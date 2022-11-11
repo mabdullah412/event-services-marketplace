@@ -1,2 +1,2 @@
 const double padding = 16;
-const double radius = 10;
+const double radius = 15;

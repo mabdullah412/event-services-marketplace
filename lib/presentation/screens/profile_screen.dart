@@ -18,7 +18,10 @@ class ProfileScreen extends StatelessWidget {
             const Header(title: 'Profile'),
             const SizedBox(height: padding),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: padding),
+              padding: const EdgeInsets.symmetric(
+                horizontal: padding,
+                vertical: padding / 2,
+              ),
               decoration: BoxDecoration(
                 color: Theme.of(context).backgroundColor,
                 borderRadius: BorderRadius.circular(radius),
@@ -26,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  Text('Dark Mode'),
+                  Text('Theme Mode'),
                   ToggleThemeButton(),
                 ],
               ),
