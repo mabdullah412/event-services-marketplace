@@ -55,6 +55,29 @@ class Themes {
       ),
     ),
 
+    // input decoration
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFF222222),
+      contentPadding: const EdgeInsets.all(padding),
+      labelStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
+      ),
+
+      // border
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: const BorderSide(color: Color(0xFF333333)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+    ),
+
     // buttonthemes
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -147,6 +170,29 @@ class Themes {
       bodyMedium: TextStyle(
         fontSize: 14,
         color: Color(0xFFDDDDDD),
+      ),
+    ),
+
+    // input decoration
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFFFFFFFF),
+      contentPadding: const EdgeInsets.all(padding),
+      labelStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
+      ),
+
+      // border
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
+        borderSide: const BorderSide(color: Color(0xFFFFFFFF)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(radius),
       ),
     ),
 
