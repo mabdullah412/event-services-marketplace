@@ -18,19 +18,19 @@ class ProfileScreen extends StatelessWidget {
             const Header(title: 'Profile'),
             const SizedBox(height: padding),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: padding,
-                vertical: padding / 2,
-              ),
+              padding: const EdgeInsets.all(padding),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(radius),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Theme Mode'),
-                  ToggleThemeButton(),
+                children: [
+                  Text(
+                    'Theme Mode',
+                    style: Theme.of(context).primaryTextTheme.titleSmall,
+                  ),
+                  const ToggleThemeButton(),
                 ],
               ),
             ),

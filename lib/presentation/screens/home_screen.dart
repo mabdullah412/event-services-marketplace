@@ -28,10 +28,14 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text('Create a package'),
+                  Text(
+                    'Create a package',
+                    style: Theme.of(context).primaryTextTheme.titleMedium,
+                  ),
                   const SizedBox(height: padding),
-                  const Text(
+                  Text(
                     'Create your own custom packages by adding the services you desire and pay for the whole package in one click.',
+                    style: Theme.of(context).primaryTextTheme.bodyMedium,
                   ),
                   const SizedBox(height: padding),
                   ElevatedButton(
@@ -53,15 +57,15 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: const [
+                children: [
                   Text(
                     'Become a seller',
-                    style: TextStyle(color: Color(0xFFF2F2F6)),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  SizedBox(height: padding),
+                  const SizedBox(height: padding),
                   Text(
                     'Have services thay you would like to sell? Go to the profile page and turn on seller mode.',
-                    style: TextStyle(color: Color(0xFFF2F2F6)),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),

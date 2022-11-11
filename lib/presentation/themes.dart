@@ -1,5 +1,6 @@
-import 'package:event_planner/constants/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../constants/constants.dart';
 
 class Themes {
   static final darkTheme = ThemeData(
@@ -8,14 +9,57 @@ class Themes {
 
     // font
     fontFamily: 'Poppins',
+
     // text -> 0xFFF2F2F6
-    primaryTextTheme: TextTheme(),
-    textTheme: TextTheme(),
+    // primary text
+    primaryTextTheme: const TextTheme(
+      // header
+      titleLarge: TextStyle(
+        fontSize: 19,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w600,
+      ),
+
+      // container
+      titleMedium: TextStyle(
+        fontSize: 17,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w500,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 15,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w600,
+      ),
+
+      // container text
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        color: Color(0xFFDDDDDD),
+      ),
+    ),
+
+    // secondary text
+    textTheme: const TextTheme(
+      // container
+      titleMedium: TextStyle(
+        fontSize: 17,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w500,
+      ),
+
+      // container text
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        color: Color(0xFFDDDDDD),
+      ),
+    ),
 
     // buttonthemes
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         elevation: MaterialStateProperty.all(0),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(padding)),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
@@ -61,13 +105,56 @@ class Themes {
 
     // font
     fontFamily: 'Poppins',
-    primaryTextTheme: TextTheme(),
-    textTheme: TextTheme(),
+
+    // primary text
+    primaryTextTheme: const TextTheme(
+      // header
+      titleLarge: TextStyle(
+        fontSize: 19,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w600,
+      ),
+
+      // container
+      titleMedium: TextStyle(
+        fontSize: 17,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w600,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 15,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w600,
+      ),
+
+      // container text
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        color: Color(0xFF444444),
+      ),
+    ),
+
+    // secondary text
+    textTheme: const TextTheme(
+      // container
+      titleMedium: TextStyle(
+        fontSize: 17,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w600,
+      ),
+
+      // container text
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        color: Color(0xFFDDDDDD),
+      ),
+    ),
 
     // buttonthemes
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         elevation: MaterialStateProperty.all(0),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(padding)),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
