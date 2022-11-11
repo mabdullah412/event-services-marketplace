@@ -1,3 +1,4 @@
+import 'package:event_planner/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -43,16 +44,22 @@ class _NavigationControllerState extends State<NavigationController> {
       ),
 
       // navigation bar
-      bottomNavigationBar: NavigationBarTheme(
-        data: Theme.of(context).navigationBarTheme,
-        child: NavigationBar(
-          selectedIndex: index,
-          onDestinationSelected: (index) {
-            setState(() {
-              this.index = index;
-            });
-          },
-          destinations: destinations,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(padding),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(radius),
+          child: NavigationBarTheme(
+            data: Theme.of(context).navigationBarTheme,
+            child: NavigationBar(
+              selectedIndex: index,
+              onDestinationSelected: (index) {
+                setState(() {
+                  this.index = index;
+                });
+              },
+              destinations: destinations,
+            ),
+          ),
         ),
       ),
     );

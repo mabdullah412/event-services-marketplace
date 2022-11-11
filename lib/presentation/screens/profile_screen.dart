@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../widgets/header.dart';
+import '../widgets/toggle_theme_btn.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -12,8 +13,24 @@ class ProfileScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(padding),
         child: Column(
-          children: const [
-            Header(title: 'Profile'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Header(title: 'Profile'),
+            const SizedBox(height: padding),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: padding),
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.circular(radius),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text('Dark Mode'),
+                  ToggleThemeButton(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
