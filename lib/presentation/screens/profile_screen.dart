@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
                 vertical: padding / 2,
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(radius),
               ),
               child: Row(
