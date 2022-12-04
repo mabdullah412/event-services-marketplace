@@ -21,14 +21,16 @@ class HomeScreen extends StatelessWidget {
               // ! add a block showing total number of services being on sale
               // ! user mini-dashboard
 
-              // const SizedBox(height: padding),
+              SizedBox(height: padding),
+              Squares(),
+
               // CreatePackageAndSellFullHeight(),
+
               SizedBox(height: padding),
-              CreatePackageInfo(),
+              ShowCreatePackage(),
               SizedBox(height: padding),
-              SellServicesInfo(),
+              ShowSellServices(),
               SizedBox(height: padding),
-              // Squares(),
             ],
           ),
         ),
@@ -51,11 +53,11 @@ class CreatePackageAndSellFullHeight extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             Expanded(
-              child: CreatePackageInfo(),
+              child: ShowCreatePackage(),
             ),
             SizedBox(width: padding),
             Expanded(
-              child: SellServicesInfo(),
+              child: ShowSellServices(),
             ),
           ],
         ),
@@ -77,12 +79,33 @@ class Squares extends StatelessWidget {
         children: [
           Expanded(
             child: AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 1.4,
               child: Container(
                 padding: const EdgeInsets.all(padding),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(radius),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'Total Services',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    const Text(
+                      '45',
+                      style: TextStyle(
+                        fontSize: 40,
+                        height: 1,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -90,12 +113,16 @@ class Squares extends StatelessWidget {
           const SizedBox(width: padding),
           Expanded(
             child: AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 1.4,
               child: Container(
                 padding: const EdgeInsets.all(padding),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(radius),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [],
                 ),
               ),
             ),
@@ -106,8 +133,8 @@ class Squares extends StatelessWidget {
   }
 }
 
-class SellServicesInfo extends StatelessWidget {
-  const SellServicesInfo({
+class ShowSellServices extends StatelessWidget {
+  const ShowSellServices({
     Key? key,
   }) : super(key: key);
 
@@ -137,8 +164,8 @@ class SellServicesInfo extends StatelessWidget {
   }
 }
 
-class CreatePackageInfo extends StatelessWidget {
-  const CreatePackageInfo({
+class ShowCreatePackage extends StatelessWidget {
+  const ShowCreatePackage({
     Key? key,
   }) : super(key: key);
 
