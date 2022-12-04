@@ -16,6 +16,11 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: const [
               Header(title: 'Home'),
+
+              // TODO: ideas for home screen
+              // ! add a block showing total number of services being on sale
+              // ! user mini-dashboard
+
               // const SizedBox(height: padding),
               // CreatePackageAndSellFullHeight(),
               SizedBox(height: padding),

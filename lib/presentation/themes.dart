@@ -37,6 +37,10 @@ class Themes {
         fontSize: 14,
         color: Color(0xFFDDDDDD),
       ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        color: Color(0xFFDDDDDD),
+      ),
     ),
 
     // secondary text
@@ -51,6 +55,10 @@ class Themes {
       // container text
       bodyMedium: TextStyle(
         fontSize: 14,
+        color: Color(0xFFDDDDDD),
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
         color: Color(0xFFDDDDDD),
       ),
     ),
@@ -155,6 +163,10 @@ class Themes {
         fontSize: 14,
         color: Color(0xFF444444),
       ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        color: Color(0xFF444444),
+      ),
     ),
 
     // secondary text
@@ -170,6 +182,10 @@ class Themes {
       bodyMedium: TextStyle(
         fontSize: 14,
         color: Color(0xFFDDDDDD),
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        color: Color(0xFF444444),
       ),
     ),
 
