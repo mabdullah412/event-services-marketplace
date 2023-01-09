@@ -4,7 +4,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'screens/discover_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/inbox_screen.dart';
 import 'screens/orders_screen.dart';
 import 'screens/profile_screen.dart';
 
@@ -20,7 +19,7 @@ class _NavigationControllerState extends State<NavigationController> {
 
   final screens = const <Widget>[
     HomeScreen(),
-    InboxScreen(),
+    // InboxScreen(),
     DiscoverScreen(),
     OrdersScreen(),
     ProfileScreen(),
@@ -28,7 +27,7 @@ class _NavigationControllerState extends State<NavigationController> {
 
   final screenTitles = const <String>[
     'Home',
-    'Inbox',
+    // 'Inbox',
     'Discover',
     'Manage Orders',
     'Profile',
@@ -72,11 +71,11 @@ class _NavigationControllerState extends State<NavigationController> {
         selectedIcon: Icon(PhosphorIcons.houseFill),
         label: 'Home',
       ),
-      NavigationDestination(
-        icon: Icon(PhosphorIcons.paperPlaneTiltBold),
-        selectedIcon: Icon(PhosphorIcons.paperPlaneTiltFill),
-        label: 'Inbox',
-      ),
+      // NavigationDestination(
+      //   icon: Icon(PhosphorIcons.paperPlaneTiltBold),
+      //   selectedIcon: Icon(PhosphorIcons.paperPlaneTiltFill),
+      //   label: 'Inbox',
+      // ),
       NavigationDestination(
         icon: Icon(PhosphorIcons.magnifyingGlassBold),
         selectedIcon: Icon(PhosphorIcons.magnifyingGlassFill),
