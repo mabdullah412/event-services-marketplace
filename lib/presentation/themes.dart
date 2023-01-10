@@ -20,6 +20,13 @@ class Themes {
         fontWeight: FontWeight.w600,
       ),
 
+      // display
+      displaySmall: TextStyle(
+        fontSize: 22,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w600,
+      ),
+
       // container
       titleMedium: TextStyle(
         fontSize: 17,
@@ -35,7 +42,7 @@ class Themes {
       // container text
       bodyMedium: TextStyle(
         fontSize: 14,
-        color: Color(0xFFDDDDDD),
+        color: Color(0xFFBBBBBB),
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
@@ -55,7 +62,7 @@ class Themes {
       // container text
       bodyMedium: TextStyle(
         fontSize: 14,
-        color: Color(0xFFDDDDDD),
+        color: Color(0xFFBBBBBB),
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
@@ -98,13 +105,26 @@ class Themes {
         ),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        // padding: MaterialStateProperty.all(const EdgeInsets.all(padding)),
+        elevation: MaterialStateProperty.all(0),
+        foregroundColor: MaterialStateProperty.all(Colors.white),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        ),
+      ),
+    ),
 
     // colorscheme
     colorScheme: const ColorScheme.dark(
-        primary: Color(0xFF9E9DFF),
-        secondary: Color(0xFF222222),
-        surface: Color(0xFF222222),
-        outline: Color(0xFF444444)),
+      primary: Color(0xFF9E9DFF),
+      secondary: Color(0xFF222222),
+      surface: Color(0xFF222222),
+      outline: Color(0xFF444444),
+    ),
 
     // navbar
     navigationBarTheme: NavigationBarThemeData(
@@ -142,6 +162,13 @@ class Themes {
       // header
       titleLarge: TextStyle(
         fontSize: 19,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w600,
+      ),
+
+      // display
+      displaySmall: TextStyle(
+        fontSize: 22,
         color: Color(0xFF444444),
         fontWeight: FontWeight.w600,
       ),
@@ -224,13 +251,26 @@ class Themes {
         ),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: ButtonStyle(
+        // padding: MaterialStateProperty.all(const EdgeInsets.all(padding)),
+        elevation: MaterialStateProperty.all(0),
+        foregroundColor: MaterialStateProperty.all(Colors.black),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        ),
+      ),
+    ),
 
     // colorscheme
     colorScheme: const ColorScheme.light(
-        primary: Color(0xFF9E9DFF),
-        secondary: Color(0xFF222222),
-        surface: Color(0xFFFFFFFF),
-        outline: Color(0xFFDDDDDD)),
+      primary: Color(0xFF9E9DFF),
+      secondary: Color(0xFF222222),
+      surface: Color(0xFFFFFFFF),
+      outline: Color(0xFFDDDDDD),
+    ),
 
     // navbar
     navigationBarTheme: NavigationBarThemeData(

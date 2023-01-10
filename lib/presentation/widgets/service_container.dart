@@ -1,3 +1,5 @@
+import 'package:event_planner/presentation/router/custom_page_route.dart';
+import 'package:event_planner/presentation/screens/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -102,7 +104,13 @@ class ServiceContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: const ServiceScreen(),
+                    ),
+                  );
+                },
                 child: const Text('Learn more'),
               ),
 
