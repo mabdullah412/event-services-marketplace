@@ -1,3 +1,5 @@
+import 'package:event_planner/presentation/router/custom_page_route.dart';
+import 'package:event_planner/presentation/screens/create_service_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -158,6 +160,15 @@ class ShowSellServices extends StatelessWidget {
             'Have services thay you would like to sell? Go to the profile page and turn on seller mode.',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          const SizedBox(height: padding),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                CustomPageRoute(child: const CreateServiceScreen()),
+              );
+            },
+            child: const Text('Create a Service'),
+          )
         ],
       ),
     );
@@ -192,7 +203,7 @@ class ShowCreatePackage extends StatelessWidget {
           const SizedBox(height: padding),
           ElevatedButton(
             onPressed: () {},
-            child: const Text('Sell a Service'),
+            child: const Text('Create a package'),
           )
         ],
       ),

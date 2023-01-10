@@ -29,7 +29,7 @@ class Themes {
       titleSmall: TextStyle(
         fontSize: 15,
         color: Color(0xFFDDDDDD),
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
       ),
 
       // container text
@@ -79,7 +79,7 @@ class Themes {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radius),
-        borderSide: const BorderSide(color: Color(0xFF333333)),
+        borderSide: const BorderSide(color: Color(0xFF444444)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -101,10 +101,10 @@ class Themes {
 
     // colorscheme
     colorScheme: const ColorScheme.dark(
-      primary: Color(0xFF9E9DFF),
-      secondary: Color(0xFF222222),
-      surface: Color(0xFF222222),
-    ),
+        primary: Color(0xFF9E9DFF),
+        secondary: Color(0xFF222222),
+        surface: Color(0xFF222222),
+        outline: Color(0xFF444444)),
 
     // navbar
     navigationBarTheme: NavigationBarThemeData(
@@ -205,7 +205,7 @@ class Themes {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radius),
-        borderSide: const BorderSide(color: Color(0xFFFFFFFF)),
+        borderSide: const BorderSide(color: Color(0xFFDDDDDD)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radius),
@@ -227,10 +227,10 @@ class Themes {
 
     // colorscheme
     colorScheme: const ColorScheme.light(
-      primary: Color(0xFF9E9DFF),
-      secondary: Color(0xFF222222),
-      surface: Color(0xFFFFFFFF),
-    ),
+        primary: Color(0xFF9E9DFF),
+        secondary: Color(0xFF222222),
+        surface: Color(0xFFFFFFFF),
+        outline: Color(0xFFDDDDDD)),
 
     // navbar
     navigationBarTheme: NavigationBarThemeData(
