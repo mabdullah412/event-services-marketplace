@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../widgets/review_card.dart';
 
 class ServiceScreen extends StatelessWidget {
   const ServiceScreen({super.key});
@@ -28,7 +29,56 @@ class ServiceScreen extends StatelessWidget {
                 const SizedBox(height: padding),
                 const Pricing(),
                 const SizedBox(height: padding),
-                Container(),
+                Container(
+                  padding: const EdgeInsets.all(padding),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(radius),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Reviews',
+                        style: Theme.of(context).primaryTextTheme.titleMedium,
+                      ),
+                      const SizedBox(height: padding),
+                      const ReviewCard(),
+                      const SizedBox(height: padding),
+                      const ReviewCard(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: padding),
+                Container(
+                  padding: const EdgeInsets.all(padding),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(radius),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Questions',
+                        style: Theme.of(context).primaryTextTheme.titleMedium,
+                      ),
+                      const SizedBox(height: padding),
+                      Container(
+                        padding: const EdgeInsets.all(padding / 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(radius),
+                          border: Border.all(
+                              color: Theme.of(context).colorScheme.outline),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -123,7 +173,30 @@ class TitleAndDescription extends StatelessWidget {
             'Sony WH-1000XM4',
             style: Theme.of(context).primaryTextTheme.displaySmall,
           ),
-          const SizedBox(height: padding),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              const Icon(
+                PhosphorIcons.starFill,
+                color: Colors.orange,
+                size: 15,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                '4.8',
+                style: Theme.of(context).primaryTextTheme.bodyMedium,
+              ),
+              const SizedBox(width: padding),
+              Text(
+                '139 Reviews',
+                style: Theme.of(context)
+                    .primaryTextTheme
+                    .bodyMedium!
+                    .apply(color: Theme.of(context).colorScheme.primary),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
           Text(
             'The intuitive and intelligent WH-1000XM4 headphones bring you new improvements in industry-leading noise cancelling technology.',
             style: Theme.of(context).primaryTextTheme.bodyMedium,
