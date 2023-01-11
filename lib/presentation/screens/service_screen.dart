@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../widgets/question_answer_card.dart';
 import '../widgets/review_card.dart';
 
 class ServiceScreen extends StatelessWidget {
@@ -16,73 +17,86 @@ class ServiceScreen extends StatelessWidget {
             padding: const EdgeInsets.all(padding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const PopHeader(),
-                const SizedBox(height: padding),
-                const ImageBanner(),
-                const SizedBox(height: padding),
-                const SellerAndBookmark(),
-                const SizedBox(height: padding),
-                const TitleAndDescription(),
-                const SizedBox(height: padding),
-                const LocationAddress(),
-                const SizedBox(height: padding),
-                const Pricing(),
-                const SizedBox(height: padding),
-                Container(
-                  padding: const EdgeInsets.all(padding),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(radius),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'Reviews',
-                        style: Theme.of(context).primaryTextTheme.titleMedium,
-                      ),
-                      const SizedBox(height: padding),
-                      const ReviewCard(),
-                      const SizedBox(height: padding),
-                      const ReviewCard(),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: padding),
-                Container(
-                  padding: const EdgeInsets.all(padding),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(radius),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'Questions',
-                        style: Theme.of(context).primaryTextTheme.titleMedium,
-                      ),
-                      const SizedBox(height: padding),
-                      Container(
-                        padding: const EdgeInsets.all(padding / 2),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(radius),
-                          border: Border.all(
-                              color: Theme.of(context).colorScheme.outline),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              children: const [
+                PopHeader(),
+                SizedBox(height: padding),
+                ImageBanner(),
+                SizedBox(height: padding),
+                SellerAndBookmark(),
+                SizedBox(height: padding),
+                TitleAndDescription(),
+                SizedBox(height: padding),
+                LocationAddress(),
+                SizedBox(height: padding),
+                Pricing(),
+                SizedBox(height: padding),
+                Reviews(),
+                SizedBox(height: padding),
+                Quetions(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Quetions extends StatelessWidget {
+  const Quetions({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(padding),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Questions',
+            style: Theme.of(context).primaryTextTheme.titleMedium,
+          ),
+          const SizedBox(height: padding),
+          const QuestionAnswerCard(),
+          const SizedBox(height: padding),
+          const QuestionAnswerCard(),
+        ],
+      ),
+    );
+  }
+}
+
+class Reviews extends StatelessWidget {
+  const Reviews({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(padding),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Reviews',
+            style: Theme.of(context).primaryTextTheme.titleMedium,
+          ),
+          const SizedBox(height: padding),
+          const ReviewCard(),
+          const SizedBox(height: padding),
+          const ReviewCard(),
+        ],
       ),
     );
   }

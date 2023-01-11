@@ -40,6 +40,10 @@ class Themes {
       ),
 
       // container text
+      bodySmall: TextStyle(
+        fontSize: 12,
+        color: Color(0xFFDDDDDD),
+      ),
       bodyMedium: TextStyle(
         fontSize: 14,
         color: Color(0xFFBBBBBB),
@@ -124,6 +128,7 @@ class Themes {
       secondary: Color(0xFF222222),
       surface: Color(0xFF222222),
       outline: Color(0xFF444444),
+      error: Colors.red,
     ),
 
     // navbar
@@ -186,6 +191,10 @@ class Themes {
       ),
 
       // container text
+      bodySmall: TextStyle(
+        fontSize: 12,
+        color: Color(0xFF444444),
+      ),
       bodyMedium: TextStyle(
         fontSize: 14,
         color: Color(0xFF444444),
@@ -270,6 +279,7 @@ class Themes {
       secondary: Color(0xFF222222),
       surface: Color(0xFFFFFFFF),
       outline: Color(0xFFDDDDDD),
+      error: Colors.red,
     ),
 
     // navbar
