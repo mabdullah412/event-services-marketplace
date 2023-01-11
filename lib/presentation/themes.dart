@@ -42,7 +42,7 @@ class Themes {
       // container text
       bodySmall: TextStyle(
         fontSize: 12,
-        color: Color(0xFFDDDDDD),
+        color: Color(0xFFBBBBBB),
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
@@ -118,6 +118,26 @@ class Themes {
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(radius),
           ),
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all(0),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(padding)),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        ),
+        backgroundColor: MaterialStateProperty.all(const Color(0xFF444444)),
+        textStyle: MaterialStateProperty.all(
+          const TextStyle(
+            fontSize: 14,
+          ),
+        ),
+        foregroundColor: MaterialStateProperty.all(
+          const Color(0xFFBBBBBB),
         ),
       ),
     ),
@@ -270,6 +290,23 @@ class Themes {
             borderRadius: BorderRadius.circular(radius),
           ),
         ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        elevation: MaterialStateProperty.all(0),
+        padding: MaterialStateProperty.all(const EdgeInsets.all(padding)),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+          ),
+        ),
+        textStyle: MaterialStateProperty.all(
+          const TextStyle(
+            fontSize: 14,
+          ),
+        ),
+        foregroundColor: MaterialStateProperty.all(const Color(0xFF444444)),
       ),
     ),
 
