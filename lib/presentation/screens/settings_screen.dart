@@ -1,8 +1,8 @@
-import 'package:event_planner/presentation/widgets/theme_button.dart';
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../widgets/pop_header.dart';
+import '../widgets/theme_button.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -14,24 +14,10 @@ class SettingsScreen extends StatelessWidget {
         body: Container(
           padding: const EdgeInsets.all(padding),
           child: Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: const Icon(PhosphorIcons.arrowBendUpLeftLight),
-                  ),
-                  const SizedBox(width: padding),
-                  Text(
-                    'Settings',
-                    style: Theme.of(context).primaryTextTheme.titleLarge,
-                  ),
-                ],
-              ),
-              const SizedBox(height: padding),
-              const ThemeButton(),
+            children: const [
+              PopHeader(title: 'Settings'),
+              SizedBox(height: padding),
+              ThemeButton(),
             ],
           ),
         ),

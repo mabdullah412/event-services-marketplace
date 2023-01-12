@@ -19,7 +19,6 @@ class HomeScreen extends StatelessWidget {
             children: const [
               Header(title: 'Home'),
 
-              // TODO: ideas for home screen
               // ! add a block showing total number of services being on sale
               // ! user mini-dashboard
 

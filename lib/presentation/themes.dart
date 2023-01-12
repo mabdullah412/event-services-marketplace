@@ -26,6 +26,22 @@ class Themes {
         color: Color(0xFFDDDDDD),
         fontWeight: FontWeight.w600,
       ),
+      displayMedium: TextStyle(
+        fontSize: 30,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w700,
+      ),
+      displayLarge: TextStyle(
+        fontSize: 34,
+        color: Color(0xFFDDDDDD),
+        fontWeight: FontWeight.w600,
+      ),
+
+      labelMedium: TextStyle(
+        fontSize: 25,
+        color: Color(0xFFBBBBBB),
+        fontWeight: FontWeight.w400,
+      ),
 
       // container
       titleMedium: TextStyle(
@@ -196,6 +212,22 @@ class Themes {
         fontSize: 22,
         color: Color(0xFF444444),
         fontWeight: FontWeight.w600,
+      ),
+      displayMedium: TextStyle(
+        fontSize: 30,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w700,
+      ),
+      displayLarge: TextStyle(
+        fontSize: 34,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w600,
+      ),
+
+      labelMedium: TextStyle(
+        fontSize: 25,
+        color: Color(0xFF444444),
+        fontWeight: FontWeight.w400,
       ),
 
       // container

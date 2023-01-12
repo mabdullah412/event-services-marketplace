@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../widgets/pop_header.dart';
 
 class CreateServiceScreen extends StatefulWidget {
   const CreateServiceScreen({super.key});
@@ -54,7 +55,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const PopHeader(),
+                  const PopHeader(title: 'Create a service'),
                   const SizedBox(height: padding),
                   imageSection(context),
                   const SizedBox(height: padding),
@@ -357,31 +358,6 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class PopHeader extends StatelessWidget {
-  const PopHeader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(PhosphorIcons.arrowBendUpLeftLight),
-        ),
-        const SizedBox(width: padding),
-        Text(
-          'Create a Service',
-          style: Theme.of(context).primaryTextTheme.titleLarge,
-        ),
-      ],
     );
   }
 }

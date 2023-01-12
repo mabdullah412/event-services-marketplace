@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../widgets/pop_header.dart';
 import '../widgets/question_answer_card.dart';
 import '../widgets/review_card.dart';
 
@@ -18,7 +19,7 @@ class ServiceScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: const [
-                PopHeader(),
+                PopHeader(title: 'Details'),
                 SizedBox(height: padding),
                 ImageBanner(),
                 SizedBox(height: padding),
@@ -282,31 +283,6 @@ class ImageBanner extends StatelessWidget {
           ),
         ),
         const Icon(PhosphorIcons.dotsThreeBold, size: 45)
-      ],
-    );
-  }
-}
-
-class PopHeader extends StatelessWidget {
-  const PopHeader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(PhosphorIcons.arrowBendUpLeftLight),
-        ),
-        const SizedBox(width: padding),
-        Text(
-          'Details',
-          style: Theme.of(context).primaryTextTheme.titleLarge,
-        ),
       ],
     );
   }
