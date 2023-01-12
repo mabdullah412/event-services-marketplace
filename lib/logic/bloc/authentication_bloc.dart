@@ -46,6 +46,6 @@ class AuthenticationBloc
   ) async {
     emit(AuthenticationLoading());
     await userRepository.deleteData();
-    emit(AuthenticationAuthenticated());
+    emit(AuthenticationUnAuthenticated());
   }
 }
