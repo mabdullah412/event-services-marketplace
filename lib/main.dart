@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'app.dart';
+import 'data/repositories/user_repository.dart';
 
 void main() {
-  runApp(const App());
+  runApp(
+    App(
+      userRepository: UserRepository(),
+    ),
+  );
 }

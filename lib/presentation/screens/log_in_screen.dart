@@ -1,29 +1,27 @@
-import 'package:event_planner/logic/bloc/authentication_bloc.dart';
-import 'package:event_planner/logic/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
+import '../../logic/bloc/authentication_bloc.dart';
+import '../../logic/bloc/login_bloc.dart';
 import '../widgets/pop_header.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  final _signupFormKey = GlobalKey<FormState>();
+class _LoginScreenState extends State<LoginScreen> {
+  final _loginFormKey = GlobalKey<FormState>();
   late AuthenticationBloc _authenticationBloc;
   late LoginBloc _loginBloc;
 
-  final _signupNameFocusNode = FocusNode();
-  final _signupEmailFocusNode = FocusNode();
-  final _signupPasswordFocusNode = FocusNode();
-  final _signupConfirmPasswordFocusNode = FocusNode();
+  final _signinEmailFocusNode = FocusNode();
+  final _signinPasswordFocusNode = FocusNode();
 
-  final signupData = {};
+  final loginData = {};
 
   @override
   void initState() {
@@ -34,17 +32,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    _signupNameFocusNode.dispose();
-    _signupEmailFocusNode.dispose();
-    _signupPasswordFocusNode.dispose();
-    _signupConfirmPasswordFocusNode.dispose();
+    _signinEmailFocusNode.dispose();
+    _signinPasswordFocusNode.dispose();
     super.dispose();
   }
 
-  Future<void> signup() async {
-    if (!_signupFormKey.currentState!.validate()) return;
-    _signupFormKey.currentState!.save();
-    _loginBloc.add(SignupButtonPressed(signupData: signupData));
+  Future<void> login() async {
+    if (!_loginFormKey.currentState!.validate()) return;
+    _loginFormKey.currentState!.save();
+    _loginBloc.add(LoginButtonPressed(loginData: loginData));
   }
 
   @override
@@ -89,26 +85,26 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const PopHeader(title: 'Sign Up'),
+                      const PopHeader(title: 'Sign In'),
                       const SizedBox(height: padding),
                       Text(
-                        'Let\'s register you.',
+                        'Let\'s sign you in.',
                         style: Theme.of(context).primaryTextTheme.displayLarge,
                       ),
                       const SizedBox(height: padding / 2),
                       Text(
-                        'Enter details to.',
+                        'Welcome back.',
                         style: Theme.of(context).primaryTextTheme.labelMedium,
                       ),
                       const SizedBox(height: padding / 2),
                       Text(
-                        'Buy and Sell Services.',
+                        'You\'ve been missed.',
                         style: Theme.of(context).primaryTextTheme.labelMedium,
                       ),
                       const SizedBox(height: padding),
                       Expanded(
                         child: Form(
-                          key: _signupFormKey,
+                          key: _loginFormKey,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
@@ -121,41 +117,16 @@ class _SignupScreenState extends State<SignupScreen> {
                                         CrossAxisAlignment.stretch,
                                     children: [
                                       TextFormField(
-                                        focusNode: _signupNameFocusNode,
-                                        textInputAction: TextInputAction.next,
-                                        textCapitalization:
-                                            TextCapitalization.words,
-                                        onSaved: (value) {
-                                          signupData['name'] = value!;
-                                        },
-                                        keyboardType: TextInputType.name,
-                                        onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                              _signupEmailFocusNode);
-                                        },
-                                        decoration: const InputDecoration(
-                                          label: Text('Name'),
-                                        ),
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Name cannot be empty.';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                      ),
-                                      const SizedBox(height: padding),
-                                      TextFormField(
-                                        focusNode: _signupEmailFocusNode,
+                                        focusNode: _signinEmailFocusNode,
                                         textInputAction: TextInputAction.next,
                                         onSaved: (value) {
-                                          signupData['email'] = value!;
+                                          loginData['email'] = value!;
                                         },
                                         keyboardType:
                                             TextInputType.emailAddress,
                                         onFieldSubmitted: (value) {
                                           FocusScope.of(context).requestFocus(
-                                              _signupPasswordFocusNode);
+                                              _signinPasswordFocusNode);
                                         },
                                         decoration: const InputDecoration(
                                           label: Text('Email'),
@@ -174,14 +145,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                       ),
                                       const SizedBox(height: padding),
                                       TextFormField(
-                                        focusNode: _signupPasswordFocusNode,
-                                        textInputAction: TextInputAction.next,
-                                        onSaved: (value) {
-                                          signupData['password'] = value!;
-                                        },
+                                        focusNode: _signinPasswordFocusNode,
+                                        textInputAction: TextInputAction.done,
                                         onFieldSubmitted: (value) {
-                                          FocusScope.of(context).requestFocus(
-                                              _signupConfirmPasswordFocusNode);
+                                          _loginFormKey.currentState!
+                                              .validate();
+                                        },
+                                        onSaved: (value) {
+                                          loginData['password'] = value!;
                                         },
                                         obscureText: true,
                                         autocorrect: false,
@@ -189,8 +160,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                         validator: (value) {
                                           if (value!.isEmpty) {
                                             return 'Password cannot be empty.';
-                                          } else if (value.length < 5) {
-                                            return 'Password must contain atleast 5 characters.';
+                                          } else if (value.length < 6) {
+                                            return 'Password must contain atleast 6 characters.';
                                           } else {
                                             return null;
                                           }
@@ -199,45 +170,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                           label: Text('Password'),
                                         ),
                                       ),
-                                      const SizedBox(height: padding),
-                                      TextFormField(
-                                        focusNode:
-                                            _signupConfirmPasswordFocusNode,
-                                        textInputAction: TextInputAction.done,
-                                        onSaved: (value) {
-                                          signupData['passwordConfirm'] =
-                                              value!;
-                                        },
-                                        onFieldSubmitted: (value) {
-                                          _signupFormKey.currentState!
-                                              .validate();
-                                        },
-                                        obscureText: true,
-                                        autocorrect: false,
-                                        enableSuggestions: false,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Password cannot be empty.';
-                                          } else if (value.length < 5) {
-                                            return 'Password must contain atleast 5 characters.';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                        decoration: const InputDecoration(
-                                          label: Text('Confirm Password'),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                               ElevatedButton(
-                                onPressed:
-                                    state is LoginLoading ? null : signup,
+                                onPressed: state is LoginLoading ? null : login,
                                 child: state is LoginLoading
                                     ? const CircularProgressIndicator()
-                                    : const Text('Sign Up'),
+                                    : const Text('Log In'),
                               ),
                             ],
                           ),

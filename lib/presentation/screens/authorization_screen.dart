@@ -1,14 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
+import '../../data/repositories/user_repository.dart';
+import '../../logic/bloc/authentication_bloc.dart';
+import '../../logic/bloc/login_bloc.dart';
 import '../router/custom_page_route.dart';
-import 'sign_in_screen.dart';
+import 'log_in_screen.dart';
 import 'sign_up_screen.dart';
 
-class AuthorizationScreen extends StatelessWidget {
+class AuthorizationScreen extends StatefulWidget {
   const AuthorizationScreen({
     Key? key,
+    required this.userRepository,
   }) : super(key: key);
+
+  final UserRepository userRepository;
+
+  @override
+  State<AuthorizationScreen> createState() => _AuthorizationScreenState();
+}
+
+class _AuthorizationScreenState extends State<AuthorizationScreen> {
+  UserRepository get userRepository => widget.userRepository;
+
+  late AuthenticationBloc _authenticationBloc;
+  late LoginBloc _loginBloc;
+
+  @override
+  void initState() {
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    _loginBloc = LoginBloc(
+      userRepository: userRepository,
+      authenticationBloc: _authenticationBloc,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _loginBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +81,10 @@ class AuthorizationScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           CustomPageRoute(
-                            child: const SignUpScreen(),
+                            child: BlocProvider.value(
+                              value: _loginBloc,
+                              child: const SignupScreen(),
+                            ),
                           ),
                         );
                       },
@@ -59,11 +95,14 @@ class AuthorizationScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           CustomPageRoute(
-                            child: const SignInScreen(),
+                            child: BlocProvider.value(
+                              value: _loginBloc,
+                              child: const LoginScreen(),
+                            ),
                           ),
                         );
                       },
-                      child: const Text('Sign In'),
+                      child: const Text('Log In'),
                     ),
                   ],
                 ),
