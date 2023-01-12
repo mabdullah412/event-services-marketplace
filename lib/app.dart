@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'data/repositories/user_repository.dart';
 import 'logic/bloc/authentication_bloc.dart';
 import 'logic/providers/theme_provider.dart';
-import 'presentation/navigation_controller.dart';
+import 'presentation/authentication_controller.dart';
 import 'presentation/themes.dart';
 
 class App extends StatefulWidget {
@@ -54,7 +54,7 @@ class _AppState extends State<App> {
             themeMode: Provider.of<ThemeProvider>(context).themeMode,
             theme: Themes.lightTheme,
             darkTheme: Themes.darkTheme,
-            home: const NavigationController(),
+            home: AuthenticationController(userRepository: userRepository),
           );
         },
       ),

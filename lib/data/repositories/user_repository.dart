@@ -66,15 +66,12 @@ class UserRepository {
     );
 
     // storing name in shared preferences
-    await _sharedPreferences.setString('FIRST_NAME', userData['firstName']);
-    await _sharedPreferences.setString('LAST_NAME', userData['lastName']);
+    await _sharedPreferences.setString('FIRST_NAME', userData['name']);
   }
 
   // to delete data after logout
   Future<void> deleteData() async {
     await _flutterSecureStorage.deleteAll();
-
-    await _sharedPreferences.remove('FIRST_NAME');
-    await _sharedPreferences.remove('LAST_NAME');
+    await _sharedPreferences.remove('name');
   }
 }
