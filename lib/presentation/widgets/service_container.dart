@@ -1,19 +1,24 @@
-import 'package:event_planner/presentation/router/custom_page_route.dart';
-import 'package:event_planner/presentation/screens/service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../data/models/service.dart';
+import '../router/custom_page_route.dart';
+import '../screens/service_screen.dart';
 
 class ServiceContainer extends StatelessWidget {
   const ServiceContainer({
+    required this.service,
     Key? key,
   }) : super(key: key);
+
+  final Service service;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(padding),
+      margin: const EdgeInsets.only(bottom: padding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
         color: Theme.of(context).colorScheme.surface,
@@ -35,7 +40,7 @@ class ServiceContainer extends StatelessWidget {
                   ),
                   const SizedBox(width: padding),
                   Text(
-                    'Seller Name',
+                    service.seller.name,
                     style: Theme.of(context).primaryTextTheme.bodyMedium,
                   ),
                 ],
@@ -58,7 +63,7 @@ class ServiceContainer extends StatelessWidget {
           // ),
 
           Container(
-            height: 250,
+            height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(radius),
               color: Theme.of(context).colorScheme.primary,
@@ -70,27 +75,23 @@ class ServiceContainer extends StatelessWidget {
 
           // details
           Text(
-            'Title',
+            service.title,
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
           Text(
-            'Price',
+            service.price.toString(),
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
           Text(
-            'Desc',
+            service.description,
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
           Text(
-            'Location',
+            service.location,
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
           Text(
-            'Rating',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
-          Text(
-            'labels',
+            service.ratingsAverage.toString(),
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
 
@@ -107,7 +108,7 @@ class ServiceContainer extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     CustomPageRoute(
-                      child: const ServiceScreen(),
+                      child: ServiceScreen(service: service),
                     ),
                   );
                 },

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../data/models/service.dart';
 import '../widgets/pop_header.dart';
 import '../widgets/question_answer_card.dart';
 import '../widgets/review_card.dart';
 
 class ServiceScreen extends StatelessWidget {
-  const ServiceScreen({super.key});
+  const ServiceScreen({required this.service, super.key});
+
+  final Service service;
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +21,27 @@ class ServiceScreen extends StatelessWidget {
             padding: const EdgeInsets.all(padding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                PopHeader(title: 'Details'),
-                SizedBox(height: padding),
-                ImageBanner(),
-                SizedBox(height: padding),
-                SellerAndBookmark(),
-                SizedBox(height: padding),
-                TitleAndDescription(),
-                SizedBox(height: padding),
-                LocationAddress(),
-                SizedBox(height: padding),
-                Pricing(),
-                SizedBox(height: padding),
-                Reviews(),
-                SizedBox(height: padding),
-                Quetions(),
+              children: [
+                const PopHeader(title: 'Details'),
+                const SizedBox(height: padding),
+                const ImageBanner(),
+                const SizedBox(height: padding),
+                SellerAndBookmark(sellerName: service.seller.name),
+                const SizedBox(height: padding),
+                TitleAndDescription(
+                  serviceTitle: service.title,
+                  serviceDescription: service.description,
+                  serviceRating: service.ratingsAverage,
+                  totalServiceReviews: service.ratingsQuantity,
+                ),
+                const SizedBox(height: padding),
+                LocationAddress(serviceLocation: service.location),
+                const SizedBox(height: padding),
+                Pricing(servicePrice: service.price),
+                const SizedBox(height: padding),
+                const Reviews(),
+                const SizedBox(height: padding),
+                const Quetions(),
               ],
             ),
           ),
@@ -106,7 +114,10 @@ class Reviews extends StatelessWidget {
 class Pricing extends StatelessWidget {
   const Pricing({
     Key? key,
+    required this.servicePrice,
   }) : super(key: key);
+
+  final int servicePrice;
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +131,7 @@ class Pricing extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Rs. 4,999.0',
+            'Rs. ${servicePrice.toDouble()}',
             style: Theme.of(context).primaryTextTheme.titleLarge,
           ),
           const SizedBox(height: padding),
@@ -137,7 +148,10 @@ class Pricing extends StatelessWidget {
 class LocationAddress extends StatelessWidget {
   const LocationAddress({
     Key? key,
+    required this.serviceLocation,
   }) : super(key: key);
+
+  final String serviceLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -159,9 +173,7 @@ class LocationAddress extends StatelessWidget {
         child: TextButton.icon(
           onPressed: () {},
           icon: const Icon(PhosphorIcons.mapPin),
-          label: const Text(
-            'Formanites Housing Society, Lidher Road, Lahore.',
-          ),
+          label: Text(serviceLocation),
         ),
       ),
     );
@@ -171,7 +183,16 @@ class LocationAddress extends StatelessWidget {
 class TitleAndDescription extends StatelessWidget {
   const TitleAndDescription({
     Key? key,
+    required this.serviceTitle,
+    required this.serviceDescription,
+    required this.serviceRating,
+    required this.totalServiceReviews,
   }) : super(key: key);
+
+  final String serviceTitle;
+  final int serviceRating;
+  final int totalServiceReviews;
+  final String serviceDescription;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +206,7 @@ class TitleAndDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Sony WH-1000XM4',
+            serviceTitle,
             style: Theme.of(context).primaryTextTheme.displaySmall,
           ),
           const SizedBox(height: 10),
@@ -198,12 +219,12 @@ class TitleAndDescription extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Text(
-                '4.8',
+                serviceRating.toString(),
                 style: Theme.of(context).primaryTextTheme.bodyMedium,
               ),
               const SizedBox(width: padding),
               Text(
-                '139 Reviews',
+                '$totalServiceReviews Reviews',
                 style: Theme.of(context)
                     .primaryTextTheme
                     .bodyMedium!
@@ -213,7 +234,7 @@ class TitleAndDescription extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'The intuitive and intelligent WH-1000XM4 headphones bring you new improvements in industry-leading noise cancelling technology.',
+            serviceDescription,
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
         ],
@@ -224,8 +245,11 @@ class TitleAndDescription extends StatelessWidget {
 
 class SellerAndBookmark extends StatelessWidget {
   const SellerAndBookmark({
+    required this.sellerName,
     Key? key,
   }) : super(key: key);
+
+  final String sellerName;
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +271,7 @@ class SellerAndBookmark extends StatelessWidget {
               ),
               const SizedBox(width: padding),
               Text(
-                'Seller Name',
+                sellerName,
                 style: Theme.of(context).primaryTextTheme.bodyMedium,
               ),
             ],
