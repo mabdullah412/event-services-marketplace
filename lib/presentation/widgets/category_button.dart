@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
+import '../router/custom_page_route.dart';
+import '../screens/services_screen.dart';
 
 class CategoryButton extends StatelessWidget {
   const CategoryButton({
-    required this.name,
+    required this.categoryName,
     required this.image,
     Key? key,
   }) : super(key: key);
 
-  final String name;
+  final String categoryName;
   final String image;
 
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).push(
+          CustomPageRoute(
+            child: ServicesScreen(categoryName: categoryName),
+          ),
+        );
+      },
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: const BorderRadius.all(
@@ -50,7 +58,7 @@ class CategoryButton extends StatelessWidget {
                     color: Theme.of(context).colorScheme.outline,
                   ),
                   child: Text(
-                    name,
+                    categoryName,
                     style: Theme.of(context).primaryTextTheme.titleSmall,
                   ),
                 ),

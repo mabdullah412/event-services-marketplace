@@ -31,27 +31,27 @@ class DiscoverScreen extends StatelessWidget {
               const SizedBox(height: padding),
 
               const CategoryButton(
-                name: 'Halls',
+                categoryName: 'Halls',
                 image: 'wedding_hall.jpg',
               ),
               const SizedBox(height: padding),
               const CategoryButton(
-                name: 'Decoration',
+                categoryName: 'Decoration',
                 image: 'decoration.jpg',
               ),
               const SizedBox(height: padding),
               const CategoryButton(
-                name: 'Transport',
+                categoryName: 'Transport',
                 image: 'red_suv.jpg',
               ),
               const SizedBox(height: padding),
               const CategoryButton(
-                name: 'Catering',
+                categoryName: 'Catering',
                 image: 'catering.jpg',
               ),
               const SizedBox(height: padding),
               const CategoryButton(
-                name: 'Photography',
+                categoryName: 'Photography',
                 image: 'photography.jpg',
               ),
 
