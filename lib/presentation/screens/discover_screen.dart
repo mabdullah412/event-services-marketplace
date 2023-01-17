@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../widgets/category_button.dart';
 import '../widgets/header.dart';
-import '../widgets/service_container.dart';
 
 class DiscoverScreen extends StatelessWidget {
   const DiscoverScreen({super.key});
@@ -30,8 +30,35 @@ class DiscoverScreen extends StatelessWidget {
 
               const SizedBox(height: padding),
 
+              const CategoryButton(
+                name: 'Halls',
+                image: 'wedding_hall.jpg',
+              ),
+              const SizedBox(height: padding),
+              const CategoryButton(
+                name: 'Decoration',
+                image: 'decoration.jpg',
+              ),
+              const SizedBox(height: padding),
+              const CategoryButton(
+                name: 'Transport',
+                image: 'red_suv.jpg',
+              ),
+              const SizedBox(height: padding),
+              const CategoryButton(
+                name: 'Catering',
+                image: 'catering.jpg',
+              ),
+              const SizedBox(height: padding),
+              const CategoryButton(
+                name: 'Photography',
+                image: 'photography.jpg',
+              ),
+
+              const SizedBox(height: padding),
+
               // item-wigdget
-              const ServiceContainer(),
+              // const ServiceContainer(),
             ],
           ),
         ),
