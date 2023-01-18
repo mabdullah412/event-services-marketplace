@@ -14,7 +14,6 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
     required this.serviceRepository,
   }) : super(ServiceInitial()) {
     on<GetServices>(_onGetServices);
-    on<GetReviews>(_onGetReviews);
   }
 
   Future<void> _onGetServices(
@@ -33,9 +32,4 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
       emit(ServiceFailure(error: err.toString()));
     }
   }
-
-  Future<void> _onGetReviews(
-    GetReviews event,
-    Emitter<ServiceState> emit,
-  ) async {}
 }

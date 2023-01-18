@@ -10,8 +10,4 @@ class ServiceAPI {
       queryParameters: {'category': category},
     );
   }
-
-  Future<dynamic> getReviews({required String serviceId}) async {
-    return await Dio().get('$baseUrl/$serviceId/reviews');
-  }
 }

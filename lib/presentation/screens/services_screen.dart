@@ -70,6 +70,10 @@ class _ServicesScreenState extends State<ServicesScreen> {
                     );
                   }
 
+                  if (state is ServiceFailure) {
+                    // TODO: Create service failure placeholder
+                  }
+
                   return const Text('Bloc Error');
                 },
               ),

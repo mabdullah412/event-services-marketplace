@@ -1,5 +1,4 @@
 import '../data_providers/service_api.dart';
-import '../models/review.dart';
 import '../models/service.dart';
 
 class ServiceRepository {
@@ -16,18 +15,5 @@ class ServiceRepository {
         .toList();
 
     return services;
-  }
-
-  Future<List<Review>> getReviews({required String serviceId}) async {
-    final rawData = await _serviceAPI.getReviews(serviceId: serviceId);
-    final List<dynamic> rawReviews = rawData.data['data']['reviews'] as List;
-
-    final List<Review> reviews = rawReviews
-        .map(
-          (review) => Review.fromMap(review),
-        )
-        .toList();
-
-    return reviews;
   }
 }

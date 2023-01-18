@@ -15,12 +15,3 @@ class GetServices extends ServiceEvent {
   @override
   List<Object> get props => [];
 }
-
-class GetReviews extends ServiceEvent {
-  final String serviceId;
-
-  const GetReviews({required this.serviceId});
-
-  @override
-  List<Object> get props => [];
-}

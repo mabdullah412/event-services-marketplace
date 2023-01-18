@@ -23,6 +23,7 @@ dependencies:
   dio: ^4.0.6
   flutter_secure_storage: ^7.0.1
   equatable: ^2.0.5
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

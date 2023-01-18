@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../data/models/review.dart';
 
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
+    required this.review,
     Key? key,
   }) : super(key: key);
+
+  final Review review;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(padding / 2),
+      margin: const EdgeInsets.only(top: padding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: Theme.of(context).colorScheme.outline),
@@ -32,11 +37,11 @@ class ReviewCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Muhammad Abdullah',
+                    review.author.name,
                     style: Theme.of(context).primaryTextTheme.bodySmall,
                   ),
                   Text(
-                    'ST ST ST ST ST',
+                    review.rating.toString(),
                     style: Theme.of(context).primaryTextTheme.bodySmall,
                   ),
                 ],
@@ -45,7 +50,7 @@ class ReviewCard extends StatelessWidget {
           ),
           const SizedBox(height: padding / 2),
           Text(
-            'It is with great pleasure to announce that our deievery team has once again won the best NPS Score Award!.',
+            review.review,
             style: Theme.of(context).primaryTextTheme.bodySmall,
           ),
         ],

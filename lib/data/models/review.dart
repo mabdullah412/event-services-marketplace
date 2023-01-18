@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 import 'user.dart';
 
 class Review {
@@ -55,7 +57,8 @@ class Review {
       author: User.fromMap(map['author'] as Map<String, dynamic>),
       service: map['service'] as String,
       rating: map['rating'] as int,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
+      createdAt:
+          DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(map['createdAt']).toLocal(),
     );
   }
 
