@@ -6,6 +6,7 @@ import '../../constants/constants.dart';
 import '../../data/models/review.dart';
 import '../../data/repositories/review_repository.dart';
 import '../../logic/bloc/get_reviews_bloc.dart';
+import 'add_review.dart';
 import 'review_card.dart';
 
 class ReviewsContainer extends StatefulWidget {
@@ -22,11 +23,12 @@ class ReviewsContainer extends StatefulWidget {
 
 class _ReviewsContainerState extends State<ReviewsContainer> {
   String get serviceId => widget.serviceId;
+  final ReviewRepository _reviewRepository = ReviewRepository();
   late GetReviewsBloc _getReviewBloc;
 
   @override
   void initState() {
-    _getReviewBloc = GetReviewsBloc(reviewRepository: ReviewRepository());
+    _getReviewBloc = GetReviewsBloc(reviewRepository: _reviewRepository);
     _getReviewBloc.add(GetReviews(serviceId: serviceId));
     super.initState();
   }
@@ -62,7 +64,11 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
                     context: context,
                     backgroundColor: Colors.transparent,
                     builder: (context) {
-                      return const AddReview();
+                      return AddReview(
+                        serviceId: serviceId,
+                        getReviewsBloc: _getReviewBloc,
+                        reviewRepository: _reviewRepository,
+                      );
                     },
                   );
                 },
@@ -102,160 +108,6 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
             },
           ),
         ],
-      ),
-    );
-  }
-}
-
-class AddReview extends StatefulWidget {
-  const AddReview({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<AddReview> createState() => _AddReviewState();
-}
-
-class _AddReviewState extends State<AddReview> {
-  final Map<dynamic, dynamic> reviewData = {};
-  int selectedRating = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: const EdgeInsets.all(padding),
-          padding: const EdgeInsets.all(padding),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(radius),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.outline,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Add a review',
-                style: Theme.of(context).primaryTextTheme.titleMedium,
-              ),
-              const SizedBox(height: padding),
-              Container(
-                padding: const EdgeInsets.all(padding),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(radius),
-                  ),
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RatingButton(
-                      value: 1,
-                      isSelected: selectedRating == 1,
-                      onPressed: () {
-                        setState(() {
-                          selectedRating = 1;
-                        });
-                      },
-                    ),
-                    Expanded(child: Container()),
-                    RatingButton(
-                      value: 2,
-                      isSelected: selectedRating == 2,
-                      onPressed: () {
-                        setState(() {
-                          selectedRating = 2;
-                        });
-                      },
-                    ),
-                    Expanded(child: Container()),
-                    RatingButton(
-                      value: 3,
-                      isSelected: selectedRating == 3,
-                      onPressed: () {
-                        setState(() {
-                          selectedRating = 3;
-                        });
-                      },
-                    ),
-                    Expanded(child: Container()),
-                    RatingButton(
-                      value: 4,
-                      isSelected: selectedRating == 4,
-                      onPressed: () {
-                        setState(() {
-                          selectedRating = 4;
-                        });
-                      },
-                    ),
-                    Expanded(child: Container()),
-                    RatingButton(
-                      value: 5,
-                      isSelected: selectedRating == 5,
-                      onPressed: () {
-                        setState(() {
-                          selectedRating = 5;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: padding),
-              TextFormField(
-                decoration: const InputDecoration(
-                  label: Text('Description'),
-                ),
-              ),
-              const SizedBox(height: padding),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Add'),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class RatingButton extends StatelessWidget {
-  const RatingButton({
-    required this.value,
-    required this.isSelected,
-    required this.onPressed,
-    Key? key,
-  }) : super(key: key);
-
-  final int value;
-  final bool isSelected;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 5,
-      child: OutlinedButton(
-        onPressed: onPressed,
-        style: isSelected
-            ? ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  Theme.of(context).colorScheme.primary,
-                ),
-                foregroundColor: MaterialStateProperty.all(
-                  Theme.of(context).colorScheme.secondary,
-                ),
-              )
-            : const ButtonStyle(),
-        child: Text(value.toString()),
       ),
     );
   }

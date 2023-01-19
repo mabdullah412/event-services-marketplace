@@ -167,6 +167,11 @@ class Themes {
       error: Colors.red,
     ),
 
+    // snackBarTheme
+    snackBarTheme: const SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+    ),
+
     // navbar
     navigationBarTheme: NavigationBarThemeData(
       height: 55,
@@ -349,6 +354,11 @@ class Themes {
       surface: Color(0xFFFFFFFF),
       outline: Color(0xFFDDDDDD),
       error: Colors.red,
+    ),
+
+    // snackBarTheme
+    snackBarTheme: const SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
     ),
 
     // navbar

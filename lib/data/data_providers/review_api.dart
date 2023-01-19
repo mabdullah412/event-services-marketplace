@@ -7,4 +7,16 @@ class ReviewAPI {
   Future<dynamic> getReviews({required String serviceId}) async {
     return await Dio().get('$baseUrl/$serviceId/reviews');
   }
+
+  Future<dynamic> createReview({
+    required String token,
+    required String serviceId,
+    required Map<dynamic, dynamic> reviewData,
+  }) async {
+    return await Dio().post(
+      '$baseUrl/$serviceId/reviews',
+      data: reviewData,
+      options: Options(headers: {'authorization': token}),
+    );
+  }
 }

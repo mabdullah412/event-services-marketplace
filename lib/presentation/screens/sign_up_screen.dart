@@ -236,7 +236,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                 onPressed:
                                     state is LoginLoading ? null : signup,
                                 child: state is LoginLoading
-                                    ? const CircularProgressIndicator()
+                                    ? const CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      )
                                     : const Text('Sign Up'),
                               ),
                             ],
