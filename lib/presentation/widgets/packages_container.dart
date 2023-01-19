@@ -28,44 +28,7 @@ class PackagesContainer extends StatelessWidget {
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.all(padding),
-                        padding: const EdgeInsets.all(padding),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(radius),
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'Create a package',
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleMedium,
-                            ),
-                            const SizedBox(height: padding),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                label: Text('Name'),
-                              ),
-                            ),
-                            const SizedBox(height: padding),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Create'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
+                  return const CreatePackage();
                 },
               );
             },
@@ -73,6 +36,52 @@ class PackagesContainer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CreatePackage extends StatelessWidget {
+  const CreatePackage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          margin: const EdgeInsets.all(padding),
+          padding: const EdgeInsets.all(padding),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(radius),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Create a package',
+                style: Theme.of(context).primaryTextTheme.titleMedium,
+              ),
+              const SizedBox(height: padding),
+              TextFormField(
+                decoration: const InputDecoration(
+                  label: Text('Name'),
+                ),
+              ),
+              const SizedBox(height: padding),
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('Create'),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
