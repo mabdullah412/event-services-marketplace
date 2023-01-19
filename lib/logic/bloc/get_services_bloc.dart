@@ -4,32 +4,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/service.dart';
 import '../../data/repositories/service_repository.dart';
 
-part 'service_event.dart';
-part 'service_state.dart';
+part 'get_services_event.dart';
+part 'get_services_state.dart';
 
-class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
+class GetServicesBloc extends Bloc<GetServicesEvent, GetServicesState> {
   final ServiceRepository serviceRepository;
 
-  ServiceBloc({
+  GetServicesBloc({
     required this.serviceRepository,
-  }) : super(ServiceInitial()) {
+  }) : super(GetServicesInitial()) {
     on<GetServices>(_onGetServices);
   }
 
   Future<void> _onGetServices(
     GetServices event,
-    Emitter<ServiceState> emit,
+    Emitter<GetServicesState> emit,
   ) async {
-    emit(ServiceLoading());
+    emit(GetServicesLoading());
 
     try {
       final List<Service> services = await serviceRepository.getServices(
         category: event.category,
       );
 
-      emit(ServiceLoaded(services: services));
+      emit(GetServicesSuccess(services: services));
     } catch (err) {
-      emit(ServiceFailure(error: err.toString()));
+      emit(GetServicesFailure(error: err.toString()));
     }
   }
 }

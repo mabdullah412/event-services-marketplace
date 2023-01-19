@@ -5,7 +5,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../constants/constants.dart';
 import '../../data/models/review.dart';
 import '../../data/repositories/review_repository.dart';
-import '../../logic/bloc/review_bloc.dart';
+import '../../logic/bloc/get_reviews_bloc.dart';
 import 'review_card.dart';
 
 class ReviewsContainer extends StatefulWidget {
@@ -22,18 +22,18 @@ class ReviewsContainer extends StatefulWidget {
 
 class _ReviewsContainerState extends State<ReviewsContainer> {
   String get serviceId => widget.serviceId;
-  late ReviewBloc _reviewBloc;
+  late GetReviewsBloc _getReviewBloc;
 
   @override
   void initState() {
-    _reviewBloc = ReviewBloc(reviewRepository: ReviewRepository());
-    _reviewBloc.add(GetReviews(serviceId: serviceId));
+    _getReviewBloc = GetReviewsBloc(reviewRepository: ReviewRepository());
+    _getReviewBloc.add(GetReviews(serviceId: serviceId));
     super.initState();
   }
 
   @override
   void dispose() {
-    _reviewBloc.close();
+    _getReviewBloc.close();
     super.dispose();
   }
 
@@ -74,16 +74,16 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
               ),
             ],
           ),
-          BlocBuilder<ReviewBloc, ReviewState>(
-            bloc: _reviewBloc,
+          BlocBuilder<GetReviewsBloc, GetReviewsState>(
+            bloc: _getReviewBloc,
             builder: (context, state) {
-              if (state is ReviewLoading || state is ReviewInitial) {
+              if (state is GetReviewsLoading || state is GetReviewsInitial) {
                 return const Center(
                   child: CircularProgressIndicator(strokeWidth: 2),
                 );
               }
 
-              if (state is ReviewLoaded) {
+              if (state is GetReviewsSuccess) {
                 return ListView.builder(
                   shrinkWrap: true,
                   itemCount: state.reviews.length,
@@ -94,7 +94,7 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
                 );
               }
 
-              if (state is ReviewFailure) {
+              if (state is GetReviewsFailure) {
                 return const ReviewFailurePlaceholder();
               }
 

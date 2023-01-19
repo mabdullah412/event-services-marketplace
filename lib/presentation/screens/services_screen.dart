@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
 import '../../data/repositories/service_repository.dart';
-import '../../logic/bloc/service_bloc.dart';
+import '../../logic/bloc/get_services_bloc.dart';
 import '../widgets/pop_header.dart';
 import '../widgets/service_container.dart';
 
@@ -22,18 +22,18 @@ class ServicesScreen extends StatefulWidget {
 
 class _ServicesScreenState extends State<ServicesScreen> {
   String get categoryName => widget.categoryName;
-  late ServiceBloc _serviceBloc;
+  late GetServicesBloc _getServiceBloc;
 
   @override
   void initState() {
-    _serviceBloc = ServiceBloc(serviceRepository: ServiceRepository());
-    _serviceBloc.add(GetServices(category: categoryName.toLowerCase()));
+    _getServiceBloc = GetServicesBloc(serviceRepository: ServiceRepository());
+    _getServiceBloc.add(GetServices(category: categoryName.toLowerCase()));
     super.initState();
   }
 
   @override
   void dispose() {
-    _serviceBloc.close();
+    _getServiceBloc.close();
     super.dispose();
   }
 
@@ -48,17 +48,18 @@ class _ServicesScreenState extends State<ServicesScreen> {
             children: [
               PopHeader(title: categoryName),
               const SizedBox(height: padding),
-              BlocBuilder<ServiceBloc, ServiceState>(
-                bloc: _serviceBloc,
+              BlocBuilder<GetServicesBloc, GetServicesState>(
+                bloc: _getServiceBloc,
                 builder: (context, state) {
-                  if (state is ServiceLoading || state is ServiceInitial) {
+                  if (state is GetServicesLoading ||
+                      state is GetServicesInitial) {
                     return const Center(
                       heightFactor: 10,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     );
                   }
 
-                  if (state is ServiceLoaded) {
+                  if (state is GetServicesSuccess) {
                     return Expanded(
                       child: ListView.builder(
                         itemCount: state.services.length,
@@ -70,7 +71,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                     );
                   }
 
-                  if (state is ServiceFailure) {
+                  if (state is GetServicesFailure) {
                     // TODO: Create service failure placeholder
                   }
 

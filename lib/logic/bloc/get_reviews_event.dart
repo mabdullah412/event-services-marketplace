@@ -1,13 +1,13 @@
-part of 'review_bloc.dart';
+part of 'get_reviews_bloc.dart';
 
-abstract class ReviewEvent extends Equatable {
-  const ReviewEvent();
+abstract class GetReviewsEvent extends Equatable {
+  const GetReviewsEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class GetReviews extends ReviewEvent {
+class GetReviews extends GetReviewsEvent {
   final String serviceId;
 
   const GetReviews({required this.serviceId});

@@ -4,32 +4,32 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/review.dart';
 import '../../data/repositories/review_repository.dart';
 
-part 'review_event.dart';
-part 'review_state.dart';
+part 'get_reviews_event.dart';
+part 'get_reviews_state.dart';
 
-class ReviewBloc extends Bloc<ReviewEvent, ReviewState> {
+class GetReviewsBloc extends Bloc<GetReviewsEvent, GetReviewsState> {
   final ReviewRepository reviewRepository;
 
-  ReviewBloc({
+  GetReviewsBloc({
     required this.reviewRepository,
-  }) : super(ReviewInitial()) {
+  }) : super(GetReviewsInitial()) {
     on<GetReviews>(_onGetReviews);
   }
 
   Future<void> _onGetReviews(
     GetReviews event,
-    Emitter<ReviewState> emit,
+    Emitter<GetReviewsState> emit,
   ) async {
-    emit(ReviewLoading());
+    emit(GetReviewsLoading());
 
     try {
       final List<Review> reviews = await reviewRepository.getReviews(
         serviceId: event.serviceId,
       );
 
-      emit(ReviewLoaded(reviews: reviews));
+      emit(GetReviewsSuccess(reviews: reviews));
     } catch (err) {
-      emit(ReviewFailure(error: err.toString()));
+      emit(GetReviewsFailure(error: err.toString()));
     }
   }
 }
