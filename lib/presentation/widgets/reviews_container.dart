@@ -90,6 +90,10 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
               }
 
               if (state is GetReviewsSuccess) {
+                if (state.reviews.isEmpty) {
+                  return const NoReviewsPlaceholder();
+                }
+
                 return ListView.builder(
                   shrinkWrap: true,
                   itemCount: state.reviews.length,
@@ -101,7 +105,7 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
               }
 
               if (state is GetReviewsFailure) {
-                return const ReviewFailurePlaceholder();
+                return const GetReviewsFailurePlaceholder();
               }
 
               return const Text('Bloc Error');
@@ -113,8 +117,8 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
   }
 }
 
-class ReviewFailurePlaceholder extends StatelessWidget {
-  const ReviewFailurePlaceholder({
+class GetReviewsFailurePlaceholder extends StatelessWidget {
+  const GetReviewsFailurePlaceholder({
     Key? key,
   }) : super(key: key);
 

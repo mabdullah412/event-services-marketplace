@@ -1,11 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
+import '../../data/models/package.dart';
+import '../../data/repositories/package_repository.dart';
+import '../../logic/bloc/create_package_bloc.dart';
+import '../../logic/bloc/get_packages_bloc.dart';
+import 'package_card.dart';
 
-class PackagesContainer extends StatelessWidget {
+class PackagesContainer extends StatefulWidget {
   const PackagesContainer({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<PackagesContainer> createState() => _PackagesContainerState();
+}
+
+class _PackagesContainerState extends State<PackagesContainer> {
+  final PackageRepository packageRepository = PackageRepository();
+  late GetPackagesBloc _getPackagesBloc;
+
+  @override
+  void initState() {
+    _getPackagesBloc = GetPackagesBloc(packageRepository: packageRepository);
+    _getPackagesBloc.add(GetPackages());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _getPackagesBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +44,39 @@ class PackagesContainer extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const NoPackagesPlaceholder(),
-          const SizedBox(height: padding),
-          const PackageCard(),
+          BlocBuilder(
+            bloc: _getPackagesBloc,
+            builder: (context, state) {
+              if (state is GetPackagesLoading || state is GetPackagesInitial) {
+                return const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                );
+              }
+
+              if (state is GetPackagesSuccess) {
+                if (state.packages.isEmpty) {
+                  return const NoPackagesPlaceholder();
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: state.packages.length,
+                  itemBuilder: (context, index) {
+                    final Package package = state.packages[index];
+                    return PackageCard(package: package);
+                  },
+                );
+              }
+
+              if (state is GetPackagesFailure) {
+                return const GetPackagesFailurePlaceholder();
+              }
+
+              return const Text('Bloc Error');
+            },
+          ),
           const SizedBox(height: padding),
           ElevatedButton(
             onPressed: () {
@@ -28,7 +84,10 @@ class PackagesContainer extends StatelessWidget {
                 context: context,
                 backgroundColor: Colors.transparent,
                 builder: (context) {
-                  return const CreatePackage();
+                  return CreatePackageSnackBar(
+                    getPackagesBloc: _getPackagesBloc,
+                    packageRepository: packageRepository,
+                  );
                 },
               );
             },
@@ -40,10 +99,70 @@ class PackagesContainer extends StatelessWidget {
   }
 }
 
-class CreatePackage extends StatelessWidget {
-  const CreatePackage({
+class GetPackagesFailurePlaceholder extends StatelessWidget {
+  const GetPackagesFailurePlaceholder({
     Key? key,
   }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Error occured while fetching packages.',
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
+
+class CreatePackageSnackBar extends StatefulWidget {
+  const CreatePackageSnackBar({
+    required this.getPackagesBloc,
+    required this.packageRepository,
+    Key? key,
+  }) : super(key: key);
+
+  final GetPackagesBloc getPackagesBloc;
+  final PackageRepository packageRepository;
+
+  @override
+  State<CreatePackageSnackBar> createState() => _CreatePackageSnackBarState();
+}
+
+class _CreatePackageSnackBarState extends State<CreatePackageSnackBar> {
+  GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
+  PackageRepository get packageRepository => widget.packageRepository;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FocusNode _packageNameFocusNode = FocusNode();
+  late CreatePackageBloc _createPackageBloc;
+  String packageName = '';
+
+  @override
+  void initState() {
+    _createPackageBloc = CreatePackageBloc(
+      getPackagesBloc: getPackagesBloc,
+      packageRepository: packageRepository,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _createPackageBloc.close();
+    super.dispose();
+  }
+
+  Future<void> createPackage() async {
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
+    _createPackageBloc.add(CreatePackage(name: packageName));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +187,68 @@ class CreatePackage extends StatelessWidget {
                 style: Theme.of(context).primaryTextTheme.titleMedium,
               ),
               const SizedBox(height: padding),
-              TextFormField(
-                decoration: const InputDecoration(
-                  label: Text('Name'),
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    label: Text('Name'),
+                  ),
+                  keyboardType: TextInputType.name,
+                  focusNode: _packageNameFocusNode,
+                  textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Package name cannot be empty.';
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (value) {
+                    packageName = value!;
+                  },
+                  onFieldSubmitted: (value) {
+                    _formKey.currentState!.validate();
+                  },
                 ),
               ),
               const SizedBox(height: padding),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Create'),
+              BlocBuilder<CreatePackageBloc, CreatePackageState>(
+                bloc: _createPackageBloc,
+                builder: (context, state) {
+                  if (state is CreatePackageFailure) {
+                    // _onWidgetDidBuild displays snackbar after
+                    // Build() has finished building
+                    _onWidgetDidBuild(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Error creating package.'),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    });
+                  }
+
+                  if (state is CreatePackageSuccess) {
+                    // _onWidgetDidBuild displays snackbar after
+                    // Build() has finished building
+                    _onWidgetDidBuild(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Package created.'),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    });
+                  }
+
+                  return ElevatedButton(
+                    onPressed:
+                        state is CreatePackageLoading ? null : createPackage,
+                    child: state is CreatePackageLoading
+                        ? const CircularProgressIndicator(strokeWidth: 2)
+                        : const Text('Create'),
+                  );
+                },
               ),
             ],
           ),
@@ -84,37 +256,11 @@ class CreatePackage extends StatelessWidget {
       ],
     );
   }
-}
 
-class PackageCard extends StatelessWidget {
-  const PackageCard({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Birthday Package',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
-          CircleAvatar(
-            radius: 15,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            child: Text(
-              '10',
-              style: Theme.of(context).primaryTextTheme.bodySmall!.apply(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-            ),
-          ),
-        ],
-      ),
-    );
+  void _onWidgetDidBuild(VoidCallback callback) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      callback();
+    });
   }
 }
 
