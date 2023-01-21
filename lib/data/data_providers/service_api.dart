@@ -11,6 +11,13 @@ class ServiceAPI {
     );
   }
 
+  Future<Response> getUserServices({required String token}) async {
+    return await Dio().get(
+      '$baseUrl/user',
+      options: Options(headers: {'authorization': token}),
+    );
+  }
+
   Future<Response> createService({
     required String token,
     required Map<dynamic, dynamic> serviceData,

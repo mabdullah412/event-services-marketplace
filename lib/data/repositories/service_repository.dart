@@ -21,6 +21,22 @@ class ServiceRepository {
     return services;
   }
 
+  Future<List<Service>> getUserServices() async {
+    final String token =
+        await _flutterSecureStorage.read(key: 'JWT_TOKEN') ?? '';
+
+    final rawData = await _serviceAPI.getUserServices(token: token);
+    final List<dynamic> rawServices = rawData.data['data']['services'] as List;
+
+    final List<Service> services = rawServices
+        .map(
+          (service) => Service.fromMap(service),
+        )
+        .toList();
+
+    return services;
+  }
+
   Future<dynamic> createService({
     required Map<dynamic, dynamic> serviceData,
   }) async {
