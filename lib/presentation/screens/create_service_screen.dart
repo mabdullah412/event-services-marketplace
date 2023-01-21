@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../data/repositories/service_repository.dart';
+import '../../logic/bloc/create_service_bloc.dart';
 import '../widgets/pop_header.dart';
 
 class CreateServiceScreen extends StatefulWidget {
@@ -15,6 +18,9 @@ class CreateServiceScreen extends StatefulWidget {
 }
 
 class _CreateServiceScreenState extends State<CreateServiceScreen> {
+  final ServiceRepository serviceRepository = ServiceRepository();
+  late CreateServiceBloc _createServiceBloc;
+
   // form key
   final _serviceDetailsFormKey = GlobalKey<FormState>();
   // focus-nodes
@@ -25,6 +31,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
   final _servicePriceFocusNode = FocusNode();
   // form-data
   dynamic category;
+  final Map<dynamic, dynamic> serviceData = {};
 
   // image-data
   bool noImages = true;
@@ -34,13 +41,50 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
   XFile? selectedImageFile;
 
   @override
+  void initState() {
+    _createServiceBloc = CreateServiceBloc(
+      serviceRepository: serviceRepository,
+    );
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _serviceTitleFocusNode.dispose();
     _serviceDescriptionFocusNode.dispose();
     _serviceLocationFocusNode.dispose();
     _serviceCategoryFocusNode.dispose();
     _servicePriceFocusNode.dispose();
+    _createServiceBloc.close();
     super.dispose();
+  }
+
+  Future<void> createService() async {
+    if (!_serviceDetailsFormKey.currentState!.validate()) return;
+    _serviceDetailsFormKey.currentState!.save();
+
+    if (noImages) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please add an image.'),
+        ),
+      );
+      return;
+    }
+
+    if (category == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a category.'),
+        ),
+      );
+      return;
+    }
+
+    // adding image-link to data;
+    serviceData['coverImage'] = selectedImageFile!.name;
+
+    _createServiceBloc.add(CreateService(serviceData: serviceData));
   }
 
   @override
@@ -67,6 +111,8 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
                         detailsSection(context),
                         const SizedBox(height: padding),
                         pricingSection(context),
+                        const SizedBox(height: padding),
+                        createButton(context),
                       ],
                     ),
                   ),
@@ -75,6 +121,62 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Container createButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(padding),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      child: BlocConsumer<CreateServiceBloc, CreateServiceState>(
+        listenWhen: (previous, current) {
+          return previous != current;
+        },
+        listener: (context, state) {
+          if (state is CreateServiceFailure) {
+            // _onWidgetDidBuild displays snackbar after
+            // Build() has finished building
+            _onWidgetDidBuild(() {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Error creating service.'),
+                ),
+              );
+              Navigator.pop(context);
+            });
+          }
+
+          if (state is CreateServiceSuccess) {
+            // _onWidgetDidBuild displays snackbar after
+            // Build() has finished building
+            _onWidgetDidBuild(() {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Service created.'),
+                ),
+              );
+              Navigator.pop(context);
+            });
+          }
+        },
+        bloc: _createServiceBloc,
+        buildWhen: (previous, current) {
+          return previous != current;
+        },
+        builder: (context, state) {
+          return ElevatedButton(
+            onPressed: state is CreateServiceLoading ? null : createService,
+            child: state is CreateServiceLoading
+                ? const CircularProgressIndicator(
+                    strokeWidth: 2,
+                  )
+                : const Text('Create'),
+          );
+        },
       ),
     );
   }
@@ -90,19 +192,18 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Add images',
+            'Add image',
             style: Theme.of(context).primaryTextTheme.titleMedium,
           ),
           const SizedBox(height: padding),
           Container(
-            height: 100,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(radius),
               border: Border.all(color: Theme.of(context).colorScheme.outline),
             ),
             child: noImages == false
-                ? Row(
+                ? Column(
                     children: [
                       Stack(
                         alignment: Alignment.center,
@@ -123,7 +224,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
                   )
                 : Center(
                     child: Text(
-                      '0 images added.',
+                      'No image added.',
                       style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                   ),
@@ -209,7 +310,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
               }
             },
             onSaved: (value) {
-              // registerData['firstName'] = value!;
+              serviceData['title'] = value!;
             },
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(
@@ -232,7 +333,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
               }
             },
             onSaved: (value) {
-              // registerData['firstName'] = value!;
+              serviceData['location'] = value!;
             },
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(
@@ -259,7 +360,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
               }
             },
             onSaved: (value) {
-              // registerData['firstName'] = value!;
+              serviceData['description'] = value!;
             },
             onFieldSubmitted: (value) {
               FocusScope.of(context).requestFocus(
@@ -285,6 +386,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
                   setState(() {
                     category = value!;
                   });
+                  serviceData['category'] = value!;
                 },
                 hint: const Text('Select Category'),
                 isExpanded: true,
@@ -344,20 +446,21 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
               }
             },
             onSaved: (value) {
-              // registerData['firstName'] = value!;
+              serviceData['price'] = value!;
             },
             onFieldSubmitted: (value) {
               FocusManager.instance.primaryFocus?.unfocus();
               _serviceDetailsFormKey.currentState!.validate();
             },
           ),
-          const SizedBox(height: padding),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Create'),
-          ),
         ],
       ),
     );
+  }
+
+  void _onWidgetDidBuild(VoidCallback callback) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      callback();
+    });
   }
 }

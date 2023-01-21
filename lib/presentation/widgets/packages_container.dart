@@ -37,7 +37,11 @@ class _PackagesContainerState extends State<PackagesContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(padding),
+      padding: const EdgeInsets.only(
+        right: padding,
+        left: padding,
+        bottom: padding,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(radius),
@@ -50,8 +54,11 @@ class _PackagesContainerState extends State<PackagesContainer> {
             bloc: _getPackagesBloc,
             builder: (context, state) {
               if (state is GetPackagesLoading || state is GetPackagesInitial) {
-                return const Center(
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                return const Padding(
+                  padding: EdgeInsets.only(top: padding),
+                  child: Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
                 );
               }
 
@@ -106,16 +113,19 @@ class GetPackagesFailurePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          'Error occured while fetching packages.',
-          style: Theme.of(context).primaryTextTheme.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: padding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Error occured while fetching packages.',
+            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -271,20 +281,23 @@ class NoPackagesPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'You have no packages.',
-          style: Theme.of(context).primaryTextTheme.bodyMedium,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: padding),
-        Text(
-          'Packages work like carts, you can add as many items you want in a package and then checkout that package. You can also work with multiple packages at the same time.',
-          style: Theme.of(context).primaryTextTheme.bodySmall,
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: padding),
+      child: Column(
+        children: [
+          Text(
+            'You have no packages.',
+            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: padding),
+          Text(
+            'Packages work like carts, you can add as many items you want in a package and then checkout that package. You can also work with multiple packages at the same time.',
+            style: Theme.of(context).primaryTextTheme.bodySmall,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }

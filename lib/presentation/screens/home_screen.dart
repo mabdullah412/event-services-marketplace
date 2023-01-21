@@ -1,9 +1,8 @@
-import 'package:event_planner/presentation/router/custom_page_route.dart';
-import 'package:event_planner/presentation/screens/create_service_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
 import '../widgets/header.dart';
+import '../widgets/sell_services_container.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,17 +19,16 @@ class HomeScreen extends StatelessWidget {
               Header(title: 'Home'),
 
               // ! add a block showing total number of services being on sale
+              // ! open fiverr website for ideas
               // ! user mini-dashboard
 
-              SizedBox(height: padding),
-              Squares(),
-
-              // CreatePackageAndSellFullHeight(),
+              // SizedBox(height: padding),
+              // Dashboard(),
 
               SizedBox(height: padding),
               ShowCreatePackage(),
               SizedBox(height: padding),
-              ShowSellServices(),
+              SellServicesContainer(),
               SizedBox(height: padding),
             ],
           ),
@@ -40,35 +38,8 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class CreatePackageAndSellFullHeight extends StatelessWidget {
-  const CreatePackageAndSellFullHeight({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Expanded(
-              child: ShowCreatePackage(),
-            ),
-            SizedBox(width: padding),
-            Expanded(
-              child: ShowSellServices(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class Squares extends StatelessWidget {
-  const Squares({
+class Dashboard extends StatelessWidget {
+  const Dashboard({
     Key? key,
   }) : super(key: key);
 
@@ -128,46 +99,6 @@ class Squares extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class ShowSellServices extends StatelessWidget {
-  const ShowSellServices({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(padding),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: BorderRadius.circular(radius),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Become a seller',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: padding),
-          Text(
-            'Have services thay you would like to sell? Go to the profile page and turn on seller mode.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: padding),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                CustomPageRoute(child: const CreateServiceScreen()),
-              );
-            },
-            child: const Text('Create a Service'),
-          )
         ],
       ),
     );

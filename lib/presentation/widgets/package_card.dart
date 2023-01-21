@@ -1,3 +1,4 @@
+import 'package:event_planner/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/package.dart';
@@ -12,26 +13,29 @@ class PackageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            package.name,
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
-          CircleAvatar(
-            radius: 15,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            child: Text(
-              package.services.length.toString(),
-              style: Theme.of(context).primaryTextTheme.bodySmall!.apply(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.only(top: padding),
+      child: OutlinedButton(
+        onPressed: () {},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              package.name,
+              style: Theme.of(context).primaryTextTheme.bodyMedium,
             ),
-          ),
-        ],
+            CircleAvatar(
+              radius: 15,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              child: Text(
+                package.services.length.toString(),
+                style: Theme.of(context).primaryTextTheme.bodySmall!.apply(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
