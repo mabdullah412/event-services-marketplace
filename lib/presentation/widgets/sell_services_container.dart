@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
+import '../../logic/bloc/get_user_services_bloc.dart';
 import '../router/custom_page_route.dart';
 import '../screens/create_service_screen.dart';
 
 class SellServicesContainer extends StatelessWidget {
   const SellServicesContainer({
+    required this.getUserServicesBloc,
     Key? key,
   }) : super(key: key);
+
+  final GetUserServicesBloc getUserServicesBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +55,11 @@ class SellServicesContainer extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
-                CustomPageRoute(child: const CreateServiceScreen()),
+                CustomPageRoute(
+                  child: CreateServiceScreen(
+                    getUserServicesBloc: getUserServicesBloc,
+                  ),
+                ),
               );
             },
             child: const Text('Create a Service'),

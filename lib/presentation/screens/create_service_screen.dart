@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:event_planner/logic/bloc/get_user_services_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,13 +12,20 @@ import '../../logic/bloc/create_service_bloc.dart';
 import '../widgets/pop_header.dart';
 
 class CreateServiceScreen extends StatefulWidget {
-  const CreateServiceScreen({super.key});
+  const CreateServiceScreen({
+    required this.getUserServicesBloc,
+    super.key,
+  });
+
+  final GetUserServicesBloc getUserServicesBloc;
 
   @override
   State<CreateServiceScreen> createState() => _CreateServiceScreenState();
 }
 
 class _CreateServiceScreenState extends State<CreateServiceScreen> {
+  GetUserServicesBloc get getUserServicesBloc => widget.getUserServicesBloc;
+
   final ServiceRepository serviceRepository = ServiceRepository();
   late CreateServiceBloc _createServiceBloc;
 
@@ -44,6 +52,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
   void initState() {
     _createServiceBloc = CreateServiceBloc(
       serviceRepository: serviceRepository,
+      getUserServicesBloc: getUserServicesBloc,
     );
     super.initState();
   }
