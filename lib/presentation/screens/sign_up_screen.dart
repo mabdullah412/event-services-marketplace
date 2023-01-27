@@ -120,6 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
+                                      const SizedBox(height: padding),
                                       TextFormField(
                                         focusNode: _signupNameFocusNode,
                                         textInputAction: TextInputAction.next,

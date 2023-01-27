@@ -395,7 +395,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
                   setState(() {
                     category = value!;
                   });
-                  serviceData['category'] = value!;
+                  serviceData['category'] = value!.toString().toLowerCase();
                 },
                 hint: const Text('Select Category'),
                 isExpanded: true,

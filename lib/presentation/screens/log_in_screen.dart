@@ -116,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
+                                      const SizedBox(height: padding),
                                       TextFormField(
                                         focusNode: _signinEmailFocusNode,
                                         textInputAction: TextInputAction.next,

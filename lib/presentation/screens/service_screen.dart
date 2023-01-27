@@ -192,14 +192,14 @@ class TitleAndDescription extends StatelessWidget {
                 serviceRating.toString(),
                 style: Theme.of(context).primaryTextTheme.bodyMedium,
               ),
-              const SizedBox(width: padding),
-              Text(
-                '$totalServiceReviews Reviews',
-                style: Theme.of(context)
-                    .primaryTextTheme
-                    .bodyMedium!
-                    .apply(color: Theme.of(context).colorScheme.primary),
-              ),
+              // const SizedBox(width: padding),
+              // Text(
+              //   '$totalServiceReviews Reviews',
+              //   style: Theme.of(context)
+              //       .primaryTextTheme
+              //       .bodyMedium!
+              //       .apply(color: Theme.of(context).colorScheme.primary),
+              // ),
             ],
           ),
           const SizedBox(height: 10),
