@@ -6,6 +6,7 @@ import '../../data/models/package.dart';
 import '../../data/repositories/package_repository.dart';
 import '../../logic/bloc/create_package_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import 'custom_snack_bar.dart';
 import 'package_card.dart';
 
 class PackagesContainer extends StatefulWidget {
@@ -183,11 +184,8 @@ class _CreatePackageSnackBarState extends State<CreatePackageSnackBar> {
           margin: const EdgeInsets.all(padding),
           padding: const EdgeInsets.all(padding),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.circular(radius),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.outline,
-            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -230,8 +228,17 @@ class _CreatePackageSnackBarState extends State<CreatePackageSnackBar> {
                     // Build() has finished building
                     _onWidgetDidBuild(() {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Error creating package.'),
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Error',
+                            description:
+                                'Error occured while creating package.',
+                            snackbarType: SnackbarType.error,
+                          ),
                         ),
                       );
                       Navigator.pop(context);
@@ -243,8 +250,15 @@ class _CreatePackageSnackBarState extends State<CreatePackageSnackBar> {
                     // Build() has finished building
                     _onWidgetDidBuild(() {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Package created.'),
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Package created',
+                            snackbarType: SnackbarType.success,
+                          ),
                         ),
                       );
                       Navigator.pop(context);
