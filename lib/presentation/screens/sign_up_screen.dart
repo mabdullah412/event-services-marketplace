@@ -1,9 +1,10 @@
-import 'package:event_planner/logic/bloc/authentication_bloc.dart';
-import 'package:event_planner/logic/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
+import '../../logic/bloc/authentication_bloc.dart';
+import '../../logic/bloc/login_bloc.dart';
+import '../widgets/custom_snack_bar.dart';
 import '../widgets/pop_header.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -70,14 +71,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   // Build() has finished building
                   _onWidgetDidBuild(() {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Error Occured'),
-                        behavior: SnackBarBehavior.floating,
-                        duration: Duration(milliseconds: 1500),
-                        margin: EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          bottom: 20,
+                      SnackBar(
+                        action: SnackBarAction(
+                          label: 'close',
+                          onPressed: () {},
+                        ),
+                        content: const CustomSnackbar(
+                          snackbarType: SnackbarType.error,
+                          title: 'Error.',
                         ),
                       ),
                     );

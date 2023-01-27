@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:event_planner/logic/bloc/get_user_services_bloc.dart';
+import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -74,8 +75,15 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
 
     if (noImages) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please add an image.'),
+        SnackBar(
+          action: SnackBarAction(
+            label: 'close',
+            onPressed: () {},
+          ),
+          content: const CustomSnackbar(
+            snackbarType: SnackbarType.info,
+            title: 'Please add an image.',
+          ),
         ),
       );
       return;
@@ -83,8 +91,15 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
 
     if (category == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a category.'),
+        SnackBar(
+          action: SnackBarAction(
+            label: 'close',
+            onPressed: () {},
+          ),
+          content: const CustomSnackbar(
+            snackbarType: SnackbarType.info,
+            title: 'Please select a category.',
+          ),
         ),
       );
       return;

@@ -169,7 +169,10 @@ class Themes {
 
     // snackBarTheme
     snackBarTheme: const SnackBarThemeData(
+      backgroundColor: Color(0xFF222222),
+      actionTextColor: Color(0xFFBBBBBB),
       behavior: SnackBarBehavior.floating,
+      elevation: 3,
     ),
 
     // navbar
@@ -358,7 +361,10 @@ class Themes {
 
     // snackBarTheme
     snackBarTheme: const SnackBarThemeData(
+      backgroundColor: Color(0xFFFFFFFF),
+      actionTextColor: Color(0xFF222222),
       behavior: SnackBarBehavior.floating,
+      elevation: 3,
     ),
 
     // navbar

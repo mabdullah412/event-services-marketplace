@@ -53,6 +53,10 @@ class _UserServicesContainerState extends State<UserServicesContainer> {
                 );
               }
 
+              if (state is GetUserServicesFailure) {
+                return const GetUserServicesFailurePlaceholder();
+              }
+
               if (state is GetUserServicesSuccess) {
                 if (state.services.isEmpty) {
                   return const NoUserServicesPlaceholder();
@@ -100,10 +104,6 @@ class _UserServicesContainerState extends State<UserServicesContainer> {
                     );
                   },
                 );
-              }
-
-              if (state is GetUserServicesFailure) {
-                return const GetUserServicesFailurePlaceholder();
               }
 
               return Container();
