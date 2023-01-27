@@ -166,8 +166,16 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
             // Build() has finished building
             _onWidgetDidBuild(() {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Error creating service.'),
+                SnackBar(
+                  action: SnackBarAction(
+                    label: 'close',
+                    onPressed: () {},
+                  ),
+                  content: const CustomSnackbar(
+                    title: 'Error',
+                    description: 'Error occured while creating serice.',
+                    snackbarType: SnackbarType.error,
+                  ),
                 ),
               );
               Navigator.pop(context);
@@ -179,8 +187,15 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
             // Build() has finished building
             _onWidgetDidBuild(() {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Service created.'),
+                SnackBar(
+                  action: SnackBarAction(
+                    label: 'close',
+                    onPressed: () {},
+                  ),
+                  content: const CustomSnackbar(
+                    title: 'Service Created Successfully',
+                    snackbarType: SnackbarType.success,
+                  ),
                 ),
               );
               Navigator.pop(context);

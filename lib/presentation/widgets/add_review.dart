@@ -1,3 +1,4 @@
+import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -194,8 +195,16 @@ class _AddReviewState extends State<AddReview> {
                     // Build() has finished building
                     _onWidgetDidBuild(() {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Error adding review.'),
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Error',
+                            description: 'Error occured while adding review.',
+                            snackbarType: SnackbarType.error,
+                          ),
                         ),
                       );
                       Navigator.pop(context);
@@ -207,8 +216,15 @@ class _AddReviewState extends State<AddReview> {
                     // Build() has finished building
                     _onWidgetDidBuild(() {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Review added.'),
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Review added',
+                            snackbarType: SnackbarType.success,
+                          ),
                         ),
                       );
                       Navigator.pop(context);
