@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
+import '../../logic/bloc/get_packages_bloc.dart';
+import '../widgets/add_to_package_modal.dart';
 import '../widgets/pop_header.dart';
 import '../widgets/question_answer_card.dart';
 import '../widgets/reviews_container.dart';
@@ -37,7 +40,11 @@ class ServiceScreen extends StatelessWidget {
                 const SizedBox(height: padding),
                 LocationAddress(serviceLocation: service.location),
                 const SizedBox(height: padding),
-                Pricing(servicePrice: service.price),
+                Pricing(
+                  serviceId: service.id,
+                  servicePrice: service.price,
+                  getPackagesBloc: BlocProvider.of<GetPackagesBloc>(context),
+                ),
                 const SizedBox(height: padding),
                 ReviewsContainer(serviceId: service.id),
                 const SizedBox(height: padding),
@@ -83,11 +90,15 @@ class Quetions extends StatelessWidget {
 
 class Pricing extends StatelessWidget {
   const Pricing({
-    Key? key,
+    required this.serviceId,
     required this.servicePrice,
+    required this.getPackagesBloc,
+    Key? key,
   }) : super(key: key);
 
   final int servicePrice;
+  final String serviceId;
+  final GetPackagesBloc getPackagesBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +117,18 @@ class Pricing extends StatelessWidget {
           ),
           const SizedBox(height: padding),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return AddToPackageModal(
+                    serviceId: serviceId,
+                    getPackagesBloc: getPackagesBloc,
+                  );
+                },
+              );
+            },
             child: const Text('Add to package'),
           ),
         ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
+import '../../logic/bloc/get_packages_bloc.dart';
 import '../router/custom_page_route.dart';
 import '../screens/services_screen.dart';
 
@@ -20,7 +22,10 @@ class CategoryButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           CustomPageRoute(
-            child: ServicesScreen(categoryName: categoryName),
+            child: BlocProvider.value(
+              value: BlocProvider.of<GetPackagesBloc>(context),
+              child: ServicesScreen(categoryName: categoryName),
+            ),
           ),
         );
       },

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/package.dart';
-import '../../data/repositories/package_repository.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
 import 'create_package_modal.dart';
 import 'package_card.dart';
@@ -18,20 +17,13 @@ class PackagesContainer extends StatefulWidget {
 }
 
 class _PackagesContainerState extends State<PackagesContainer> {
-  final PackageRepository packageRepository = PackageRepository();
   late GetPackagesBloc _getPackagesBloc;
 
   @override
   void initState() {
-    _getPackagesBloc = GetPackagesBloc(packageRepository: packageRepository);
+    _getPackagesBloc = BlocProvider.of<GetPackagesBloc>(context);
     _getPackagesBloc.add(GetPackages());
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _getPackagesBloc.close();
-    super.dispose();
   }
 
   @override
@@ -57,7 +49,11 @@ class _PackagesContainerState extends State<PackagesContainer> {
                 return const Padding(
                   padding: EdgeInsets.only(top: padding),
                   child: Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
                   ),
                 );
               }
@@ -96,7 +92,6 @@ class _PackagesContainerState extends State<PackagesContainer> {
                 builder: (context) {
                   return CreatePackageModal(
                     getPackagesBloc: _getPackagesBloc,
-                    packageRepository: packageRepository,
                   );
                 },
               );

@@ -10,12 +10,10 @@ import 'custom_snack_bar.dart';
 class CreatePackageModal extends StatefulWidget {
   const CreatePackageModal({
     required this.getPackagesBloc,
-    required this.packageRepository,
     Key? key,
   }) : super(key: key);
 
   final GetPackagesBloc getPackagesBloc;
-  final PackageRepository packageRepository;
 
   @override
   State<CreatePackageModal> createState() => _CreatePackageModalState();
@@ -23,7 +21,6 @@ class CreatePackageModal extends StatefulWidget {
 
 class _CreatePackageModalState extends State<CreatePackageModal> {
   GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
-  PackageRepository get packageRepository => widget.packageRepository;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FocusNode _packageNameFocusNode = FocusNode();
@@ -34,7 +31,7 @@ class _CreatePackageModalState extends State<CreatePackageModal> {
   void initState() {
     _createPackageBloc = CreatePackageBloc(
       getPackagesBloc: getPackagesBloc,
-      packageRepository: packageRepository,
+      packageRepository: PackageRepository(),
     );
     super.initState();
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
+import '../../logic/bloc/get_packages_bloc.dart';
 import '../router/custom_page_route.dart';
 import '../screens/service_screen.dart';
 
@@ -108,7 +110,10 @@ class ServiceContainer extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     CustomPageRoute(
-                      child: ServiceScreen(service: service),
+                      child: BlocProvider.value(
+                        value: BlocProvider.of<GetPackagesBloc>(context),
+                        child: ServiceScreen(service: service),
+                      ),
                     ),
                   );
                 },

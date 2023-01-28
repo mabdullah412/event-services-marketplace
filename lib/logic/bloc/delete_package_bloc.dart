@@ -25,7 +25,7 @@ class DeletePackageBloc extends Bloc<DeletePackageEvent, DeletePackageState> {
     emit(DeletePackageLoading());
 
     try {
-      final dynamic response = packageRepository.deletePackage(
+      final dynamic response = await packageRepository.deletePackage(
         packageId: event.packageId,
       );
 

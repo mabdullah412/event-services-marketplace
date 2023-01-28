@@ -35,9 +35,11 @@ class PackageCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              package.name,
-              style: Theme.of(context).primaryTextTheme.bodyMedium,
+            Expanded(
+              child: Text(
+                package.name,
+                style: Theme.of(context).primaryTextTheme.bodyMedium,
+              ),
             ),
             CircleAvatar(
               radius: 15,

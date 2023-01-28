@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
 import '../../data/repositories/service_repository.dart';
+import '../../logic/bloc/get_packages_bloc.dart';
 import '../../logic/bloc/get_services_bloc.dart';
 import '../widgets/pop_header.dart';
 import '../widgets/service_container.dart';
@@ -65,7 +66,10 @@ class _ServicesScreenState extends State<ServicesScreen> {
                         itemCount: state.services.length,
                         itemBuilder: (context, index) {
                           final Service service = state.services[index];
-                          return ServiceContainer(service: service);
+                          return BlocProvider.value(
+                            value: BlocProvider.of<GetPackagesBloc>(context),
+                            child: ServiceContainer(service: service),
+                          );
                         },
                       ),
                     );

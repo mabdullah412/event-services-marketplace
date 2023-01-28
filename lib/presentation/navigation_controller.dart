@@ -1,7 +1,10 @@
-import 'package:event_planner/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import '../constants/constants.dart';
+import '../data/repositories/package_repository.dart';
+import '../logic/bloc/get_packages_bloc.dart';
 import 'screens/discover_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/orders_screen.dart';
@@ -35,28 +38,38 @@ class _NavigationControllerState extends State<NavigationController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // indexed stack preserves state through page changes
-      body: IndexedStack(
-        index: index,
-        children: screens,
-      ),
+    return MultiBlocProvider(
+      providers: [
+        // passing GetPackagesBloc because it is required on multiple screens
+        BlocProvider<GetPackagesBloc>(
+          create: (context) => GetPackagesBloc(
+            packageRepository: PackageRepository(),
+          ),
+        ),
+      ],
+      child: Scaffold(
+        // indexed stack preserves state through page changes
+        body: IndexedStack(
+          index: index,
+          children: screens,
+        ),
 
-      // navigation bar
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(padding),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(radius),
-          child: NavigationBarTheme(
-            data: Theme.of(context).navigationBarTheme,
-            child: NavigationBar(
-              selectedIndex: index,
-              onDestinationSelected: (index) {
-                setState(() {
-                  this.index = index;
-                });
-              },
-              destinations: destinations,
+        // navigation bar
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(padding),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(radius),
+            child: NavigationBarTheme(
+              data: Theme.of(context).navigationBarTheme,
+              child: NavigationBar(
+                selectedIndex: index,
+                onDestinationSelected: (index) {
+                  setState(() {
+                    this.index = index;
+                  });
+                },
+                destinations: destinations,
+              ),
             ),
           ),
         ),
