@@ -104,7 +104,9 @@ class _AddToPackageModalState extends State<AddToPackageModal> {
                             onPressed: () {},
                           ),
                           content: const CustomSnackbar(
-                            title: 'Added to Package Successfully',
+                            title: 'Success',
+                            description:
+                                'Service added to Package Successfully',
                             snackbarType: SnackbarType.success,
                           ),
                         ),

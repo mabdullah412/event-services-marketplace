@@ -80,12 +80,14 @@ class _CustomSnackbarState extends State<CustomSnackbar> {
           children: [
             icon,
             const SizedBox(width: padding),
-            Text(
-              title,
-              style: Theme.of(context)
-                  .primaryTextTheme
-                  .bodyMedium!
-                  .apply(color: color),
+            Expanded(
+              child: Text(
+                title,
+                style: Theme.of(context)
+                    .primaryTextTheme
+                    .bodyMedium!
+                    .apply(color: color),
+              ),
             ),
           ],
         ),

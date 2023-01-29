@@ -1,3 +1,4 @@
+import 'package:event_planner/logic/bloc/remove_from_package_bloc.dart';
 import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,21 +34,37 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
   GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
   Package get package => widget.package;
 
-  bool deletingPackage = false;
+  bool deleting = false;
+  late int totalPrice;
+
   late DeletePackageBloc _deletePackageBloc;
+  late RemoveFromPackageBloc _removeFromPackageBloc;
+  final PackageRepository _packageRepository = PackageRepository();
 
   @override
   void initState() {
     _deletePackageBloc = DeletePackageBloc(
-      packageRepository: PackageRepository(),
+      packageRepository: _packageRepository,
       getPackagesBloc: getPackagesBloc,
     );
+
+    _removeFromPackageBloc = RemoveFromPackageBloc(
+      packageRepository: _packageRepository,
+      getPackagesBloc: getPackagesBloc,
+    );
+
+    totalPrice = 0;
+    for (var i = 0; i < package.services.length; i++) {
+      totalPrice = totalPrice + package.services[i].price;
+    }
+
     super.initState();
   }
 
   @override
   void dispose() {
     _deletePackageBloc.close();
+    _removeFromPackageBloc.close();
     super.dispose();
   }
 
@@ -95,7 +112,8 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                                 onPressed: () {},
                               ),
                               content: const CustomSnackbar(
-                                title: 'Package deleted successfully',
+                                title: 'Success',
+                                description: 'Package deleted successfully',
                                 snackbarType: SnackbarType.success,
                               ),
                             ),
@@ -133,13 +151,13 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                       return IconButton(
                         onPressed: () {
                           setState(() {
-                            deletingPackage = true;
+                            deleting = true;
                           });
                           _deletePackageBloc.add(
                             DeletePackage(packageId: package.id),
                           );
                         },
-                        icon: state is DeletePackageLoading
+                        icon: deleting == true
                             ? const SizedBox(
                                 height: 20,
                                 width: 20,
@@ -157,6 +175,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                   ),
                 ],
               ),
+              Text('Rs. $totalPrice'),
               const SizedBox(height: padding / 2),
               RichText(
                 text: TextSpan(
@@ -175,12 +194,108 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                 ),
               ),
               const SizedBox(height: padding),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: package.services.length,
-                itemBuilder: (context, index) {
-                  final Service service = package.services[index];
-                  return PackageOrderServiceButton(service: service);
+              BlocConsumer<RemoveFromPackageBloc, RemoveFromPackageState>(
+                bloc: _removeFromPackageBloc,
+                listenWhen: (previous, current) => previous != current,
+                listener: (context, state) {
+                  if (state is RemoveFromPackageSuccess) {
+                    // _onWidgetDidBuild executes below code after
+                    // Build() has finished building
+                    _onWidgetDidBuild(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Success',
+                            description: 'Service removed from package.',
+                            snackbarType: SnackbarType.success,
+                          ),
+                        ),
+                      );
+
+                      Navigator.pop(context);
+                    });
+                  }
+
+                  if (state is RemoveFromPackageFailure) {
+                    _onWidgetDidBuild(() {
+                      // _onWidgetDidBuild displays snackbar after
+                      // Build() has finished building
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Error',
+                            description:
+                                'Error occured while removing service from package',
+                            snackbarType: SnackbarType.error,
+                          ),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    });
+                  }
+                },
+                buildWhen: (previous, current) => previous != current,
+                builder: (context, state) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: package.services.length,
+                    itemBuilder: (context, index) {
+                      final Service service = package.services[index];
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: padding / 2),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: PackageOrderServiceButton(
+                                service: service,
+                                getPackagesBloc: getPackagesBloc,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  deleting = true;
+                                });
+
+                                _removeFromPackageBloc.add(
+                                  RemoveFromPackage(
+                                    packageId: package.id,
+                                    serviceId: service.id,
+                                  ),
+                                );
+
+                                // package.services.removeAt(index);
+
+                                // setState(() {
+                                //   deleting = false;
+                                // });
+                              },
+                              icon: deleting == true
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      PhosphorIcons.trashLight,
+                                      size: 20,
+                                    ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
               if (package.services.isEmpty)
@@ -190,10 +305,9 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                 ),
               const SizedBox(height: padding),
               ElevatedButton(
-                onPressed:
-                    package.services.isNotEmpty && deletingPackage == false
-                        ? () {}
-                        : null,
+                onPressed: package.services.isNotEmpty && deleting == false
+                    ? () {}
+                    : null,
                 child: const Text('Place order'),
               ),
             ],
