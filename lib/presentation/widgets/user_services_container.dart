@@ -1,3 +1,4 @@
+import 'package:event_planner/logic/bloc/get_packages_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -73,7 +74,11 @@ class _UserServicesContainerState extends State<UserServicesContainer> {
                         onPressed: () {
                           Navigator.of(context).push(
                             CustomPageRoute(
-                              child: ServiceScreen(service: service),
+                              child: BlocProvider.value(
+                                value:
+                                    BlocProvider.of<GetPackagesBloc>(context),
+                                child: ServiceScreen(service: service),
+                              ),
                             ),
                           );
                         },

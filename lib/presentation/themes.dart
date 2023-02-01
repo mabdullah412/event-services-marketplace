@@ -355,6 +355,7 @@ class Themes {
       primary: Color(0xFF9E9DFF),
       secondary: Color(0xFF222222),
       surface: Color(0xFFFFFFFF),
+      background: Color(0xFFF2F2F6),
       outline: Color(0xFFDDDDDD),
       error: Colors.red,
     ),

@@ -22,17 +22,24 @@ class UserCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CircleAvatar(
-            radius: 35,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            foregroundColor: Theme.of(context).colorScheme.secondary,
-            child: const Icon(PhosphorIcons.userCircleLight, size: 40),
-          ),
-          const SizedBox(height: padding),
-          Text(
-            'User Full Name',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).primaryTextTheme.bodyLarge,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                radius: 35,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.secondary,
+                child: const Icon(PhosphorIcons.userCircleLight, size: 40),
+              ),
+              const SizedBox(width: padding),
+              Expanded(
+                child: Text(
+                  'User Full Name',
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).primaryTextTheme.bodyLarge,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: padding),
           ElevatedButton(
