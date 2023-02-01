@@ -6,11 +6,13 @@ import '../constants/constants.dart';
 import '../data/repositories/package_repository.dart';
 import '../logic/bloc/get_packages_bloc.dart';
 import 'screens/discover_screen.dart';
-import 'screens/home_screen.dart';
 import 'screens/orders_screen.dart';
 import 'screens/profile_screen.dart';
 
 class NavigationController extends StatefulWidget {
+  /// Handles what screen is to be displayed, as it hosts the navigation buttons
+  /// required to navigate to different screens.
+
   const NavigationController({super.key});
 
   @override
@@ -21,8 +23,6 @@ class _NavigationControllerState extends State<NavigationController> {
   int index = 0;
 
   final screens = const <Widget>[
-    HomeScreen(),
-    // InboxScreen(),
     DiscoverScreen(),
     OrdersScreen(),
     ProfileScreen(),
@@ -30,9 +30,7 @@ class _NavigationControllerState extends State<NavigationController> {
 
   final screenTitles = const <String>[
     'Home',
-    // 'Inbox',
-    'Discover',
-    'Manage Orders',
+    'Orders',
     'Profile',
   ];
 
@@ -80,19 +78,9 @@ class _NavigationControllerState extends State<NavigationController> {
   List<Widget> get destinations {
     return const [
       NavigationDestination(
-        icon: Icon(PhosphorIcons.houseBold),
+        icon: Icon(PhosphorIcons.magnifyingGlassBold),
         selectedIcon: Icon(PhosphorIcons.houseFill),
         label: 'Home',
-      ),
-      // NavigationDestination(
-      //   icon: Icon(PhosphorIcons.paperPlaneTiltBold),
-      //   selectedIcon: Icon(PhosphorIcons.paperPlaneTiltFill),
-      //   label: 'Inbox',
-      // ),
-      NavigationDestination(
-        icon: Icon(PhosphorIcons.magnifyingGlassBold),
-        selectedIcon: Icon(PhosphorIcons.magnifyingGlassFill),
-        label: 'Discover',
       ),
       NavigationDestination(
         icon: Icon(PhosphorIcons.scrollBold),

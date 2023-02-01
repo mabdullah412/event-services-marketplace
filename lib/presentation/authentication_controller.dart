@@ -9,6 +9,9 @@ import 'screens/authorization_screen.dart';
 import 'screens/loading_screen.dart';
 
 class AuthenticationController extends StatefulWidget {
+  /// Manages the authentication by limiting access to the application to
+  /// registered users only.
+
   const AuthenticationController({
     super.key,
     required this.userRepository,

@@ -1,5 +1,3 @@
-import 'package:event_planner/presentation/widgets/sell_services_container.dart';
-import 'package:event_planner/presentation/widgets/user_services_container.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
@@ -7,8 +5,10 @@ import '../../data/repositories/service_repository.dart';
 import '../../logic/bloc/get_user_services_bloc.dart';
 import '../widgets/buyer_dashboard.dart';
 import '../widgets/header.dart';
+import '../widgets/sell_services_container.dart';
 import '../widgets/seller_dashboard.dart';
 import '../widgets/user_card.dart';
+import '../widgets/user_services_container.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

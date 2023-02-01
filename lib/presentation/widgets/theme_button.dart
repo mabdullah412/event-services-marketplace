@@ -1,6 +1,9 @@
-import 'package:event_planner/constants/constants.dart';
-import 'package:event_planner/presentation/widgets/toggle_theme_btn.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
+
+import '../../constants/constants.dart';
+import '../../logic/providers/theme_provider.dart';
 
 class ThemeButton extends StatelessWidget {
   const ThemeButton({
@@ -25,6 +28,37 @@ class ThemeButton extends StatelessWidget {
           const ToggleThemeButton(),
         ],
       ),
+    );
+  }
+}
+
+class ToggleThemeButton extends StatelessWidget {
+  const ToggleThemeButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
+
+    return Row(
+      children: [
+        ElevatedButton(
+          onPressed: themeProvider.themeMode == ThemeMode.dark
+              ? null
+              : () {
+                  themeProvider.toggleTheme();
+                },
+          child: const Icon(PhosphorIcons.moonFill),
+        ),
+        const SizedBox(width: padding),
+        ElevatedButton(
+          onPressed: themeProvider.themeMode == ThemeMode.light
+              ? null
+              : () {
+                  themeProvider.toggleTheme();
+                },
+          child: const Icon(PhosphorIcons.sunFill),
+        ),
+      ],
     );
   }
 }

@@ -10,6 +10,10 @@ import 'log_in_screen.dart';
 import 'sign_up_screen.dart';
 
 class AuthorizationScreen extends StatefulWidget {
+  /// Handles the SignUp and Login functionality of the application. This screen
+  /// is displayed when the user is not logged in authentication fails for some
+  /// reason.
+
   const AuthorizationScreen({
     Key? key,
     required this.userRepository,
