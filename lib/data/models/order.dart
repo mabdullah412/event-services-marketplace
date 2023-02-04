@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -11,12 +12,14 @@ class Order {
   final User buyer;
   final DateTime createdAt;
   final List<Service> services;
+  final int totalPrice;
 
   Order({
     required this.id,
     required this.buyer,
     required this.createdAt,
     required this.services,
+    required this.totalPrice,
   });
 
   Order copyWith({
@@ -24,12 +27,14 @@ class Order {
     User? buyer,
     DateTime? createdAt,
     List<Service>? services,
+    int? totalPrice,
   }) {
     return Order(
       id: id ?? this.id,
       buyer: buyer ?? this.buyer,
       createdAt: createdAt ?? this.createdAt,
       services: services ?? this.services,
+      totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 
@@ -39,6 +44,7 @@ class Order {
       'buyer': buyer.toMap(),
       'createdAt': createdAt.millisecondsSinceEpoch,
       'services': services.map((x) => x.toMap()).toList(),
+      'totalPrice': totalPrice,
     };
   }
 
@@ -50,9 +56,10 @@ class Order {
           DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(map['createdAt']).toLocal(),
       services: List<Service>.from(
         (map['services'] as List).map<Service>(
-          (x) => Service.fromMap(x as Map<String, dynamic>),
+          (service) => Service.fromMap(service as Map<String, dynamic>),
         ),
       ),
+      totalPrice: map['totalPrice'] as int,
     );
   }
 
@@ -63,7 +70,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, buyer: $buyer, createdAt: $createdAt, services: $services)';
+    return 'Order(id: $id, buyer: $buyer, createdAt: $createdAt, services: $services, totalPrice: $totalPrice)';
   }
 
   @override
@@ -73,7 +80,8 @@ class Order {
     return other.id == id &&
         other.buyer == buyer &&
         other.createdAt == createdAt &&
-        listEquals(other.services, services);
+        listEquals(other.services, services) &&
+        other.totalPrice == totalPrice;
   }
 
   @override
@@ -81,6 +89,7 @@ class Order {
     return id.hashCode ^
         buyer.hashCode ^
         createdAt.hashCode ^
-        services.hashCode;
+        services.hashCode ^
+        totalPrice.hashCode;
   }
 }

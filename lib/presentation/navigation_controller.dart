@@ -21,6 +21,7 @@ class NavigationController extends StatefulWidget {
 
 class _NavigationControllerState extends State<NavigationController> {
   int index = 0;
+  late GetPackagesBloc _getPackagesBloc;
 
   final screens = const <Widget>[
     DiscoverScreen(),
@@ -35,14 +36,24 @@ class _NavigationControllerState extends State<NavigationController> {
   ];
 
   @override
+  void initState() {
+    _getPackagesBloc = GetPackagesBloc(packageRepository: PackageRepository());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _getPackagesBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         // passing GetPackagesBloc because it is required on multiple screens
         BlocProvider<GetPackagesBloc>(
-          create: (context) => GetPackagesBloc(
-            packageRepository: PackageRepository(),
-          ),
+          create: (context) => _getPackagesBloc,
         ),
       ],
       child: Scaffold(

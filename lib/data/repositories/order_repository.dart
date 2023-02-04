@@ -14,7 +14,7 @@ class OrderRepository {
         await _flutterSecureStorage.read(key: 'JWT_TOKEN') ?? '';
 
     final Response rawData = await _orderAPI.getOrders(token: token);
-    final List<dynamic> rawOrders = rawData.data['data']['packages'] as List;
+    final List<dynamic> rawOrders = rawData.data['data']['orders'] as List;
 
     final List<Order> orders = rawOrders
         .map(

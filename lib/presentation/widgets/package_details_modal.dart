@@ -1,5 +1,3 @@
-import 'package:event_planner/logic/bloc/remove_from_package_bloc.dart';
-import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -10,6 +8,8 @@ import '../../data/models/service.dart';
 import '../../data/repositories/package_repository.dart';
 import '../../logic/bloc/delete_package_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import '../../logic/bloc/remove_from_package_bloc.dart';
+import 'custom_snack_bar.dart';
 import 'package_order_service_button.dart';
 
 class PackageDetailsModal extends StatefulWidget {
@@ -75,12 +75,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
       children: [
         Container(
           margin: const EdgeInsets.all(padding),
-          padding: const EdgeInsets.only(
-            top: padding / 2,
-            left: padding,
-            right: padding,
-            bottom: padding,
-          ),
+          padding: const EdgeInsets.all(padding),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.circular(radius),
@@ -91,9 +86,19 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    package.name,
-                    style: Theme.of(context).primaryTextTheme.titleMedium,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        package.name,
+                        style: Theme.of(context).primaryTextTheme.titleMedium,
+                      ),
+                      const SizedBox(height: padding / 4),
+                      Text(
+                        'Created on ${package.createdAt.year}-${package.createdAt.month}-${package.createdAt.day}',
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                      ),
+                    ],
                   ),
                   BlocConsumer<DeletePackageBloc, DeletePackageState>(
                     bloc: _deletePackageBloc,
@@ -175,24 +180,12 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                   ),
                 ],
               ),
-              Text('Rs. $totalPrice'),
-              const SizedBox(height: padding / 2),
-              RichText(
-                text: TextSpan(
-                  text: 'Date created: ',
-                  style: Theme.of(context).primaryTextTheme.bodyMedium,
-                  children: [
-                    TextSpan(
-                      text:
-                          '${package.createdAt.year}-${package.createdAt.month}-${package.createdAt.day}',
-                      style:
-                          Theme.of(context).primaryTextTheme.bodyMedium!.apply(
-                                fontWeightDelta: 2,
-                              ),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: padding),
+              Text(
+                'Rs ${totalPrice.toDouble()}',
+                style: Theme.of(context).primaryTextTheme.titleLarge,
               ),
+              const Divider(),
               const SizedBox(height: padding),
               BlocConsumer<RemoveFromPackageBloc, RemoveFromPackageState>(
                 bloc: _removeFromPackageBloc,
@@ -304,6 +297,8 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                   style: Theme.of(context).primaryTextTheme.bodyMedium,
                 ),
               const SizedBox(height: padding),
+              const Divider(),
+              const SizedBox(height: padding / 2),
               ElevatedButton(
                 onPressed: package.services.isNotEmpty && deleting == false
                     ? () {}

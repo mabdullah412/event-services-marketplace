@@ -29,11 +29,7 @@ class _PackagesContainerState extends State<PackagesContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
-        right: padding,
-        left: padding,
-        bottom: padding,
-      ),
+      padding: const EdgeInsets.all(padding),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(radius),
@@ -68,9 +64,12 @@ class _PackagesContainerState extends State<PackagesContainer> {
                   itemCount: state.packages.length,
                   itemBuilder: (context, index) {
                     final Package package = state.packages[index];
-                    return PackageCard(
-                      package: package,
-                      getPackagesBloc: _getPackagesBloc,
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: padding / 2),
+                      child: PackageCard(
+                        package: package,
+                        getPackagesBloc: _getPackagesBloc,
+                      ),
                     );
                   },
                 );
@@ -83,7 +82,7 @@ class _PackagesContainerState extends State<PackagesContainer> {
               return const Text('Bloc Error');
             },
           ),
-          const SizedBox(height: padding),
+          const SizedBox(height: padding / 2),
           ElevatedButton(
             onPressed: () {
               showModalBottomSheet(
@@ -111,19 +110,16 @@ class GetPackagesFailurePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: padding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Error occured while fetching packages.',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Error occured while fetching packages.',
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
@@ -135,23 +131,20 @@ class NoPackagesPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: padding),
-      child: Column(
-        children: [
-          Text(
-            'You have no packages.',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: padding),
-          Text(
-            'Packages work like carts, you can add as many items you want in a package and then checkout that package. You can also work with multiple packages at the same time.',
-            style: Theme.of(context).primaryTextTheme.bodySmall,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          'You have no packages.',
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: padding),
+        Text(
+          'Packages work like carts, you can add as many items you want in a package and then checkout that package. You can also work with multiple packages at the same time.',
+          style: Theme.of(context).primaryTextTheme.bodySmall,
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }

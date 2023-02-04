@@ -1,11 +1,37 @@
+import 'package:event_planner/logic/bloc/get_packages_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
+import '../../data/models/order.dart';
+import '../../data/repositories/order_repository.dart';
+import '../../logic/bloc/get_orders_bloc.dart';
+import 'order_card.dart';
 
-class OrdersContainer extends StatelessWidget {
+class OrdersContainer extends StatefulWidget {
   const OrdersContainer({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<OrdersContainer> createState() => _OrdersContainerState();
+}
+
+class _OrdersContainerState extends State<OrdersContainer> {
+  late GetOrdersBloc _getOrdersBloc;
+
+  @override
+  void initState() {
+    _getOrdersBloc = GetOrdersBloc(orderRepository: OrderRepository());
+    _getOrdersBloc.add(GetOrders());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _getOrdersBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,35 +42,59 @@ class OrdersContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
       ),
       child: Column(
-        children: const [
-          NoOrdersPlaceholder(),
-          SizedBox(height: padding),
-          OrderCard(),
-        ],
-      ),
-    );
-  }
-}
-
-class OrderCard extends StatelessWidget {
-  const OrderCard({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Order # 28/06/2022',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+          BlocBuilder<GetOrdersBloc, GetOrdersState>(
+            bloc: _getOrdersBloc,
+            builder: (context, state) {
+              if (state is GetOrdersLoading || state is GetOrdersInitial) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: padding),
+                  child: Center(
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                );
+              }
+
+              if (state is GetOrdersSuccess) {
+                if (state.orders.isEmpty) {
+                  return const NoOrdersPlaceholder();
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: state.orders.length,
+                  itemBuilder: (context, index) {
+                    final Order order = state.orders[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: padding / 2),
+                      child: OrderCard(
+                        order: order,
+                        getOrdersBloc: _getOrdersBloc,
+                        getPackagesBloc:
+                            BlocProvider.of<GetPackagesBloc>(context),
+                      ),
+                    );
+                  },
+                );
+              }
+
+              if (state is GetOrdersFailure) {
+                return const GetOrdersFailurePlaceholder();
+              }
+
+              return const Text('bloc error');
+            },
           ),
-          Text(
-            'Rs. 4999.0',
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+          const SizedBox(height: padding / 2),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('View previous orders'),
           ),
         ],
       ),
@@ -62,7 +112,28 @@ class NoOrdersPlaceholder extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'You have not placed an order yet.',
+          'There are no orders placed yet.',
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
+
+class GetOrdersFailurePlaceholder extends StatelessWidget {
+  const GetOrdersFailurePlaceholder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Error occured while fetching orders.',
           style: Theme.of(context).primaryTextTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
