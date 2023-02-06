@@ -43,7 +43,7 @@ class _PackagesContainerState extends State<PackagesContainer> {
             builder: (context, state) {
               if (state is GetPackagesLoading || state is GetPackagesInitial) {
                 return const Padding(
-                  padding: EdgeInsets.only(top: padding),
+                  padding: EdgeInsets.only(top: padding, bottom: padding),
                   child: Center(
                     child: SizedBox(
                       height: 20,

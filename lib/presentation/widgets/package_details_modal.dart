@@ -34,7 +34,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
   GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
   Package get package => widget.package;
 
-  bool deleting = false;
+  bool dissableOnPressed = false;
   late int totalPrice;
 
   late DeletePackageBloc _deletePackageBloc;
@@ -156,13 +156,13 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                       return IconButton(
                         onPressed: () {
                           setState(() {
-                            deleting = true;
+                            dissableOnPressed = true;
                           });
                           _deletePackageBloc.add(
                             DeletePackage(packageId: package.id),
                           );
                         },
-                        icon: deleting == true
+                        icon: dissableOnPressed == true
                             ? const SizedBox(
                                 height: 20,
                                 width: 20,
@@ -186,7 +186,6 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                 style: Theme.of(context).primaryTextTheme.titleLarge,
               ),
               const Divider(),
-              const SizedBox(height: padding),
               BlocConsumer<RemoveFromPackageBloc, RemoveFromPackageState>(
                 bloc: _removeFromPackageBloc,
                 listenWhen: (previous, current) => previous != current,
@@ -243,7 +242,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                     itemBuilder: (context, index) {
                       final Service service = package.services[index];
                       return Container(
-                        margin: const EdgeInsets.only(bottom: padding / 2),
+                        margin: const EdgeInsets.only(top: padding / 2),
                         child: Row(
                           children: [
                             Expanded(
@@ -255,7 +254,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                             IconButton(
                               onPressed: () {
                                 setState(() {
-                                  deleting = true;
+                                  dissableOnPressed = true;
                                 });
 
                                 _removeFromPackageBloc.add(
@@ -271,7 +270,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                                 //   deleting = false;
                                 // });
                               },
-                              icon: deleting == true
+                              icon: dissableOnPressed == true
                                   ? const SizedBox(
                                       height: 20,
                                       width: 20,
@@ -296,13 +295,14 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                   'You have not yet added any service in this package.',
                   style: Theme.of(context).primaryTextTheme.bodyMedium,
                 ),
-              const SizedBox(height: padding),
+              const SizedBox(height: padding / 2),
               const Divider(),
               const SizedBox(height: padding / 2),
               ElevatedButton(
-                onPressed: package.services.isNotEmpty && deleting == false
-                    ? () {}
-                    : null,
+                onPressed:
+                    package.services.isNotEmpty && dissableOnPressed == false
+                        ? () {}
+                        : null,
                 child: const Text('Place order'),
               ),
             ],

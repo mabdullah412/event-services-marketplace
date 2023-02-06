@@ -1,4 +1,3 @@
-import 'package:event_planner/logic/bloc/get_packages_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,6 +5,7 @@ import '../../constants/constants.dart';
 import '../../data/models/order.dart';
 import '../../data/repositories/order_repository.dart';
 import '../../logic/bloc/get_orders_bloc.dart';
+import '../../logic/bloc/get_packages_bloc.dart';
 import 'order_card.dart';
 
 class OrdersContainer extends StatefulWidget {
@@ -50,7 +50,7 @@ class _OrdersContainerState extends State<OrdersContainer> {
             builder: (context, state) {
               if (state is GetOrdersLoading || state is GetOrdersInitial) {
                 return const Padding(
-                  padding: EdgeInsets.only(top: padding),
+                  padding: EdgeInsets.only(top: padding, bottom: padding),
                   child: Center(
                     child: SizedBox(
                       height: 20,

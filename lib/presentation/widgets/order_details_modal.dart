@@ -1,4 +1,8 @@
+import 'package:event_planner/data/repositories/order_repository.dart';
+import 'package:event_planner/logic/bloc/cancel_order_bloc.dart';
+import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
@@ -29,9 +33,26 @@ class OrderDetailsModal extends StatefulWidget {
 class _OrderDetailsModalState extends State<OrderDetailsModal> {
   Order get order => widget.order;
   GetOrdersBloc get getOrdersBloc => widget.getOrdersBloc;
+  // getPackagesBloc is needed in service screen.
   GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
+  late CancelOrderBloc _cancelOrderBloc;
 
-  bool deleting = false;
+  bool dissableOnPressed = false;
+
+  @override
+  void initState() {
+    _cancelOrderBloc = CancelOrderBloc(
+      orderRepository: OrderRepository(),
+      getOrdersBloc: getOrdersBloc,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _cancelOrderBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,27 +86,85 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: deleting == true
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 1,
+                  BlocConsumer<CancelOrderBloc, CancelOrderState>(
+                    bloc: _cancelOrderBloc,
+                    listenWhen: (previous, current) => previous != current,
+                    listener: (context, state) {
+                      if (state is CancelOrderSuccess) {
+                        _onWidgetDidBuild(() {
+                          // _onWidgetDidBuild displays snackbar after
+                          // Build() has finished building
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              action: SnackBarAction(
+                                label: 'close',
+                                onPressed: () {},
+                              ),
+                              content: const CustomSnackbar(
+                                title: 'Success',
+                                description: 'Order cancelled successfully',
+                                snackbarType: SnackbarType.success,
+                              ),
                             ),
-                          )
-                        : Icon(
-                            PhosphorIcons.trash,
-                            color: Theme.of(context).colorScheme.error,
-                            size: 20,
-                          ),
+                          );
+                          Navigator.pop(context);
+                        });
+                      }
+
+                      if (state is CancelOrderFailure) {
+                        _onWidgetDidBuild(() {
+                          // _onWidgetDidBuild displays snackbar after
+                          // Build() has finished building
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              action: SnackBarAction(
+                                label: 'close',
+                                onPressed: () {},
+                              ),
+                              content: const CustomSnackbar(
+                                title: 'Error',
+                                description:
+                                    'Error occured while cancelling order',
+                                snackbarType: SnackbarType.error,
+                              ),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    buildWhen: (previous, current) => previous != current,
+                    builder: (context, state) {
+                      return IconButton(
+                        onPressed: () {
+                          setState(() {
+                            dissableOnPressed = true;
+                          });
+
+                          _cancelOrderBloc.add(
+                            CancelOrder(orderId: order.id),
+                          );
+                        },
+                        icon: dissableOnPressed == true
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                ),
+                              )
+                            : Icon(
+                                PhosphorIcons.trash,
+                                color: Theme.of(context).colorScheme.error,
+                                size: 20,
+                              ),
+                      );
+                    },
                   ),
                 ],
               ),
               const SizedBox(height: padding / 4),
               const Divider(),
-              // const SizedBox(height: padding / 4),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: order.services.length,
@@ -113,5 +192,11 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
         ),
       ],
     );
+  }
+
+  void _onWidgetDidBuild(VoidCallback callback) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      callback();
+    });
   }
 }
