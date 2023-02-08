@@ -55,61 +55,96 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
           padding: const EdgeInsets.all(padding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Expanded(
-                flex: 7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Event Services Marketplace.',
-                      style: Theme.of(context).primaryTextTheme.displayMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: padding),
-                    Text(
-                      'Lucas ipsum dolor sit amet gonk darth r2-d2 darth secura lando moff dooku amidala kenobi. Bothan fett hutt windu hutt hutt boba obi-wan droid.',
-                      style: Theme.of(context).primaryTextTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Marketplace.',
+                    style: Theme.of(context).primaryTextTheme.displayMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: padding * 2),
+                  Image.asset(
+                    'assets/illustrations/auth_screen.png',
+                    fit: BoxFit.cover,
+                    scale: 3,
+                  ),
+                  const SizedBox(height: padding * 2),
+                  Text(
+                    'One stop shop for all your event planning needs. Create a package that contains your favorite services and pay everyone with just one click.',
+                    style: Theme.of(context).primaryTextTheme.bodyMedium!.apply(
+                          color: Theme.of(context)
+                              .primaryTextTheme
+                              .bodyLarge!
+                              .color,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          CustomPageRoute(
-                            child: BlocProvider.value(
-                              value: _loginBloc,
-                              child: const SignupScreen(),
-                            ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        CustomPageRoute(
+                          child: BlocProvider.value(
+                            value: _loginBloc,
+                            child: const SignupScreen(),
                           ),
-                        );
-                      },
-                      child: const Text('Sign Up'),
-                    ),
-                    const SizedBox(height: padding),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          CustomPageRoute(
-                            child: BlocProvider.value(
-                              value: _loginBloc,
-                              child: const LoginScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text('Get Started'),
+                  ),
+                  const SizedBox(height: padding / 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Already have an account?',
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .bodyMedium!
+                            .apply(
+                              fontSizeDelta: 1,
+                              fontWeightDelta: 0,
+                              color: Theme.of(context)
+                                  .primaryTextTheme
+                                  .bodyLarge!
+                                  .color,
                             ),
-                          ),
-                        );
-                      },
-                      child: const Text('Log In'),
-                    ),
-                  ],
-                ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            CustomPageRoute(
+                              child: BlocProvider.value(
+                                value: _loginBloc,
+                                child: const LoginScreen(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'Log in',
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .bodyMedium!
+                              .apply(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSizeDelta: 1,
+                                fontWeightDelta: 2,
+                              ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
