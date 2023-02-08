@@ -268,13 +268,13 @@ class SellerAndBookmark extends StatelessWidget {
               ),
             ],
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              PhosphorIcons.bookmarkSimple,
-              size: 20,
-            ),
-          )
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(
+          //     PhosphorIcons.bookmarkSimple,
+          //     size: 20,
+          //   ),
+          // ),
         ],
       ),
     );
@@ -298,8 +298,7 @@ class ImageBanner extends StatelessWidget {
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            height: 50,
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(padding),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(radius),
@@ -314,9 +313,17 @@ class ImageBanner extends StatelessWidget {
         },
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return const SizedBox(
+          return Container(
             height: 50,
-            child: Center(
+            padding: const EdgeInsets.all(padding),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.outline,
+              ),
+              borderRadius: BorderRadius.circular(radius),
+            ),
+            child: const Center(
               child: CircularProgressIndicator(strokeWidth: 2),
             ),
           );

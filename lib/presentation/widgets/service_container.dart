@@ -47,52 +47,64 @@ class ServiceContainer extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(
-                onPressed: () {},
-                constraints: const BoxConstraints(),
-                icon: const Icon(PhosphorIcons.dotsThreeVerticalBold),
-              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   constraints: const BoxConstraints(),
+              //   icon: const Icon(PhosphorIcons.dotsThreeVerticalBold),
+              // ),
             ],
           ),
 
-          // white space
-          const SizedBox(height: padding),
+          const SizedBox(height: padding / 2),
+          const Divider(),
+          const SizedBox(height: padding / 2),
 
           // image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(radius),
-            child: Image.network(
-              service.coverImage,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: 50,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.outline,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 180),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(radius),
+              child: Image.network(
+                service.coverImage,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    padding: const EdgeInsets.all(padding),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                      borderRadius: BorderRadius.circular(radius),
                     ),
-                    borderRadius: BorderRadius.circular(radius),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Error occured while fetching image.',
-                      style: Theme.of(context).primaryTextTheme.bodyMedium,
+                    child: Center(
+                      child: Text(
+                        'Error occured while fetching image.',
+                        style: Theme.of(context).primaryTextTheme.bodyMedium,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+
+                  return Container(
+                    padding: const EdgeInsets.all(padding),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                      borderRadius: BorderRadius.circular(radius),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-
-          // Container(
-          //   height: 200,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(radius),
-          //     color: Theme.of(context).colorScheme.primary,
-          //   ),
-          // ),
 
           // white space
           const SizedBox(height: padding),
@@ -100,29 +112,37 @@ class ServiceContainer extends StatelessWidget {
           // details
           Text(
             service.title,
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            style: Theme.of(context).primaryTextTheme.titleLarge,
           ),
+
+          const SizedBox(height: padding / 4),
+
           Text(
-            service.price.toString(),
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            'Rs. ${service.price.toDouble()}',
+            style: Theme.of(context).primaryTextTheme.titleMedium!.apply(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
           ),
+
+          const SizedBox(height: padding / 4),
+
           Text(
             service.description,
             style: Theme.of(context).primaryTextTheme.bodyMedium,
           ),
-          Text(
-            service.location,
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
-          Text(
-            service.ratingsAverage.toString(),
-            style: Theme.of(context).primaryTextTheme.bodyMedium,
-          ),
 
-          // white space
-          // const SizedBox(height: padding),
+          // Text(
+          //   service.location,
+          //   style: Theme.of(context).primaryTextTheme.bodyMedium,
+          // ),
+          // Text(
+          //   service.ratingsAverage.toString(),
+          //   style: Theme.of(context).primaryTextTheme.bodyMedium,
+          // ),
+
+          const SizedBox(height: padding / 2),
           const Divider(),
-          const SizedBox(height: padding),
+          const SizedBox(height: padding / 2),
 
           // learn more, save for later, add to package,
           Row(
@@ -145,12 +165,12 @@ class ServiceContainer extends StatelessWidget {
               // Row
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {},
-                    constraints: const BoxConstraints(),
-                    icon: const Icon(PhosphorIcons.bookmarkSimple),
-                  ),
-                  const SizedBox(width: padding),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   constraints: const BoxConstraints(),
+                  //   icon: const Icon(PhosphorIcons.bookmarkSimple),
+                  // ),
+                  // const SizedBox(width: padding),
                   IconButton(
                     onPressed: () {},
                     constraints: const BoxConstraints(),

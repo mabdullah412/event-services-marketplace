@@ -61,6 +61,10 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   }
 
                   if (state is GetServicesSuccess) {
+                    if (state.services.isEmpty) {
+                      return const NoServicesPlaceholder();
+                    }
+
                     return Expanded(
                       child: ListView.builder(
                         itemCount: state.services.length,
@@ -76,7 +80,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   }
 
                   if (state is GetServicesFailure) {
-                    // TODO: Create service failure placeholder
+                    const GetServicesFailurePlaceholder();
                   }
 
                   return const Text('Bloc Error');
@@ -85,6 +89,59 @@ class _ServicesScreenState extends State<ServicesScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class GetServicesFailurePlaceholder extends StatelessWidget {
+  const GetServicesFailurePlaceholder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Error occured while fetching services.',
+          style: Theme.of(context).primaryTextTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
+
+class NoServicesPlaceholder extends StatelessWidget {
+  const NoServicesPlaceholder({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(padding),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(Radius.circular(radius)),
+      ),
+      child: Column(
+        children: [
+          Text(
+            '0 services of this type at the moment.',
+            style: Theme.of(context).primaryTextTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: padding / 2),
+          Text(
+            'Be sure to check back in a while.',
+            style: Theme.of(context).primaryTextTheme.bodySmall,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
