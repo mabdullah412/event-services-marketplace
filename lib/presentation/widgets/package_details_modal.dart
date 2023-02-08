@@ -5,9 +5,12 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../constants/constants.dart';
 import '../../data/models/package.dart';
 import '../../data/models/service.dart';
+import '../../data/repositories/order_repository.dart';
 import '../../data/repositories/package_repository.dart';
 import '../../logic/bloc/delete_package_bloc.dart';
+import '../../logic/bloc/get_orders_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import '../../logic/bloc/place_order_bloc.dart';
 import '../../logic/bloc/remove_from_package_bloc.dart';
 import 'custom_snack_bar.dart';
 import 'package_order_service_button.dart';
@@ -19,32 +22,41 @@ class PackageDetailsModal extends StatefulWidget {
     Key? key,
     required this.package,
     required this.getPackagesBloc,
+    required this.getOrdersBloc,
   }) : super(key: key);
 
   final Package package;
   final GetPackagesBloc getPackagesBloc;
-  // final PlaceOrderBloc placeOrderBloc
-  // final GetOrdersBloc getOrdersBloc
+  final GetOrdersBloc getOrdersBloc;
 
   @override
   State<PackageDetailsModal> createState() => _PackageDetailsModalState();
 }
 
 class _PackageDetailsModalState extends State<PackageDetailsModal> {
-  GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
   Package get package => widget.package;
+  GetOrdersBloc get getOrdersBloc => widget.getOrdersBloc;
+  GetPackagesBloc get getPackagesBloc => widget.getPackagesBloc;
 
   bool dissableOnPressed = false;
   late int totalPrice;
 
+  late PlaceOrderBloc _placeOrderBloc;
   late DeletePackageBloc _deletePackageBloc;
   late RemoveFromPackageBloc _removeFromPackageBloc;
+
   final PackageRepository _packageRepository = PackageRepository();
 
   @override
   void initState() {
     _deletePackageBloc = DeletePackageBloc(
       packageRepository: _packageRepository,
+      getPackagesBloc: getPackagesBloc,
+    );
+
+    _placeOrderBloc = PlaceOrderBloc(
+      orderRepository: OrderRepository(),
+      getOrdersBloc: getOrdersBloc,
       getPackagesBloc: getPackagesBloc,
     );
 
@@ -65,6 +77,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
   void dispose() {
     _deletePackageBloc.close();
     _removeFromPackageBloc.close();
+    _placeOrderBloc.close();
     super.dispose();
   }
 
@@ -298,12 +311,72 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
               const SizedBox(height: padding / 2),
               const Divider(),
               const SizedBox(height: padding / 2),
-              ElevatedButton(
-                onPressed:
-                    package.services.isNotEmpty && dissableOnPressed == false
-                        ? () {}
-                        : null,
-                child: const Text('Place order'),
+              BlocConsumer<PlaceOrderBloc, PlaceOrderState>(
+                bloc: _placeOrderBloc,
+                listenWhen: (previous, current) => previous != current,
+                listener: (context, state) {
+                  if (state is PlaceOrderSuccess) {
+                    // _onWidgetDidBuild executes below code after
+                    // Build() has finished building
+                    _onWidgetDidBuild(() {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Success',
+                            description: 'Placed order successfully.',
+                            snackbarType: SnackbarType.success,
+                          ),
+                        ),
+                      );
+
+                      Navigator.pop(context);
+                    });
+                  }
+
+                  if (state is PlaceOrderFailure) {
+                    _onWidgetDidBuild(() {
+                      // _onWidgetDidBuild displays snackbar after
+                      // Build() has finished building
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          action: SnackBarAction(
+                            label: 'close',
+                            onPressed: () {},
+                          ),
+                          content: const CustomSnackbar(
+                            title: 'Error',
+                            description: 'Error occured while placing order.',
+                            snackbarType: SnackbarType.error,
+                          ),
+                        ),
+                      );
+
+                      Navigator.pop(context);
+                    });
+                  }
+                },
+                buildWhen: (previous, current) => previous != current,
+                builder: (context, state) => ElevatedButton(
+                  onPressed:
+                      package.services.isNotEmpty && dissableOnPressed == false
+                          ? () {
+                              setState(() {
+                                dissableOnPressed = true;
+                              });
+
+                              _placeOrderBloc.add(
+                                PlaceOrder(
+                                  packageId: package.id,
+                                ),
+                              );
+                            }
+                          : null,
+                  child: const Text('Place order'),
+                ),
               ),
             ],
           ),

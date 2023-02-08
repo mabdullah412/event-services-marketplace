@@ -28,8 +28,8 @@ class PlaceOrderBloc extends Bloc<PlaceOrderEvent, PlaceOrderState> {
     emit(PlaceOrderLoading());
 
     try {
-      final dynamic response = await orderRepository.cancelOrder(
-        orderId: event.packageId,
+      final dynamic response = await orderRepository.placeOrder(
+        packageId: event.packageId,
       );
 
       if (response == false) {

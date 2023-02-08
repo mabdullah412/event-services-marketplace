@@ -1,3 +1,5 @@
+import 'package:event_planner/data/repositories/order_repository.dart';
+import 'package:event_planner/logic/bloc/get_orders_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -22,6 +24,7 @@ class NavigationController extends StatefulWidget {
 class _NavigationControllerState extends State<NavigationController> {
   int index = 0;
   late GetPackagesBloc _getPackagesBloc;
+  late GetOrdersBloc _getOrdersBloc;
 
   final screens = const <Widget>[
     DiscoverScreen(),
@@ -38,12 +41,14 @@ class _NavigationControllerState extends State<NavigationController> {
   @override
   void initState() {
     _getPackagesBloc = GetPackagesBloc(packageRepository: PackageRepository());
+    _getOrdersBloc = GetOrdersBloc(orderRepository: OrderRepository());
     super.initState();
   }
 
   @override
   void dispose() {
     _getPackagesBloc.close();
+    _getOrdersBloc.close();
     super.dispose();
   }
 
@@ -54,6 +59,10 @@ class _NavigationControllerState extends State<NavigationController> {
         // passing GetPackagesBloc because it is required on multiple screens
         BlocProvider<GetPackagesBloc>(
           create: (context) => _getPackagesBloc,
+        ),
+        // passing GetOrdersBloc because it is required on multiple screens
+        BlocProvider(
+          create: (context) => _getOrdersBloc,
         ),
       ],
       child: Scaffold(

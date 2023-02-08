@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/package.dart';
+import '../../logic/bloc/get_orders_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
 import 'create_package_modal.dart';
 import 'package_card.dart';
@@ -69,6 +70,7 @@ class _PackagesContainerState extends State<PackagesContainer> {
                       child: PackageCard(
                         package: package,
                         getPackagesBloc: _getPackagesBloc,
+                        getOrdersBloc: BlocProvider.of<GetOrdersBloc>(context),
                       ),
                     );
                   },
