@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:event_planner/logic/bloc/get_user_services_bloc.dart';
-import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +8,8 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../constants/constants.dart';
 import '../../data/repositories/service_repository.dart';
 import '../../logic/bloc/create_service_bloc.dart';
+import '../../logic/bloc/get_user_services_bloc.dart';
+import '../widgets/custom_snack_bar.dart';
 import '../widgets/pop_header.dart';
 
 class CreateServiceScreen extends StatefulWidget {
@@ -38,6 +38,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
   final _serviceLocationFocusNode = FocusNode();
   final _serviceCategoryFocusNode = FocusNode();
   final _servicePriceFocusNode = FocusNode();
+  final _serviceImageFocusNode = FocusNode();
   // form-data
   dynamic category;
   final Map<dynamic, dynamic> serviceData = {};
@@ -48,6 +49,9 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
   File? selectedImage;
   // File stores image path and name that we want to upload
   XFile? selectedImageFile;
+  // saves image url
+  String imageUrl = '';
+  bool invalidUrl = true;
 
   @override
   void initState() {
@@ -65,6 +69,7 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
     _serviceLocationFocusNode.dispose();
     _serviceCategoryFocusNode.dispose();
     _servicePriceFocusNode.dispose();
+    _serviceImageFocusNode.dispose();
     _createServiceBloc.close();
     super.dispose();
   }
@@ -89,6 +94,22 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
       return;
     }
 
+    if (invalidUrl) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          action: SnackBarAction(
+            label: 'close',
+            onPressed: () {},
+          ),
+          content: const CustomSnackbar(
+            snackbarType: SnackbarType.info,
+            title: 'Please add a valid url.',
+          ),
+        ),
+      );
+      return;
+    }
+
     if (category == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -106,7 +127,8 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
     }
 
     // adding image-link to data;
-    serviceData['coverImage'] = selectedImageFile!.name;
+    // serviceData['coverImage'] = selectedImageFile!.name;
+    serviceData['coverImage'] = imageUrl;
 
     _createServiceBloc.add(CreateService(serviceData: serviceData));
   }
@@ -242,79 +264,152 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
               border: Border.all(color: Theme.of(context).colorScheme.outline),
             ),
             child: noImages == false
-                ? Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Text(
-                            'Loading',
-                            style: Theme.of(context).primaryTextTheme.bodySmall,
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(radius),
-                            child: Image.file(
-                              selectedImage!,
+                ? ClipRRect(
+                    borderRadius:
+                        const BorderRadius.all(Radius.circular(radius)),
+                    child: Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      errorBuilder: (context, error, stackTrace) {
+                        _onWidgetDidBuild(() {
+                          setState(() {
+                            invalidUrl = true;
+                          });
+                        });
+
+                        return SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              'Invalid Url.',
+                              style:
+                                  Theme.of(context).primaryTextTheme.bodyMedium,
                             ),
                           ),
-                        ],
-                      ),
-                    ],
+                        );
+                      },
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+
+                        return const SizedBox(
+                          height: 50,
+                          child: Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        );
+                      },
+                    ),
                   )
-                : Center(
-                    child: Text(
-                      'No image added.',
-                      style: Theme.of(context).primaryTextTheme.bodyMedium,
+                // ! Code for when loading image from file
+                // Column(
+                //     children: [
+                //       Stack(
+                //         alignment: Alignment.center,
+                //         children: [
+                //           Text(
+                //             'Loading',
+                //             style: Theme.of(context).primaryTextTheme.bodySmall,
+                //           ),
+                //           ClipRRect(
+                //             borderRadius: BorderRadius.circular(radius),
+                //             child: Image.file(
+                //               selectedImage!,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   )
+                : SizedBox(
+                    height: 50,
+                    child: Center(
+                      child: Text(
+                        'No image added.',
+                        style: Theme.of(context).primaryTextTheme.bodyMedium,
+                      ),
                     ),
                   ),
           ),
           const SizedBox(height: padding),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final imageFile = await ImagePicker().pickImage(
-                      source: ImageSource.camera,
-                    );
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Add Url',
+            ),
+            focusNode: _serviceImageFocusNode,
+            textInputAction: TextInputAction.next,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Image url cannot be empty.';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              // serviceData['image'] = value!;
+              imageUrl = value!;
+            },
+            onChanged: (value) {
+              imageUrl = value;
 
-                    if (imageFile == null) {
-                      return;
-                    }
-
-                    setState(() {
-                      selectedImage = File(imageFile.path);
-                      selectedImageFile = imageFile;
-                      noImages = false;
-                    });
-                  },
-                  child: const Text('Capture'),
-                ),
-              ),
-              const SizedBox(width: padding),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final imageFile = await ImagePicker().pickImage(
-                      source: ImageSource.gallery,
-                    );
-
-                    if (imageFile == null) {
-                      return;
-                    }
-
-                    setState(() {
-                      selectedImage = File(imageFile.path);
-                      selectedImageFile = imageFile;
-                      noImages = false;
-                    });
-                  },
-                  child: const Text('Gallery'),
-                ),
-              ),
-            ],
+              setState(() {
+                invalidUrl = false;
+                noImages = false;
+              });
+            },
+            onFieldSubmitted: (value) {
+              FocusScope.of(context).requestFocus(
+                _serviceTitleFocusNode,
+              );
+            },
           ),
+          // const SizedBox(height: padding),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Expanded(
+          //       child: ElevatedButton(
+          //         onPressed: () async {
+          //           final imageFile = await ImagePicker().pickImage(
+          //             source: ImageSource.camera,
+          //           );
+
+          //           if (imageFile == null) {
+          //             return;
+          //           }
+
+          //           setState(() {
+          //             selectedImage = File(imageFile.path);
+          //             selectedImageFile = imageFile;
+          //             noImages = false;
+          //           });
+          //         },
+          //         child: const Text('Capture'),
+          //       ),
+          //     ),
+          //     const SizedBox(width: padding),
+          //     Expanded(
+          //       child: ElevatedButton(
+          //         onPressed: () async {
+          //           final imageFile = await ImagePicker().pickImage(
+          //             source: ImageSource.gallery,
+          //           );
+
+          //           if (imageFile == null) {
+          //             return;
+          //           }
+
+          //           setState(() {
+          //             selectedImage = File(imageFile.path);
+          //             selectedImageFile = imageFile;
+          //             noImages = false;
+          //           });
+          //         },
+          //         child: const Text('Gallery'),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
