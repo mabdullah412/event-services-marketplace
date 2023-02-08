@@ -27,7 +27,7 @@ class ServiceScreen extends StatelessWidget {
               children: [
                 const PopHeader(title: 'Details'),
                 const SizedBox(height: padding),
-                const ImageBanner(),
+                ImageBanner(imageUrl: service.coverImage),
                 const SizedBox(height: padding),
                 SellerAndBookmark(sellerName: service.seller.name),
                 const SizedBox(height: padding),
@@ -284,22 +284,44 @@ class SellerAndBookmark extends StatelessWidget {
 class ImageBanner extends StatelessWidget {
   const ImageBanner({
     Key? key,
+    required this.imageUrl,
   }) : super(key: key);
+
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Container(
-          height: 250,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius),
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        const Icon(PhosphorIcons.dotsThreeBold, size: 45)
-      ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            height: 50,
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(radius),
+            ),
+            child: Center(
+              child: Text(
+                'Error occured while fetching image.',
+                style: Theme.of(context).primaryTextTheme.bodyMedium,
+              ),
+            ),
+          );
+        },
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return const SizedBox(
+            height: 50,
+            child: Center(
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          );
+        },
+      ),
     );
   }
 }

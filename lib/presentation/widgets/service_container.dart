@@ -59,18 +59,40 @@ class ServiceContainer extends StatelessWidget {
           const SizedBox(height: padding),
 
           // image
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(radius),
-          //   child: Image.network(src),
-          // ),
-
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(radius),
-              color: Theme.of(context).colorScheme.primary,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(radius),
+            child: Image.network(
+              service.coverImage,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  height: 50,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                    borderRadius: BorderRadius.circular(radius),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Error occured while fetching image.',
+                      style: Theme.of(context).primaryTextTheme.bodyMedium,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
+
+          // Container(
+          //   height: 200,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(radius),
+          //     color: Theme.of(context).colorScheme.primary,
+          //   ),
+          // ),
 
           // white space
           const SizedBox(height: padding),
