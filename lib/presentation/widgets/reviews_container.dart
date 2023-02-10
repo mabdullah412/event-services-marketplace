@@ -61,9 +61,11 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Reviews',
-                style: Theme.of(context).primaryTextTheme.titleMedium,
+              Expanded(
+                child: Text(
+                  'Reviews',
+                  style: Theme.of(context).primaryTextTheme.titleMedium,
+                ),
               ),
               OutlinedButton.icon(
                 onPressed: () {
@@ -99,7 +101,7 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
                   );
                 },
                 icon: const Icon(
-                  PhosphorIcons.plus,
+                  PhosphorIcons.plusBold,
                   size: 20,
                 ),
                 label: const Text('Add'),

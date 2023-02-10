@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/order.dart';
@@ -91,9 +92,10 @@ class _OrdersContainerState extends State<OrdersContainer> {
             },
           ),
           const SizedBox(height: padding / 2),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {},
-            child: const Text('View previous orders'),
+            icon: const Icon(PhosphorIcons.calendarCheckBold, size: 20),
+            label: const Text('View previous orders'),
           ),
         ],
       ),

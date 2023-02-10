@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/package.dart';
@@ -85,7 +86,7 @@ class _PackagesContainerState extends State<PackagesContainer> {
             },
           ),
           const SizedBox(height: padding / 2),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -97,7 +98,8 @@ class _PackagesContainerState extends State<PackagesContainer> {
                 },
               );
             },
-            child: const Text('Create a package'),
+            icon: const Icon(PhosphorIcons.plusBold, size: 20),
+            label: const Text('Create a package'),
           ),
         ],
       ),

@@ -129,12 +129,14 @@ class Pricing extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Rs. ${servicePrice.toDouble()}',
-            style: Theme.of(context).primaryTextTheme.titleLarge,
+          Expanded(
+            child: Text(
+              'Rs. ${servicePrice.toDouble()}',
+              style: Theme.of(context).primaryTextTheme.titleLarge,
+            ),
           ),
           const SizedBox(height: padding),
-          ElevatedButton(
+          ElevatedButton.icon(
             onPressed: () {
               if (userId == sellerId) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -165,7 +167,8 @@ class Pricing extends StatelessWidget {
                 },
               );
             },
-            child: const Text('Add to package'),
+            icon: const Icon(PhosphorIcons.listPlusBold, size: 20),
+            label: const Text('Add to package'),
           ),
         ],
       ),

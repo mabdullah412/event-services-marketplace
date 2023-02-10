@@ -1,6 +1,3 @@
-import 'package:event_planner/data/repositories/order_repository.dart';
-import 'package:event_planner/logic/bloc/cancel_order_bloc.dart';
-import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -8,8 +5,12 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../constants/constants.dart';
 import '../../data/models/order.dart';
 import '../../data/models/service.dart';
+import '../../data/repositories/order_repository.dart';
+import '../../logic/bloc/cancel_order_bloc.dart';
 import '../../logic/bloc/get_orders_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import 'custom_snack_bar.dart';
+import 'order_service_status.dart';
 import 'package_order_service_button.dart';
 
 class OrderDetailsModal extends StatefulWidget {
@@ -172,11 +173,19 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
                   itemCount: order.services.length,
                   itemBuilder: (context, index) {
                     final Service service = order.services[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(top: padding / 2),
-                      child: PackageOrderServiceButton(
-                        service: service,
-                        getPackagesBloc: getPackagesBloc,
+                    return Container(
+                      margin: const EdgeInsets.only(top: padding / 2),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: PackageOrderServiceButton(
+                              service: service,
+                              getPackagesBloc: getPackagesBloc,
+                            ),
+                          ),
+                          const SizedBox(width: padding),
+                          const OrderServiceStatus(status: Status.pending),
+                        ],
                       ),
                     );
                   },
