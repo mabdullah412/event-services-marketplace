@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import '../../logic/providers/user_data_provider.dart';
 import '../widgets/add_to_package_modal.dart';
+import '../widgets/custom_snack_bar.dart';
 import '../widgets/pop_header.dart';
 import '../widgets/question_answer_card.dart';
 import '../widgets/reviews_container.dart';
@@ -17,6 +20,11 @@ class ServiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userId = Provider.of<UserDataProvider>(
+      context,
+      listen: false,
+    ).getId();
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -43,12 +51,18 @@ class ServiceScreen extends StatelessWidget {
                 Pricing(
                   serviceId: service.id,
                   servicePrice: service.price,
+                  sellerId: service.seller.id,
+                  userId: userId,
                   getPackagesBloc: BlocProvider.of<GetPackagesBloc>(context),
                 ),
                 const SizedBox(height: padding),
-                ReviewsContainer(serviceId: service.id),
+                ReviewsContainer(
+                  serviceId: service.id,
+                  userId: userId,
+                  sellerId: service.seller.id,
+                ),
                 const SizedBox(height: padding),
-                const Quetions(),
+                // const Quetions(),
               ],
             ),
           ),
@@ -92,12 +106,16 @@ class Pricing extends StatelessWidget {
   const Pricing({
     required this.serviceId,
     required this.servicePrice,
+    required this.sellerId,
+    required this.userId,
     required this.getPackagesBloc,
     Key? key,
   }) : super(key: key);
 
   final int servicePrice;
   final String serviceId;
+  final String sellerId;
+  final String userId;
   final GetPackagesBloc getPackagesBloc;
 
   @override
@@ -118,6 +136,24 @@ class Pricing extends StatelessWidget {
           const SizedBox(height: padding),
           ElevatedButton(
             onPressed: () {
+              if (userId == sellerId) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    action: SnackBarAction(
+                      label: 'close',
+                      onPressed: () {},
+                    ),
+                    content: const CustomSnackbar(
+                      snackbarType: SnackbarType.info,
+                      title: 'Info',
+                      description: 'You cannot buy or review your own services',
+                    ),
+                  ),
+                );
+
+                return;
+              }
+
               showModalBottomSheet(
                 context: context,
                 backgroundColor: Colors.transparent,

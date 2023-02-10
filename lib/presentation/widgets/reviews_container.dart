@@ -7,15 +7,20 @@ import '../../data/models/review.dart';
 import '../../data/repositories/review_repository.dart';
 import '../../logic/bloc/get_reviews_bloc.dart';
 import 'add_review.dart';
+import 'custom_snack_bar.dart';
 import 'review_card.dart';
 
 class ReviewsContainer extends StatefulWidget {
   const ReviewsContainer({
     required this.serviceId,
+    required this.userId,
+    required this.sellerId,
     Key? key,
   }) : super(key: key);
 
   final String serviceId;
+  final String userId;
+  final String sellerId;
 
   @override
   State<ReviewsContainer> createState() => _ReviewsContainerState();
@@ -23,6 +28,8 @@ class ReviewsContainer extends StatefulWidget {
 
 class _ReviewsContainerState extends State<ReviewsContainer> {
   String get serviceId => widget.serviceId;
+  String get userId => widget.userId;
+  String get sellerId => widget.sellerId;
   final ReviewRepository _reviewRepository = ReviewRepository();
   late GetReviewsBloc _getReviewBloc;
 
@@ -60,6 +67,25 @@ class _ReviewsContainerState extends State<ReviewsContainer> {
               ),
               OutlinedButton.icon(
                 onPressed: () {
+                  if (userId == sellerId) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        action: SnackBarAction(
+                          label: 'close',
+                          onPressed: () {},
+                        ),
+                        content: const CustomSnackbar(
+                          snackbarType: SnackbarType.info,
+                          title: 'Info',
+                          description:
+                              'You cannot buy or review your own services',
+                        ),
+                      ),
+                    );
+
+                    return;
+                  }
+
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.transparent,

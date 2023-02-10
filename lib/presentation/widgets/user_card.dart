@@ -1,5 +1,7 @@
+import 'package:event_planner/logic/providers/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/constants.dart';
 import '../router/custom_page_route.dart';
@@ -12,6 +14,8 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var name = Provider.of<UserDataProvider>(context, listen: false).getName();
+
     return Container(
       padding: const EdgeInsets.all(padding),
       decoration: BoxDecoration(
@@ -34,7 +38,7 @@ class UserCard extends StatelessWidget {
               const SizedBox(width: padding),
               Expanded(
                 child: Text(
-                  'User Full Name',
+                  name,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).primaryTextTheme.bodyLarge,
                 ),

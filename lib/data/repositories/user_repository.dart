@@ -65,8 +65,17 @@ class UserRepository {
       value: userData['token'],
     );
 
-    // storing name in shared preferences
-    await _sharedPreferences.setString('FIRST_NAME', userData['name']);
+    // storing name and id in shared preferences
+    await _sharedPreferences.setString('ID', userData['id']);
+    await _sharedPreferences.setString('NAME', userData['name']);
+  }
+
+  String getId() {
+    return _sharedPreferences.getString('ID') as String;
+  }
+
+  String getName() {
+    return _sharedPreferences.getString('NAME') as String;
   }
 
   // to delete data after logout
