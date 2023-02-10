@@ -195,7 +195,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
               ),
               const SizedBox(height: padding),
               Text(
-                'Rs ${totalPrice.toDouble()}',
+                'Rs. ${totalPrice.toDouble()}',
                 style: Theme.of(context).primaryTextTheme.titleLarge,
               ),
               const Divider(),
@@ -249,57 +249,54 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                 },
                 buildWhen: (previous, current) => previous != current,
                 builder: (context, state) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: package.services.length,
-                    itemBuilder: (context, index) {
-                      final Service service = package.services[index];
-                      return Container(
-                        margin: const EdgeInsets.only(top: padding / 2),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: PackageOrderServiceButton(
-                                service: service,
-                                getPackagesBloc: getPackagesBloc,
+                  return ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 200),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: package.services.length,
+                      itemBuilder: (context, index) {
+                        final Service service = package.services[index];
+                        return Container(
+                          margin: const EdgeInsets.only(top: padding / 2),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: PackageOrderServiceButton(
+                                  service: service,
+                                  getPackagesBloc: getPackagesBloc,
+                                ),
                               ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  dissableOnPressed = true;
-                                });
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    dissableOnPressed = true;
+                                  });
 
-                                _removeFromPackageBloc.add(
-                                  RemoveFromPackage(
-                                    packageId: package.id,
-                                    serviceId: service.id,
-                                  ),
-                                );
-
-                                // package.services.removeAt(index);
-
-                                // setState(() {
-                                //   deleting = false;
-                                // });
-                              },
-                              icon: dissableOnPressed == true
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 1,
-                                      ),
-                                    )
-                                  : const Icon(
-                                      PhosphorIcons.trashLight,
-                                      size: 20,
+                                  _removeFromPackageBloc.add(
+                                    RemoveFromPackage(
+                                      packageId: package.id,
+                                      serviceId: service.id,
                                     ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                                  );
+                                },
+                                icon: dissableOnPressed == true
+                                    ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1,
+                                        ),
+                                      )
+                                    : const Icon(
+                                        PhosphorIcons.trashLight,
+                                        size: 20,
+                                      ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -307,6 +304,7 @@ class _PackageDetailsModalState extends State<PackageDetailsModal> {
                 Text(
                   'You have not yet added any service in this package.',
                   style: Theme.of(context).primaryTextTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
               const SizedBox(height: padding / 2),
               const Divider(),

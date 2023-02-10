@@ -146,6 +146,7 @@ class NoPackagesPlaceholder extends StatelessWidget {
           style: Theme.of(context).primaryTextTheme.bodySmall,
           textAlign: TextAlign.center,
         ),
+        const SizedBox(height: padding / 2),
       ],
     );
   }

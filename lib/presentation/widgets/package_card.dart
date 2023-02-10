@@ -42,14 +42,19 @@ class PackageCard extends StatelessWidget {
               style: Theme.of(context).primaryTextTheme.bodyMedium,
             ),
           ),
-          CircleAvatar(
-            radius: 15,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            child: Text(
-              package.services.length.toString(),
-              style: Theme.of(context).primaryTextTheme.bodySmall!.apply(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+          RichText(
+            text: TextSpan(
+              text: 'Items: ',
+              style: Theme.of(context).primaryTextTheme.bodyMedium,
+              children: [
+                TextSpan(
+                  text: '${package.services.length}',
+                  style: Theme.of(context).primaryTextTheme.bodyMedium!.apply(
+                        fontWeightDelta: 2,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ],
             ),
           ),
         ],

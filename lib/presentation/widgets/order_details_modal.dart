@@ -76,7 +76,7 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Rs ${order.totalPrice.toDouble()}',
+                        'Rs. ${order.totalPrice.toDouble()}',
                         style: Theme.of(context).primaryTextTheme.titleLarge,
                       ),
                       const SizedBox(height: padding / 4),
@@ -165,19 +165,22 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
               ),
               const SizedBox(height: padding / 4),
               const Divider(),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: order.services.length,
-                itemBuilder: (context, index) {
-                  final Service service = order.services[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(top: padding / 2),
-                    child: PackageOrderServiceButton(
-                      service: service,
-                      getPackagesBloc: getPackagesBloc,
-                    ),
-                  );
-                },
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 300),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: order.services.length,
+                  itemBuilder: (context, index) {
+                    final Service service = order.services[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(top: padding / 2),
+                      child: PackageOrderServiceButton(
+                        service: service,
+                        getPackagesBloc: getPackagesBloc,
+                      ),
+                    );
+                  },
+                ),
               ),
               if (order.services.isEmpty)
                 Padding(
