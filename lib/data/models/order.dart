@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:event_planner/constants/enums.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
@@ -13,6 +14,7 @@ class Order {
   final DateTime createdAt;
   final List<Service> services;
   final int totalPrice;
+  final Status status;
 
   Order({
     required this.id,
@@ -20,6 +22,7 @@ class Order {
     required this.createdAt,
     required this.services,
     required this.totalPrice,
+    required this.status,
   });
 
   Order copyWith({
@@ -28,6 +31,7 @@ class Order {
     DateTime? createdAt,
     List<Service>? services,
     int? totalPrice,
+    Status? status,
   }) {
     return Order(
       id: id ?? this.id,
@@ -35,6 +39,7 @@ class Order {
       createdAt: createdAt ?? this.createdAt,
       services: services ?? this.services,
       totalPrice: totalPrice ?? this.totalPrice,
+      status: status ?? this.status,
     );
   }
 
@@ -45,6 +50,7 @@ class Order {
       'createdAt': createdAt.millisecondsSinceEpoch,
       'services': services.map((x) => x.toMap()).toList(),
       'totalPrice': totalPrice,
+      'status': status,
     };
   }
 
@@ -55,11 +61,18 @@ class Order {
       createdAt:
           DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(map['createdAt']).toLocal(),
       services: List<Service>.from(
-        (map['services'] as List).map<Service>(
-          (service) => Service.fromMap(service as Map<String, dynamic>),
+        (map['items'] as List).map<Service>(
+          (item) {
+            Map<String, dynamic> service = item['service'];
+            service['orderItemId'] = item['_id'];
+            service['quantity'] = item['quantity'];
+            service['status'] = item['status'];
+            return Service.fromMap(service);
+          },
         ),
       ),
       totalPrice: map['totalPrice'] as int,
+      status: map['status'] == 'pending' ? Status.pending : Status.completed,
     );
   }
 
@@ -70,7 +83,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, buyer: $buyer, createdAt: $createdAt, services: $services, totalPrice: $totalPrice)';
+    return 'Order(id: $id, buyer: $buyer, createdAt: $createdAt, services: $services, totalPrice: $totalPrice, status: $status)';
   }
 
   @override
@@ -81,7 +94,8 @@ class Order {
         other.buyer == buyer &&
         other.createdAt == createdAt &&
         listEquals(other.services, services) &&
-        other.totalPrice == totalPrice;
+        other.totalPrice == totalPrice &&
+        other.status == status;
   }
 
   @override
@@ -90,6 +104,7 @@ class Order {
         buyer.hashCode ^
         createdAt.hashCode ^
         services.hashCode ^
-        totalPrice.hashCode;
+        totalPrice.hashCode ^
+        status.hashCode;
   }
 }

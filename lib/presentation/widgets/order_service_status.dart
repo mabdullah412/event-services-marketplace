@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-enum Status { pending, complete }
+import '../../constants/enums.dart';
 
 class OrderServiceStatus extends StatelessWidget {
   const OrderServiceStatus({

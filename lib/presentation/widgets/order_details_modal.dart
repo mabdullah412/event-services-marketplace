@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../constants/enums.dart';
 import '../../data/models/order.dart';
 import '../../data/models/service.dart';
 import '../../data/repositories/order_repository.dart';
@@ -184,7 +185,9 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
                             ),
                           ),
                           const SizedBox(width: padding),
-                          const OrderServiceStatus(status: Status.pending),
+                          OrderServiceStatus(
+                            status: service.status!,
+                          ),
                         ],
                       ),
                     );
@@ -195,7 +198,7 @@ class _OrderDetailsModalState extends State<OrderDetailsModal> {
                 Padding(
                   padding: const EdgeInsets.only(top: padding / 2),
                   child: Text(
-                    'You have not yet added any service in this package.',
+                    'An error occured while fetching orders.',
                     style: Theme.of(context).primaryTextTheme.bodyMedium,
                   ),
                 ),

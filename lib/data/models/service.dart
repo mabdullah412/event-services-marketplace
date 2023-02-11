@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import '../../constants/enums.dart';
 import 'user.dart';
 
 class Service {
@@ -14,6 +16,10 @@ class Service {
   final int ratingsQuantity;
   final int ratingsAverage;
 
+  final int? quantity;
+  final Status? status;
+  final String? orderItemId;
+
   Service({
     required this.id,
     required this.seller,
@@ -25,6 +31,9 @@ class Service {
     required this.price,
     required this.ratingsQuantity,
     required this.ratingsAverage,
+    this.quantity,
+    this.status,
+    this.orderItemId,
   });
 
   Service copyWith({
@@ -38,6 +47,9 @@ class Service {
     int? price,
     int? ratingsQuantity,
     int? ratingsAverage,
+    int? quantity,
+    Status? status,
+    String? orderItemId,
   }) {
     return Service(
       id: id ?? this.id,
@@ -50,6 +62,9 @@ class Service {
       price: price ?? this.price,
       ratingsQuantity: ratingsQuantity ?? this.ratingsQuantity,
       ratingsAverage: ratingsAverage ?? this.ratingsAverage,
+      quantity: quantity ?? this.quantity,
+      status: status ?? this.status,
+      orderItemId: orderItemId ?? this.orderItemId,
     );
   }
 
@@ -65,6 +80,9 @@ class Service {
       'price': price,
       'ratingsQuantity': ratingsQuantity,
       'ratingsAverage': ratingsAverage,
+      'quantity': quantity,
+      'status': status,
+      'orderItemId': orderItemId,
     };
   }
 
@@ -80,6 +98,14 @@ class Service {
       price: map['price'] as int,
       ratingsQuantity: map['ratingsQuantity'] as int,
       ratingsAverage: map['ratingsAverage'] as int,
+      quantity: map['quantity'] != null ? map['quantity'] as int : null,
+      status: map['status'] != null
+          ? map['status'] == 'pending'
+              ? Status.pending
+              : Status.completed
+          : null,
+      orderItemId:
+          map['orderItemId'] != null ? map['orderItemId'] as String : null,
     );
   }
 
@@ -90,7 +116,7 @@ class Service {
 
   @override
   String toString() {
-    return 'Service(id: $id, seller: $seller, title: $title, description: $description, location: $location, category: $category, coverImage: $coverImage, price: $price, ratingsQuantity: $ratingsQuantity, ratingsAverage: $ratingsAverage)';
+    return 'Service(id: $id, seller: $seller, title: $title, description: $description, location: $location, category: $category, coverImage: $coverImage, price: $price, ratingsQuantity: $ratingsQuantity, ratingsAverage: $ratingsAverage, quantity: $quantity, status: $status, orderItemId: $orderItemId)';
   }
 
   @override
@@ -106,7 +132,10 @@ class Service {
         other.coverImage == coverImage &&
         other.price == price &&
         other.ratingsQuantity == ratingsQuantity &&
-        other.ratingsAverage == ratingsAverage;
+        other.ratingsAverage == ratingsAverage &&
+        other.quantity == quantity &&
+        other.status == status &&
+        other.orderItemId == orderItemId;
   }
 
   @override
@@ -120,6 +149,9 @@ class Service {
         coverImage.hashCode ^
         price.hashCode ^
         ratingsQuantity.hashCode ^
-        ratingsAverage.hashCode;
+        ratingsAverage.hashCode ^
+        quantity.hashCode ^
+        status.hashCode ^
+        orderItemId.hashCode;
   }
 }
