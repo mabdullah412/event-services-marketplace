@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
-import '../../constants/enums.dart';
 import '../../data/models/order.dart';
 import '../../data/models/service.dart';
 import '../../data/repositories/order_repository.dart';

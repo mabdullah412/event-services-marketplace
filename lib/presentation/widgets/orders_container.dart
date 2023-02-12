@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../constants/enums.dart';
 import '../../data/models/order.dart';
 import '../../logic/bloc/get_orders_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import '../router/custom_page_route.dart';
+import '../screens/order_history_screen.dart';
 import 'order_card.dart';
 
 class OrdersContainer extends StatefulWidget {
@@ -19,6 +22,11 @@ class OrdersContainer extends StatefulWidget {
 
 class _OrdersContainerState extends State<OrdersContainer> {
   late GetOrdersBloc _getOrdersBloc;
+
+  // if not true: GetOrdersState was not Success
+  // bool loadedPreviousOrders = false;
+  // List<Order> pendingOrders = <Order>[];
+  // List<Order> previousOrders = <Order>[];
 
   @override
   void initState() {
@@ -45,57 +53,79 @@ class _OrdersContainerState extends State<OrdersContainer> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          BlocBuilder<GetOrdersBloc, GetOrdersState>(
+          BlocConsumer<GetOrdersBloc, GetOrdersState>(
             bloc: _getOrdersBloc,
+            listener: (context, state) {},
             builder: (context, state) {
-              if (state is GetOrdersLoading || state is GetOrdersInitial) {
-                return const Padding(
-                  padding: EdgeInsets.only(top: padding, bottom: padding),
-                  child: Center(
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  ),
-                );
-              }
-
-              if (state is GetOrdersSuccess) {
-                if (state.orders.isEmpty) {
-                  return const NoOrdersPlaceholder();
-                }
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.orders.length,
-                  itemBuilder: (context, index) {
-                    final Order order = state.orders[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: padding / 2),
-                      child: OrderCard(
-                        order: order,
-                        getOrdersBloc: _getOrdersBloc,
-                        getPackagesBloc:
-                            BlocProvider.of<GetPackagesBloc>(context),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // get order loading/initial
+                  if (state is GetOrdersLoading || state is GetOrdersInitial)
+                    const Padding(
+                      padding: EdgeInsets.only(top: padding, bottom: padding),
+                      child: Center(
+                        child: SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                       ),
-                    );
-                  },
-                );
-              }
+                    ),
 
-              if (state is GetOrdersFailure) {
-                return const GetOrdersFailurePlaceholder();
-              }
+                  // get orders success
+                  if (state is GetOrdersSuccess)
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.orders
+                          .where((order) => order.status == Status.pending)
+                          .toList()
+                          .length,
+                      itemBuilder: (context, index) {
+                        // ! in-efficient calculation,
+                        // ! goes through the array at every iteration
+                        final Order order = state.orders
+                            .where((order) => order.status == Status.pending)
+                            .toList()[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: padding / 2),
+                          child: OrderCard(
+                            order: order,
+                            getOrdersBloc: _getOrdersBloc,
+                            getPackagesBloc:
+                                BlocProvider.of<GetPackagesBloc>(context),
+                          ),
+                        );
+                      },
+                    ),
 
-              return const Text('bloc error');
+                  // get orders failure
+                  if (state is GetOrdersFailure)
+                    const GetOrdersFailurePlaceholder(),
+
+                  const SizedBox(height: padding / 2),
+                  ElevatedButton.icon(
+                    onPressed: state is GetOrdersSuccess
+                        ? () {
+                            Navigator.of(context).push(
+                              CustomPageRoute(
+                                child: OrderHistoryScreen(
+                                  orders: state.orders
+                                      .where((order) =>
+                                          order.status != Status.pending)
+                                      .toList(),
+                                ),
+                              ),
+                            );
+                          }
+                        : null,
+                    icon: const Icon(PhosphorIcons.calendarCheckBold, size: 20),
+                    label: const Text('View previous orders'),
+                  ),
+                ],
+              );
             },
-          ),
-          const SizedBox(height: padding / 2),
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: const Icon(PhosphorIcons.calendarCheckBold, size: 20),
-            label: const Text('View previous orders'),
           ),
         ],
       ),

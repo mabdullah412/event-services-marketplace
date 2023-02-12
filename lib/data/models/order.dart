@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:event_planner/constants/enums.dart';
@@ -72,7 +71,11 @@ class Order {
         ),
       ),
       totalPrice: map['totalPrice'] as int,
-      status: map['status'] == 'pending' ? Status.pending : Status.completed,
+      status: map['status'] == 'pending'
+          ? Status.pending
+          : map['status'] == 'completed'
+              ? Status.completed
+              : Status.cancelled,
     );
   }
 
