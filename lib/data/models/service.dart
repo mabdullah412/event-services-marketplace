@@ -19,6 +19,7 @@ class Service {
   final int? quantity;
   final Status? status;
   final String? orderItemId;
+  final User? buyer;
 
   Service({
     required this.id,
@@ -34,6 +35,7 @@ class Service {
     this.quantity,
     this.status,
     this.orderItemId,
+    this.buyer,
   });
 
   Service copyWith({
@@ -50,6 +52,7 @@ class Service {
     int? quantity,
     Status? status,
     String? orderItemId,
+    User? buyer,
   }) {
     return Service(
       id: id ?? this.id,
@@ -65,6 +68,7 @@ class Service {
       quantity: quantity ?? this.quantity,
       status: status ?? this.status,
       orderItemId: orderItemId ?? this.orderItemId,
+      buyer: buyer ?? this.buyer,
     );
   }
 
@@ -83,6 +87,7 @@ class Service {
       'quantity': quantity,
       'status': status,
       'orderItemId': orderItemId,
+      'buyer': buyer?.toMap(),
     };
   }
 
@@ -106,6 +111,9 @@ class Service {
           : null,
       orderItemId:
           map['orderItemId'] != null ? map['orderItemId'] as String : null,
+      buyer: map['buyer'] != null
+          ? User.fromMap(map['buyer'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -116,7 +124,7 @@ class Service {
 
   @override
   String toString() {
-    return 'Service(id: $id, seller: $seller, title: $title, description: $description, location: $location, category: $category, coverImage: $coverImage, price: $price, ratingsQuantity: $ratingsQuantity, ratingsAverage: $ratingsAverage, quantity: $quantity, status: $status, orderItemId: $orderItemId)';
+    return 'Service(id: $id, seller: $seller, title: $title, description: $description, location: $location, category: $category, coverImage: $coverImage, price: $price, ratingsQuantity: $ratingsQuantity, ratingsAverage: $ratingsAverage, quantity: $quantity, status: $status, orderItemId: $orderItemId, buyer: $buyer)';
   }
 
   @override
@@ -135,7 +143,8 @@ class Service {
         other.ratingsAverage == ratingsAverage &&
         other.quantity == quantity &&
         other.status == status &&
-        other.orderItemId == orderItemId;
+        other.orderItemId == orderItemId &&
+        other.buyer == buyer;
   }
 
   @override
@@ -152,6 +161,7 @@ class Service {
         ratingsAverage.hashCode ^
         quantity.hashCode ^
         status.hashCode ^
-        orderItemId.hashCode;
+        orderItemId.hashCode ^
+        buyer.hashCode;
   }
 }

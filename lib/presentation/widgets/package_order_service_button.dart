@@ -50,14 +50,34 @@ class PackageOrderServiceButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // TODO: ADD CIRCLE AVATAR CONTAING QUANTITY
                 Expanded(
-                  child: Text(
-                    service.title +
-                        (service.quantity != null
-                            ? ' (${service.quantity})'
-                            : ''),
-                    style: Theme.of(context).primaryTextTheme.bodyMedium,
+                  child: Row(
+                    children: [
+                      if (service.quantity != null)
+                        CircleAvatar(
+                          radius: 12,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          child: Text(
+                            service.quantity.toString(),
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .bodySmall!
+                                .apply(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                          ),
+                        ),
+                      if (service.quantity != null)
+                        const SizedBox(width: padding / 2),
+                      Expanded(
+                        child: Text(
+                          service.title,
+                          style: Theme.of(context).primaryTextTheme.bodyMedium,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 RichText(

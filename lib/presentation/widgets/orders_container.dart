@@ -74,6 +74,14 @@ class _OrdersContainerState extends State<OrdersContainer> {
                       ),
                     ),
 
+                  if (state is GetOrdersSuccess)
+                    state.orders
+                            .where((order) => order.status == Status.pending)
+                            .toList()
+                            .isEmpty
+                        ? const NoOrdersPlaceholder()
+                        : const SizedBox(),
+
                   // get orders success
                   if (state is GetOrdersSuccess)
                     ListView.builder(
@@ -123,6 +131,14 @@ class _OrdersContainerState extends State<OrdersContainer> {
                     icon: const Icon(PhosphorIcons.calendarCheckBold, size: 20),
                     label: const Text('View previous orders'),
                   ),
+                  const SizedBox(height: padding / 2),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      _getOrdersBloc.add(GetOrders());
+                    },
+                    icon: const Icon(PhosphorIcons.arrowCounterClockwiseBold),
+                    label: const Text('Refresh'),
+                  ),
                 ],
               );
             },
@@ -143,7 +159,7 @@ class NoOrdersPlaceholder extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'There are no orders placed yet.',
+          'There are no pending orders yet.',
           style: Theme.of(context).primaryTextTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),

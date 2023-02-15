@@ -101,6 +101,14 @@ class _PackagesContainerState extends State<PackagesContainer> {
             icon: const Icon(PhosphorIcons.plusBold, size: 20),
             label: const Text('Create a package'),
           ),
+          const SizedBox(height: padding / 2),
+          OutlinedButton.icon(
+            onPressed: () {
+              _getPackagesBloc.add(GetPackages());
+            },
+            icon: const Icon(PhosphorIcons.arrowCounterClockwiseBold),
+            label: const Text('Refresh'),
+          ),
         ],
       ),
     );

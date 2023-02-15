@@ -56,19 +56,19 @@ class UserCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: padding),
-          OutlinedButton.icon(
-            onPressed: () {
-              Navigator.of(context).push(
-                CustomPageRoute(child: const PaymentMethodsScreen()),
-              );
-            },
-            icon: const Icon(
-              PhosphorIcons.cardholderBold,
-              size: 20,
-            ),
-            label: const Text('Payment Methods'),
-          ),
-          const SizedBox(height: padding),
+          // OutlinedButton.icon(
+          //   onPressed: () {
+          //     Navigator.of(context).push(
+          //       CustomPageRoute(child: const PaymentMethodsScreen()),
+          //     );
+          //   },
+          //   icon: const Icon(
+          //     PhosphorIcons.cardholderBold,
+          //     size: 20,
+          //   ),
+          //   label: const Text('Payment Methods'),
+          // ),
+          // const SizedBox(height: padding / 2),
           ElevatedButton.icon(
             onPressed: () {
               Navigator.of(context).push(

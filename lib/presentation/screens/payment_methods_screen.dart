@@ -86,12 +86,12 @@ class PaymentMethod extends StatelessWidget {
           ),
           const SizedBox(height: padding / 2),
           Text(
-            'Muhammad Abdullah',
+            'Card Holder Name',
             style: Theme.of(context).primaryTextTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),
           Text(
-            'United Bank Limited',
+            'Bank Name',
             style: Theme.of(context).primaryTextTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
