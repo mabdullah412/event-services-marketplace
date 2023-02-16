@@ -337,6 +337,7 @@ class Themes {
             borderRadius: BorderRadius.circular(radius),
           ),
         ),
+        backgroundColor: MaterialStateProperty.all(const Color(0xFFF2F2F6)),
         textStyle: MaterialStateProperty.all(
           const TextStyle(
             fontSize: 14,
