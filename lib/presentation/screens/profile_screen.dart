@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/constants.dart';
-import '../widgets/buyer_dashboard.dart';
 import '../widgets/header.dart';
 import '../widgets/seller_dashboard.dart';
 import '../widgets/user_card.dart';
@@ -22,10 +21,10 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: padding),
               UserCard(),
               SizedBox(height: padding),
-              BuyerDashboard(),
-              SizedBox(height: padding),
               SellerDashboard(),
               SizedBox(height: padding),
+              // BuyerDashboard(),
+              // SizedBox(height: padding),
             ],
           ),
         ),

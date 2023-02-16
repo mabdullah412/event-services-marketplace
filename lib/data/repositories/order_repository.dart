@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:event_planner/data/models/service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../data_providers/order_api.dart';
@@ -43,5 +44,31 @@ class OrderRepository {
     if (token == '') return false;
 
     return await _orderAPI.cancelOrder(token: token, orderId: orderId);
+  }
+
+  Future<List<Service>> getSellerOrders() async {
+    final String token =
+        await _flutterSecureStorage.read(key: 'JWT_TOKEN') ?? '';
+
+    final Response rawData = await _orderAPI.getSellerOrders(token: token);
+    final List<dynamic> rawOrders = rawData.data['data']['items'] as List;
+
+    final List<Service> items = rawOrders
+        .map(
+          (item) => Service.fromMapItem(item),
+        )
+        .toList();
+
+    return items;
+  }
+
+  Future<dynamic> completeOrder({
+    required String orderId,
+  }) async {
+    final String token =
+        await _flutterSecureStorage.read(key: 'JWT_TOKEN') ?? '';
+    if (token == '') return false;
+
+    return await _orderAPI.completeOrder(token: token, orderId: orderId);
   }
 }

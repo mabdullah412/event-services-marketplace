@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
+import '../../constants/enums.dart';
+import '../../data/repositories/order_repository.dart';
 import '../../data/repositories/service_repository.dart';
+import '../../logic/bloc/get_seller_orders_bloc.dart';
 import '../../logic/bloc/get_user_services_bloc.dart';
 import '../router/custom_page_route.dart';
+import '../screens/complete_orders_screen.dart';
 import '../screens/create_service_screen.dart';
 import '../screens/user_services_screen.dart';
 import 'stat_card.dart';
@@ -20,18 +25,24 @@ class SellerDashboard extends StatefulWidget {
 
 class _SellerDashboardState extends State<SellerDashboard> {
   late GetUserServicesBloc _getUserServicesBloc;
+  late GetSellerOrdersBloc _getSellerOrdersBloc;
 
   @override
   void initState() {
     _getUserServicesBloc = GetUserServicesBloc(
       serviceRepository: ServiceRepository(),
     );
+    _getSellerOrdersBloc = GetSellerOrdersBloc(
+      orderRepository: OrderRepository(),
+    );
+    _getSellerOrdersBloc.add(GetSellerOrders());
     super.initState();
   }
 
   @override
   void dispose() {
     _getUserServicesBloc.close();
+    _getSellerOrdersBloc.close();
     super.dispose();
   }
 
@@ -65,7 +76,48 @@ class _SellerDashboardState extends State<SellerDashboard> {
             ),
           ),
           const SizedBox(height: padding),
-          const CompleteOrdersButton(ordersLeft: 1),
+          BlocBuilder<GetSellerOrdersBloc, GetSellerOrdersState>(
+            bloc: _getSellerOrdersBloc,
+            builder: (context, state) {
+              if (state is GetSellerOrdersLoading ||
+                  state is GetSellerOrdersInitial) {
+                return Container(
+                  padding: const EdgeInsets.all(padding),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(radius),
+                    ),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outline,
+                    ),
+                  ),
+                  child: const Center(
+                    child: SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              if (state is GetSellerOrdersSuccess) {
+                return CompleteOrdersButton(
+                  getSellerOrdersBloc: _getSellerOrdersBloc,
+                  ordersLeft: state.orders
+                      .where(
+                        (order) => order.status == Status.pending,
+                      )
+                      .toList()
+                      .length,
+                );
+              }
+
+              return const Text('Bloc Error');
+            },
+          ),
           const SizedBox(height: padding),
           OutlinedButton.icon(
             onPressed: () {
@@ -102,16 +154,26 @@ class _SellerDashboardState extends State<SellerDashboard> {
 
 class CompleteOrdersButton extends StatelessWidget {
   const CompleteOrdersButton({
+    required this.getSellerOrdersBloc,
     required this.ordersLeft,
     Key? key,
   }) : super(key: key);
 
+  final GetSellerOrdersBloc getSellerOrdersBloc;
   final int ordersLeft;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).push(
+          CustomPageRoute(
+            child: CompleteOrdersScreen(
+              getSellerOrdersBloc: getSellerOrdersBloc,
+            ),
+          ),
+        );
+      },
       icon: const Icon(PhosphorIcons.checkSquare, size: 40),
       label: Column(
         children: [
@@ -122,7 +184,7 @@ class CompleteOrdersButton extends StatelessWidget {
           RichText(
             text: TextSpan(
               text: ordersLeft.toString(),
-              style: Theme.of(context).primaryTextTheme.bodySmall!.apply(
+              style: Theme.of(context).primaryTextTheme.bodyMedium!.apply(
                     color: Theme.of(context).colorScheme.primary,
                     fontWeightDelta: 2,
                   ),

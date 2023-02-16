@@ -34,4 +34,24 @@ class OrderAPI {
       options: Options(headers: {'authorization': token}),
     );
   }
+
+  Future<Response> getSellerOrders({
+    required String token,
+  }) async {
+    return Dio().get(
+      '$baseUrl/seller',
+      options: Options(headers: {'authorization': token}),
+    );
+  }
+
+  Future<Response> completeOrder({
+    required String token,
+    required String orderId,
+  }) async {
+    return Dio().post(
+      '$baseUrl/seller',
+      data: {'itemId': orderId},
+      options: Options(headers: {'authorization': token}),
+    );
+  }
 }

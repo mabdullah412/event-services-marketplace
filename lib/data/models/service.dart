@@ -117,6 +117,30 @@ class Service {
     );
   }
 
+  factory Service.fromMapItem(Map<String, dynamic> map) {
+    /// This special from map function is used when sellerOrders are retrieved
+    /// from the server.
+
+    Map<String, dynamic> service = map['service'];
+
+    return Service(
+      id: service['_id'] as String,
+      seller: User.fromMap(service['seller'] as Map<String, dynamic>),
+      title: service['title'] as String,
+      description: service['description'] as String,
+      location: service['location'] as String,
+      category: service['category'] as String,
+      coverImage: service['coverImage'] as String,
+      price: service['price'] as int,
+      ratingsQuantity: service['ratingsQuantity'] as int,
+      ratingsAverage: service['ratingsAverage'] as int,
+      quantity: map['quantity'] as int,
+      status: map['status'] == 'pending' ? Status.pending : Status.completed,
+      orderItemId: map['_id'] as String,
+      buyer: User.fromMap(map['buyer'] as Map<String, dynamic>),
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
   factory Service.fromJson(String source) =>
