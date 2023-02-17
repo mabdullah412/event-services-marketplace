@@ -45,11 +45,12 @@ class CategoryButton extends StatelessWidget {
             height: 120,
             padding: const EdgeInsets.all(padding),
             decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(radius),
               image: DecorationImage(
                 image: AssetImage('assets/images/$image'),
                 fit: BoxFit.cover,
-                opacity: 0.6,
+                opacity: 0.7,
               ),
             ),
             child: Column(

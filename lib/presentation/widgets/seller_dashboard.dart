@@ -9,10 +9,9 @@ import '../../data/repositories/service_repository.dart';
 import '../../logic/bloc/get_seller_orders_bloc.dart';
 import '../../logic/bloc/get_user_services_bloc.dart';
 import '../router/custom_page_route.dart';
-import '../screens/complete_orders_screen.dart';
 import '../screens/create_service_screen.dart';
 import '../screens/user_services_screen.dart';
-import 'stat_card.dart';
+import 'complete_orders_button.dart';
 
 class SellerDashboard extends StatefulWidget {
   const SellerDashboard({
@@ -61,20 +60,20 @@ class _SellerDashboardState extends State<SellerDashboard> {
             'Seller dashboard',
             style: Theme.of(context).primaryTextTheme.titleMedium,
           ),
-          const SizedBox(height: padding),
-          IntrinsicHeight(
-            child: Row(
-              children: const [
-                Expanded(
-                  child: StatCard(title: 'Orders completed:', value: '2'),
-                ),
-                SizedBox(width: padding),
-                Expanded(
-                  child: StatCard(title: 'Total Earned:', value: 'Rs. 50,000'),
-                ),
-              ],
-            ),
-          ),
+          // const SizedBox(height: padding),
+          // IntrinsicHeight(
+          //   child: Row(
+          //     children: const [
+          //       Expanded(
+          //         child: StatCard(title: 'Orders completed:', value: '2'),
+          //       ),
+          //       SizedBox(width: padding),
+          //       Expanded(
+          //         child: StatCard(title: 'Total Earned:', value: 'Rs. 50,000'),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           const SizedBox(height: padding),
           BlocBuilder<GetSellerOrdersBloc, GetSellerOrdersState>(
             bloc: _getSellerOrdersBloc,
@@ -145,58 +144,6 @@ class _SellerDashboardState extends State<SellerDashboard> {
             },
             icon: const Icon(PhosphorIcons.plusBold, size: 20),
             label: const Text('Create a service'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CompleteOrdersButton extends StatelessWidget {
-  const CompleteOrdersButton({
-    required this.getSellerOrdersBloc,
-    required this.ordersLeft,
-    Key? key,
-  }) : super(key: key);
-
-  final GetSellerOrdersBloc getSellerOrdersBloc;
-  final int ordersLeft;
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton.icon(
-      onPressed: () {
-        Navigator.of(context).push(
-          CustomPageRoute(
-            child: CompleteOrdersScreen(
-              getSellerOrdersBloc: getSellerOrdersBloc,
-            ),
-          ),
-        );
-      },
-      icon: const Icon(PhosphorIcons.checkSquare, size: 40),
-      label: Column(
-        children: [
-          Text(
-            'Complete Orders',
-            style: Theme.of(context).primaryTextTheme.bodyLarge,
-          ),
-          RichText(
-            text: TextSpan(
-              text: ordersLeft.toString(),
-              style: Theme.of(context).primaryTextTheme.bodyMedium!.apply(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeightDelta: 2,
-                  ),
-              children: [
-                TextSpan(
-                  text: ordersLeft == 1
-                      ? ' order left to complete.'
-                      : ' orders left to complete.',
-                  style: Theme.of(context).primaryTextTheme.bodySmall,
-                ),
-              ],
-            ),
           ),
         ],
       ),

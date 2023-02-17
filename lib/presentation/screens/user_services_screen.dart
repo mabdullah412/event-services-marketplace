@@ -31,48 +31,51 @@ class _UserServicesScreenState extends State<UserServicesScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          padding: const EdgeInsets.all(padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const PopHeader(title: 'Your Services'),
-              const SizedBox(height: padding),
-              BlocBuilder<GetUserServicesBloc, GetUserServicesState>(
-                bloc: getUserServicesBloc,
-                buildWhen: (previous, current) => previous != current,
-                builder: (context, state) {
-                  if (state is GetUserServicesLoading ||
-                      state is GetUserServicesInitial) {
-                    return const Center(
-                      heightFactor: 10,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    );
-                  }
-
-                  if (state is GetUserServicesSuccess) {
-                    if (state.services.isEmpty) {
-                      return const NoUserServicesPlaceholder();
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(padding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const PopHeader(title: 'Your Services'),
+                const SizedBox(height: padding),
+                BlocBuilder<GetUserServicesBloc, GetUserServicesState>(
+                  bloc: getUserServicesBloc,
+                  buildWhen: (previous, current) => previous != current,
+                  builder: (context, state) {
+                    if (state is GetUserServicesLoading ||
+                        state is GetUserServicesInitial) {
+                      return const Center(
+                        heightFactor: 10,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      );
                     }
 
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.services.length,
-                      itemBuilder: (context, index) {
-                        final service = state.services[index];
-                        return UserServiceTile(service: service);
-                      },
-                    );
-                  }
+                    if (state is GetUserServicesSuccess) {
+                      if (state.services.isEmpty) {
+                        return const NoUserServicesPlaceholder();
+                      }
 
-                  if (state is GetUserServicesFailure) {
-                    return const GetUserServicesFailurePlaceholder();
-                  }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.services.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final service = state.services[index];
+                          return UserServiceTile(service: service);
+                        },
+                      );
+                    }
 
-                  return const Text('Bloc Error');
-                },
-              ),
-            ],
+                    if (state is GetUserServicesFailure) {
+                      return const GetUserServicesFailurePlaceholder();
+                    }
+
+                    return const Text('Bloc Error');
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

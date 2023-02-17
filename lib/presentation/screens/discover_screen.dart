@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
 import '../widgets/category_button.dart';
@@ -19,19 +18,15 @@ class DiscoverScreen extends StatelessWidget {
             children: [
               const Header(title: 'Discover'),
               const SizedBox(height: padding),
-
-              // search bar
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Search',
-                  prefixIcon: Icon(PhosphorIcons.magnifyingGlass),
-                ),
-              ),
-
+              const Banner(),
               const SizedBox(height: padding),
-
+              Text(
+                'All Categories',
+                style: Theme.of(context).primaryTextTheme.bodyLarge,
+              ),
+              const SizedBox(height: padding),
               const CategoryButton(
-                categoryName: 'Halls',
+                categoryName: 'Venue',
                 image: 'wedding_hall.jpg',
               ),
               const SizedBox(height: padding),
@@ -54,14 +49,53 @@ class DiscoverScreen extends StatelessWidget {
                 categoryName: 'Photography',
                 image: 'photography.jpg',
               ),
-
               const SizedBox(height: padding),
-
-              // item-wigdget
-              // const ServiceContainer(),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class Banner extends StatelessWidget {
+  const Banner({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      padding: const EdgeInsets.all(padding),
+      decoration: BoxDecoration(
+        image: const DecorationImage(
+          image: AssetImage('assets/images/banner.jpg'),
+          fit: BoxFit.cover,
+          opacity: 0.7,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(radius),
+        ),
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'EVENT PLANNING',
+            style: Theme.of(context).primaryTextTheme.displayMedium!.apply(
+                  color: const Color(0xFFF2F2F6),
+                ),
+          ),
+          Text(
+            'now just a few taps away.',
+            style: Theme.of(context).primaryTextTheme.bodyLarge!.apply(
+                  color: const Color(0xFFF2F2F6),
+                ),
+          ),
+        ],
       ),
     );
   }
