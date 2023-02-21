@@ -40,9 +40,19 @@ class ReviewCard extends StatelessWidget {
                     review.author.name,
                     style: Theme.of(context).primaryTextTheme.bodySmall,
                   ),
-                  Text(
-                    review.rating.toString(),
-                    style: Theme.of(context).primaryTextTheme.bodySmall,
+                  Row(
+                    children: [
+                      Text(
+                        review.rating.toString(),
+                        style: Theme.of(context).primaryTextTheme.bodySmall,
+                      ),
+                      const SizedBox(width: padding / 4),
+                      const Icon(
+                        PhosphorIcons.starFill,
+                        color: Colors.orange,
+                        size: 12,
+                      ),
+                    ],
                   ),
                 ],
               ),

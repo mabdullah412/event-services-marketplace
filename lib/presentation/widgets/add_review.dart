@@ -1,4 +1,3 @@
-import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,6 +5,7 @@ import '../../constants/constants.dart';
 import '../../data/repositories/review_repository.dart';
 import '../../logic/bloc/create_review_bloc.dart';
 import '../../logic/bloc/get_reviews_bloc.dart';
+import 'custom_snack_bar.dart';
 
 class AddReview extends StatefulWidget {
   const AddReview({

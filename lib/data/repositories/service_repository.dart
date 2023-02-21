@@ -49,4 +49,17 @@ class ServiceRepository {
       serviceData: serviceData,
     );
   }
+
+  Future<dynamic> deleteService({
+    required String serviceId,
+  }) async {
+    final String token =
+        await _flutterSecureStorage.read(key: 'JWT_TOKEN') ?? '';
+    if (token == '') return false;
+
+    return await _serviceAPI.deleteService(
+      token: token,
+      serviceId: serviceId,
+    );
+  }
 }

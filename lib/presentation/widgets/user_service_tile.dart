@@ -5,17 +5,47 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
 import '../../data/repositories/package_repository.dart';
+import '../../data/repositories/service_repository.dart';
+import '../../logic/bloc/delete_service_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import '../../logic/bloc/get_user_services_bloc.dart';
 import '../router/custom_page_route.dart';
 import '../screens/service_screen.dart';
 
-class UserServiceTile extends StatelessWidget {
+class UserServiceTile extends StatefulWidget {
   const UserServiceTile({
-    Key? key,
     required this.service,
+    required this.getUserServicesBloc,
+    Key? key,
   }) : super(key: key);
 
   final Service service;
+  final GetUserServicesBloc getUserServicesBloc;
+
+  @override
+  State<UserServiceTile> createState() => _UserServiceTileState();
+}
+
+class _UserServiceTileState extends State<UserServiceTile> {
+  GetUserServicesBloc get getUserServicesBloc => widget.getUserServicesBloc;
+  Service get service => widget.service;
+
+  late DeleteServiceBloc _deleteServiceBloc;
+
+  @override
+  void initState() {
+    _deleteServiceBloc = DeleteServiceBloc(
+      getUserServicesBloc: getUserServicesBloc,
+      serviceRepository: ServiceRepository(),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _deleteServiceBloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,42 +104,80 @@ class UserServiceTile extends StatelessWidget {
           const SizedBox(height: padding / 4),
           const Divider(),
           const SizedBox(height: padding / 4),
-          ItemRow(
+          ItemField(
             title: 'Category',
             value: service.category,
           ),
           const SizedBox(height: padding / 2),
-          ItemRow(
+          ItemField(
             title: 'Reviews',
             value: service.ratingsQuantity.toString(),
           ),
           const SizedBox(height: padding / 2),
-          ItemRow(
+          ItemField(
             title: 'Price (Rs)',
             value: service.price.toString(),
           ),
           const SizedBox(height: padding / 4),
           const Divider(),
           const SizedBox(height: padding / 4),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.of(context).push(
-                CustomPageRoute(
-                  // passing new instance just bcz it is needed in the
-                  // service screen,
-                  // No problem will occur,
-                  // bcz user cannot buy or review their own service.
-                  child: BlocProvider.value(
-                    value: GetPackagesBloc(
-                      packageRepository: PackageRepository(),
+          BlocBuilder<DeleteServiceBloc, DeleteServiceState>(
+            bloc: _deleteServiceBloc,
+            builder: (context, state) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      onPressed: state is DeleteServiceLoading
+                          ? null
+                          : () {
+                              Navigator.of(context).push(
+                                CustomPageRoute(
+                                  // passing new instance just bcz it is needed in the
+                                  // service screen,
+                                  // No problem will occur,
+                                  // bcz user cannot buy or review their own service.
+                                  child: BlocProvider.value(
+                                    value: GetPackagesBloc(
+                                      packageRepository: PackageRepository(),
+                                    ),
+                                    child: ServiceScreen(service: service),
+                                  ),
+                                ),
+                              );
+                            },
+                      icon:
+                          const Icon(PhosphorIcons.arrowArcRightBold, size: 20),
+                      label: const Text('Go To'),
                     ),
-                    child: ServiceScreen(service: service),
                   ),
-                ),
+                  const SizedBox(width: padding),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                    onPressed: state is DeleteServiceLoading
+                        ? null
+                        : () {
+                            _deleteServiceBloc.add(
+                              DeleteService(serviceId: service.id),
+                            );
+                          },
+                    child: state is DeleteServiceLoading
+                        ? const SizedBox(
+                            height: 15,
+                            width: 15,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Icon(PhosphorIcons.trashBold, size: 20),
+                  )
+                ],
               );
             },
-            icon: const Icon(PhosphorIcons.arrowArcRightBold, size: 20),
-            label: const Text('Go To'),
           ),
         ],
       ),
@@ -117,8 +185,8 @@ class UserServiceTile extends StatelessWidget {
   }
 }
 
-class ItemRow extends StatelessWidget {
-  const ItemRow({
+class ItemField extends StatelessWidget {
+  const ItemField({
     Key? key,
     required this.title,
     required this.value,

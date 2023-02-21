@@ -240,29 +240,29 @@ class TitleAndDescription extends StatelessWidget {
             serviceTitle,
             style: Theme.of(context).primaryTextTheme.displaySmall,
           ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const Icon(
-                PhosphorIcons.starFill,
-                color: Colors.orange,
-                size: 15,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                serviceRating.toString(),
-                style: Theme.of(context).primaryTextTheme.bodyMedium,
-              ),
-              // const SizedBox(width: padding),
-              // Text(
-              //   '$totalServiceReviews Reviews',
-              //   style: Theme.of(context)
-              //       .primaryTextTheme
-              //       .bodyMedium!
-              //       .apply(color: Theme.of(context).colorScheme.primary),
-              // ),
-            ],
-          ),
+          // const SizedBox(height: 10),
+          // Row(
+          //   children: [
+          //     const Icon(
+          //       PhosphorIcons.starFill,
+          //       color: Colors.orange,
+          //       size: 15,
+          //     ),
+          //     const SizedBox(width: 5),
+          //     Text(
+          //       serviceRating.toString(),
+          //       style: Theme.of(context).primaryTextTheme.bodyMedium,
+          //     ),
+          // const SizedBox(width: padding),
+          // Text(
+          //   '$totalServiceReviews Reviews',
+          //   style: Theme.of(context)
+          //       .primaryTextTheme
+          //       .bodyMedium!
+          //       .apply(color: Theme.of(context).colorScheme.primary),
+          // ),
+          //   ],
+          // ),
           const SizedBox(height: 10),
           Text(
             serviceDescription,

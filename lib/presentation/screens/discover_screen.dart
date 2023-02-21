@@ -31,11 +31,6 @@ class DiscoverScreen extends StatelessWidget {
               ),
               const SizedBox(height: padding),
               const CategoryButton(
-                categoryName: 'Decoration',
-                image: 'decoration.jpg',
-              ),
-              const SizedBox(height: padding),
-              const CategoryButton(
                 categoryName: 'Transport',
                 image: 'red_suv.jpg',
               ),
@@ -48,6 +43,11 @@ class DiscoverScreen extends StatelessWidget {
               const CategoryButton(
                 categoryName: 'Photography',
                 image: 'photography.jpg',
+              ),
+              const SizedBox(height: padding),
+              const CategoryButton(
+                categoryName: 'Decoration',
+                image: 'decoration.jpg',
               ),
               const SizedBox(height: padding),
             ],

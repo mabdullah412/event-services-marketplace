@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/service.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
+import '../../logic/providers/user_data_provider.dart';
 import '../router/custom_page_route.dart';
 import '../screens/service_screen.dart';
+import 'add_to_package_modal.dart';
+import 'custom_snack_bar.dart';
 
 class ServiceContainer extends StatelessWidget {
   const ServiceContainer({
@@ -18,6 +22,11 @@ class ServiceContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userId = Provider.of<UserDataProvider>(
+      context,
+      listen: false,
+    ).getId();
+
     return Container(
       padding: const EdgeInsets.all(padding),
       margin: const EdgeInsets.only(bottom: padding),
@@ -38,7 +47,14 @@ class ServiceContainer extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.secondary,
-                    child: const Icon(PhosphorIcons.userCircle),
+                    child: Text(
+                      service.seller.name[0],
+                      style:
+                          Theme.of(context).primaryTextTheme.bodyMedium!.apply(
+                                color: Theme.of(context).colorScheme.surface,
+                                fontWeightDelta: 2,
+                              ),
+                    ),
                   ),
                   const SizedBox(width: padding),
                   Text(
@@ -47,11 +63,6 @@ class ServiceContainer extends StatelessWidget {
                   ),
                 ],
               ),
-              // IconButton(
-              //   onPressed: () {},
-              //   constraints: const BoxConstraints(),
-              //   icon: const Icon(PhosphorIcons.dotsThreeVerticalBold),
-              // ),
             ],
           ),
 
@@ -129,22 +140,18 @@ class ServiceContainer extends StatelessWidget {
           Text(
             service.description,
             style: Theme.of(context).primaryTextTheme.bodyMedium,
+            maxLines: 5,
           ),
-
-          // Text(
-          //   service.location,
-          //   style: Theme.of(context).primaryTextTheme.bodyMedium,
-          // ),
-          // Text(
-          //   service.ratingsAverage.toString(),
-          //   style: Theme.of(context).primaryTextTheme.bodyMedium,
-          // ),
+          Text(
+            '...',
+            style: Theme.of(context).primaryTextTheme.bodyMedium,
+          ),
 
           const SizedBox(height: padding / 2),
           const Divider(),
           const SizedBox(height: padding / 2),
 
-          // learn more, save for later, add to package,
+          // learn more, add to package,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -161,22 +168,41 @@ class ServiceContainer extends StatelessWidget {
                 },
                 child: const Text('Learn more'),
               ),
+              IconButton(
+                onPressed: () {
+                  if (userId == service.seller.id) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        action: SnackBarAction(
+                          label: 'close',
+                          onPressed: () {},
+                        ),
+                        content: const CustomSnackbar(
+                          snackbarType: SnackbarType.info,
+                          title: 'Info',
+                          description:
+                              'You cannot buy or review your own services',
+                        ),
+                      ),
+                    );
 
-              // Row
-              Row(
-                children: [
-                  // IconButton(
-                  //   onPressed: () {},
-                  //   constraints: const BoxConstraints(),
-                  //   icon: const Icon(PhosphorIcons.bookmarkSimple),
-                  // ),
-                  // const SizedBox(width: padding),
-                  IconButton(
-                    onPressed: () {},
-                    constraints: const BoxConstraints(),
-                    icon: const Icon(PhosphorIcons.listPlus),
-                  ),
-                ],
+                    return;
+                  }
+
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (contextBuilder) {
+                      return AddToPackageModal(
+                        serviceId: service.id,
+                        getPackagesBloc:
+                            BlocProvider.of<GetPackagesBloc>(context),
+                      );
+                    },
+                  );
+                },
+                constraints: const BoxConstraints(),
+                icon: const Icon(PhosphorIcons.listPlus),
               ),
             ],
           ),

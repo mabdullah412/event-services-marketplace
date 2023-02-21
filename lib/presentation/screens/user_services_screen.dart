@@ -62,7 +62,10 @@ class _UserServicesScreenState extends State<UserServicesScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           final service = state.services[index];
-                          return UserServiceTile(service: service);
+                          return UserServiceTile(
+                            service: service,
+                            getUserServicesBloc: getUserServicesBloc,
+                          );
                         },
                       );
                     }

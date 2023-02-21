@@ -48,7 +48,12 @@ class _SellerDashboardState extends State<SellerDashboard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(padding),
+      padding: const EdgeInsets.only(
+        top: padding / 2,
+        bottom: padding,
+        right: padding,
+        left: padding,
+      ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
         color: Theme.of(context).colorScheme.surface,
@@ -56,25 +61,25 @@ class _SellerDashboardState extends State<SellerDashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            'Seller dashboard',
-            style: Theme.of(context).primaryTextTheme.titleMedium,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Seller dashboard',
+                style: Theme.of(context).primaryTextTheme.titleMedium,
+              ),
+              IconButton(
+                onPressed: () {
+                  _getSellerOrdersBloc.add(GetSellerOrders());
+                },
+                icon: const Icon(
+                  PhosphorIcons.arrowCounterClockwiseBold,
+                  size: 20,
+                ),
+              ),
+            ],
           ),
-          // const SizedBox(height: padding),
-          // IntrinsicHeight(
-          //   child: Row(
-          //     children: const [
-          //       Expanded(
-          //         child: StatCard(title: 'Orders completed:', value: '2'),
-          //       ),
-          //       SizedBox(width: padding),
-          //       Expanded(
-          //         child: StatCard(title: 'Total Earned:', value: 'Rs. 50,000'),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          const SizedBox(height: padding),
+          const SizedBox(height: padding / 2),
           BlocBuilder<GetSellerOrdersBloc, GetSellerOrdersState>(
             bloc: _getSellerOrdersBloc,
             builder: (context, state) {
@@ -117,7 +122,7 @@ class _SellerDashboardState extends State<SellerDashboard> {
               return const Text('Bloc Error');
             },
           ),
-          const SizedBox(height: padding),
+          const SizedBox(height: padding / 2),
           OutlinedButton.icon(
             onPressed: () {
               Navigator.of(context).push(
@@ -131,7 +136,7 @@ class _SellerDashboardState extends State<SellerDashboard> {
             icon: const Icon(PhosphorIcons.stackSimpleBold, size: 20),
             label: const Text('View your services'),
           ),
-          const SizedBox(height: padding),
+          const SizedBox(height: padding / 2),
           ElevatedButton.icon(
             onPressed: () {
               Navigator.of(context).push(

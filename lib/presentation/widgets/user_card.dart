@@ -68,7 +68,7 @@ class UserCard extends StatelessWidget {
           //   label: const Text('Payment Methods'),
           // ),
           // const SizedBox(height: padding / 2),
-          ElevatedButton.icon(
+          OutlinedButton.icon(
             onPressed: () {
               Navigator.of(context).push(
                 CustomPageRoute(child: const SettingsScreen()),

@@ -1,14 +1,14 @@
-import 'package:event_planner/data/repositories/package_repository.dart';
-import 'package:event_planner/logic/bloc/add_to_package_bloc.dart';
-import 'package:event_planner/presentation/widgets/custom_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../constants/constants.dart';
 import '../../data/models/package.dart';
+import '../../data/repositories/package_repository.dart';
+import '../../logic/bloc/add_to_package_bloc.dart';
 import '../../logic/bloc/get_packages_bloc.dart';
 import 'create_package_modal.dart';
+import 'custom_snack_bar.dart';
 import 'packages_container.dart';
 
 class AddToPackageModal extends StatefulWidget {

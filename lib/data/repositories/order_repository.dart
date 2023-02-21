@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:event_planner/data/models/service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../data_providers/order_api.dart';
 import '../models/order.dart';
+import '../models/service.dart';
 
 class OrderRepository {
   final OrderAPI _orderAPI = OrderAPI();

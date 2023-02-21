@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:event_planner/constants/enums.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+import '../../constants/enums.dart';
 import 'service.dart';
 import 'user.dart';
 

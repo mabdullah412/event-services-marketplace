@@ -28,4 +28,14 @@ class ServiceAPI {
       options: Options(headers: {'authorization': token}),
     );
   }
+
+  Future<Response> deleteService({
+    required String token,
+    required String serviceId,
+  }) async {
+    return await Dio().delete(
+      '$baseUrl/$serviceId',
+      options: Options(headers: {'authorization': token}),
+    );
+  }
 }

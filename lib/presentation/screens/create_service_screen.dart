@@ -532,9 +532,9 @@ class _CreateServiceScreenState extends State<CreateServiceScreen> {
                 style: Theme.of(context).primaryTextTheme.bodyMedium,
                 items: <String>[
                   'Decoration',
-                  'Car Rental',
+                  'Transport',
                   'Catering',
-                  'Halls',
+                  'Venue',
                   'Photography',
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
