@@ -54,6 +54,7 @@ class _AppState extends State<App> {
       ],
       child: MultiProvider(
         providers: [
+          // to switch between dark and light mode
           ChangeNotifierProvider<ThemeProvider>(
             create: (context) => _themeProvider,
           ),
