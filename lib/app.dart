@@ -57,6 +57,7 @@ class _AppState extends State<App> {
           ChangeNotifierProvider<ThemeProvider>(
             create: (context) => _themeProvider,
           ),
+          // to get username for profile screen
           Provider(
             create: (context) => _userDataProvider,
           ),
