@@ -3,6 +3,7 @@
 An ecommerce application made with Flutter. It is the updated version of my [Sophomore Year Project](https://github.com/mabdullah412/online-event-service-marketplace-flutter).
 
 <!-- TODO: ADD IMAGE HERE -->
+![Banner](./assets/esm-banner.jpg)
 
 ## Contents
 
